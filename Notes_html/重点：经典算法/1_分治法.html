@@ -1,0 +1,73 @@
+<html>
+<head>
+  <title>1_分治法</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/601392 (zh-CN, DDL); Windows/10.0.0 (Win64); EDAMVersion=V2;"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="10044"/>
+<h1>1_分治法</h1>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h1 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 41px; border-bottom: 3px double #999; color: #000; margin-top: 14px;">分治法</h1>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">描述</h2>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">把一个复杂的问题分成两个或更多的相同或相似的子问题，再把子问题分成更小的子问题……直到最后子问题可以简单的直接求解，原问题的解即子问题的解的合并。</p>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">使用条件</h2>
+<ol style="line-height: 160%; box-sizing: content-box; display: block; padding-left: 30px; margin: 6px 0 10px; color: #333; list-style-type: decimal;">
+<li style="line-height: 160%; box-sizing: content-box;">问题缩小到一定成都就可以容易的解决</li>
+<li style="line-height: 160%; box-sizing: content-box;">问题可以分解为若干个规模较小的相同问题</li>
+<li style="line-height: 160%; box-sizing: content-box;">子问题的解可以合并成总问题的解</li>
+<li style="line-height: 160%; box-sizing: content-box;">子问题之间没有耦合</li>
+</ol>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">步骤</h2>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">step1 分解：将原问题分解为若干个规模较小，相互独立，与原问题形式相同的子问题；    <br/>
+step2 解决：若子问题规模较小而容易被解决则直接解，否则递归地解各个子问题    <br/>
+step3 合并：将各个子问题的解合并为原问题的解。</p>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">代码思路</h2>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">Divide-and-Conquer(P)
+
+    1. if |P|≤n0
+
+    2. then return(ADHOC(P))
+
+    3. 将P分解为较小的子问题 P1 ,P2 ,...,Pk
+
+    4. for i←1 to k
+
+    5. do yi ← Divide-and-Conquer(Pi) △ 递归解决Pi
+
+    6. T ← MERGE(y1,y2,...,yk) △ 合并子问题
+
+    7. return(T)
+</code></pre>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">其中|P|表示问题P的规模；n0为一阈值，表示当问题P的规模不超过n0时，问题已容易直接解出，不必再继续分解。ADHOC(P)是该分治法中的基本子算法，用于直接解小规模的问题P。因此，当P的规模不超过n0时直接用算法ADHOC(P)求解。算法MERGE(y1,y2,...,yk)是该分治法中的合并子算法，用于将P的子问题P1 ,P2 ,...,Pk的相应的解y1,y2,...,yk合并为P的解。</p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">分治方法
+    if(满足了最小可简单解决的规模){
+        使用最基本子算法求解问题
+    }
+    else{
+        分解
+        递归使用分治算法解决分解出来的各部分
+        得到分解的每个算法的结果，进行结果合并
+    }
+</code></pre>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">可应用的经典问题</h2>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">（1）二分搜索<br/>
+（2）大整数乘法<br/>
+（3）Strassen矩阵乘法<br/>
+（4）棋盘覆盖<br/>
+（5）合并排序<br/>
+（6）快速排序<br/>
+（7）线性时间选择<br/>
+（8）最接近点对问题<br/>
+（9）循环赛日程表<br/>
+（10）汉诺塔</p>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%20%E5%88%86%E6%B2%BB%E6%B3%95%0A%23%23%20%E6%8F%8F%E8%BF%B0%0A%0A%E6%8A%8A%E4%B8%80%E4%B8%AA%E5%A4%8D%E6%9D%82%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E6%88%90%E4%B8%A4%E4%B8%AA%E6%88%96%E6%9B%B4%E5%A4%9A%E7%9A%84%E7%9B%B8%E5%90%8C%E6%88%96%E7%9B%B8%E4%BC%BC%E7%9A%84%E5%AD%90%E9%97%AE%E9%A2%98%EF%BC%8C%E5%86%8D%E6%8A%8A%E5%AD%90%E9%97%AE%E9%A2%98%E5%88%86%E6%88%90%E6%9B%B4%E5%B0%8F%E7%9A%84%E5%AD%90%E9%97%AE%E9%A2%98%E2%80%A6%E2%80%A6%E7%9B%B4%E5%88%B0%E6%9C%80%E5%90%8E%E5%AD%90%E9%97%AE%E9%A2%98%E5%8F%AF%E4%BB%A5%E7%AE%80%E5%8D%95%E7%9A%84%E7%9B%B4%E6%8E%A5%E6%B1%82%E8%A7%A3%EF%BC%8C%E5%8E%9F%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%8D%B3%E5%AD%90%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E7%9A%84%E5%90%88%E5%B9%B6%E3%80%82%0A%23%23%20%E4%BD%BF%E7%94%A8%E6%9D%A1%E4%BB%B6%0A1.%20%E9%97%AE%E9%A2%98%E7%BC%A9%E5%B0%8F%E5%88%B0%E4%B8%80%E5%AE%9A%E6%88%90%E9%83%BD%E5%B0%B1%E5%8F%AF%E4%BB%A5%E5%AE%B9%E6%98%93%E7%9A%84%E8%A7%A3%E5%86%B3%0A2.%20%E9%97%AE%E9%A2%98%E5%8F%AF%E4%BB%A5%E5%88%86%E8%A7%A3%E4%B8%BA%E8%8B%A5%E5%B9%B2%E4%B8%AA%E8%A7%84%E6%A8%A1%E8%BE%83%E5%B0%8F%E7%9A%84%E7%9B%B8%E5%90%8C%E9%97%AE%E9%A2%98%0A3.%20%E5%AD%90%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%8F%AF%E4%BB%A5%E5%90%88%E5%B9%B6%E6%88%90%E6%80%BB%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%0A4.%20%E5%AD%90%E9%97%AE%E9%A2%98%E4%B9%8B%E9%97%B4%E6%B2%A1%E6%9C%89%E8%80%A6%E5%90%88%0A%23%23%20%E6%AD%A5%E9%AA%A4%0Astep1%20%E5%88%86%E8%A7%A3%EF%BC%9A%E5%B0%86%E5%8E%9F%E9%97%AE%E9%A2%98%E5%88%86%E8%A7%A3%E4%B8%BA%E8%8B%A5%E5%B9%B2%E4%B8%AA%E8%A7%84%E6%A8%A1%E8%BE%83%E5%B0%8F%EF%BC%8C%E7%9B%B8%E4%BA%92%E7%8B%AC%E7%AB%8B%EF%BC%8C%E4%B8%8E%E5%8E%9F%E9%97%AE%E9%A2%98%E5%BD%A2%E5%BC%8F%E7%9B%B8%E5%90%8C%E7%9A%84%E5%AD%90%E9%97%AE%E9%A2%98%EF%BC%9B%C2%A0%C2%A0%20%C2%A0%0Astep2%20%E8%A7%A3%E5%86%B3%EF%BC%9A%E8%8B%A5%E5%AD%90%E9%97%AE%E9%A2%98%E8%A7%84%E6%A8%A1%E8%BE%83%E5%B0%8F%E8%80%8C%E5%AE%B9%E6%98%93%E8%A2%AB%E8%A7%A3%E5%86%B3%E5%88%99%E7%9B%B4%E6%8E%A5%E8%A7%A3%EF%BC%8C%E5%90%A6%E5%88%99%E9%80%92%E5%BD%92%E5%9C%B0%E8%A7%A3%E5%90%84%E4%B8%AA%E5%AD%90%E9%97%AE%E9%A2%98%C2%A0%C2%A0%20%C2%A0%0Astep3%20%E5%90%88%E5%B9%B6%EF%BC%9A%E5%B0%86%E5%90%84%E4%B8%AA%E5%AD%90%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%90%88%E5%B9%B6%E4%B8%BA%E5%8E%9F%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E3%80%82%0A%0A%23%23%20%E4%BB%A3%E7%A0%81%E6%80%9D%E8%B7%AF%0A%60%60%60%0ADivide-and-Conquer(P)%0A%0A%20%20%20%201.%20if%20%7CP%7C%E2%89%A4n0%0A%0A%20%20%20%202.%20then%20return(ADHOC(P))%0A%0A%20%20%20%203.%20%E5%B0%86P%E5%88%86%E8%A7%A3%E4%B8%BA%E8%BE%83%E5%B0%8F%E7%9A%84%E5%AD%90%E9%97%AE%E9%A2%98%20P1%20%2CP2%20%2C...%2CPk%0A%0A%20%20%20%204.%20for%20i%E2%86%901%20to%20k%0A%0A%20%20%20%205.%20do%20yi%20%E2%86%90%20Divide-and-Conquer(Pi)%20%E2%96%B3%20%E9%80%92%E5%BD%92%E8%A7%A3%E5%86%B3Pi%0A%0A%20%20%20%206.%20T%20%E2%86%90%20MERGE(y1%2Cy2%2C...%2Cyk)%20%E2%96%B3%20%E5%90%88%E5%B9%B6%E5%AD%90%E9%97%AE%E9%A2%98%0A%0A%20%20%20%207.%20return(T)%0A%60%60%60%0A%0A%E5%85%B6%E4%B8%AD%7CP%7C%E8%A1%A8%E7%A4%BA%E9%97%AE%E9%A2%98P%E7%9A%84%E8%A7%84%E6%A8%A1%EF%BC%9Bn0%E4%B8%BA%E4%B8%80%E9%98%88%E5%80%BC%EF%BC%8C%E8%A1%A8%E7%A4%BA%E5%BD%93%E9%97%AE%E9%A2%98P%E7%9A%84%E8%A7%84%E6%A8%A1%E4%B8%8D%E8%B6%85%E8%BF%87n0%E6%97%B6%EF%BC%8C%E9%97%AE%E9%A2%98%E5%B7%B2%E5%AE%B9%E6%98%93%E7%9B%B4%E6%8E%A5%E8%A7%A3%E5%87%BA%EF%BC%8C%E4%B8%8D%E5%BF%85%E5%86%8D%E7%BB%A7%E7%BB%AD%E5%88%86%E8%A7%A3%E3%80%82ADHOC(P)%E6%98%AF%E8%AF%A5%E5%88%86%E6%B2%BB%E6%B3%95%E4%B8%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%AD%90%E7%AE%97%E6%B3%95%EF%BC%8C%E7%94%A8%E4%BA%8E%E7%9B%B4%E6%8E%A5%E8%A7%A3%E5%B0%8F%E8%A7%84%E6%A8%A1%E7%9A%84%E9%97%AE%E9%A2%98P%E3%80%82%E5%9B%A0%E6%AD%A4%EF%BC%8C%E5%BD%93P%E7%9A%84%E8%A7%84%E6%A8%A1%E4%B8%8D%E8%B6%85%E8%BF%87n0%E6%97%B6%E7%9B%B4%E6%8E%A5%E7%94%A8%E7%AE%97%E6%B3%95ADHOC(P)%E6%B1%82%E8%A7%A3%E3%80%82%E7%AE%97%E6%B3%95MERGE(y1%2Cy2%2C...%2Cyk)%E6%98%AF%E8%AF%A5%E5%88%86%E6%B2%BB%E6%B3%95%E4%B8%AD%E7%9A%84%E5%90%88%E5%B9%B6%E5%AD%90%E7%AE%97%E6%B3%95%EF%BC%8C%E7%94%A8%E4%BA%8E%E5%B0%86P%E7%9A%84%E5%AD%90%E9%97%AE%E9%A2%98P1%20%2CP2%20%2C...%2CPk%E7%9A%84%E7%9B%B8%E5%BA%94%E7%9A%84%E8%A7%A3y1%2Cy2%2C...%2Cyk%E5%90%88%E5%B9%B6%E4%B8%BAP%E7%9A%84%E8%A7%A3%E3%80%82%0A%60%60%60%0A%E5%88%86%E6%B2%BB%E6%96%B9%E6%B3%95%0A%20%20%20%20if(%E6%BB%A1%E8%B6%B3%E4%BA%86%E6%9C%80%E5%B0%8F%E5%8F%AF%E7%AE%80%E5%8D%95%E8%A7%A3%E5%86%B3%E7%9A%84%E8%A7%84%E6%A8%A1)%7B%0A%20%20%20%20%20%20%20%20%E4%BD%BF%E7%94%A8%E6%9C%80%E5%9F%BA%E6%9C%AC%E5%AD%90%E7%AE%97%E6%B3%95%E6%B1%82%E8%A7%A3%E9%97%AE%E9%A2%98%0A%20%20%20%20%7D%0A%20%20%20%20else%7B%0A%20%20%20%20%20%20%20%20%E5%88%86%E8%A7%A3%0A%20%20%20%20%20%20%20%20%E9%80%92%E5%BD%92%E4%BD%BF%E7%94%A8%E5%88%86%E6%B2%BB%E7%AE%97%E6%B3%95%E8%A7%A3%E5%86%B3%E5%88%86%E8%A7%A3%E5%87%BA%E6%9D%A5%E7%9A%84%E5%90%84%E9%83%A8%E5%88%86%0A%20%20%20%20%20%20%20%20%E5%BE%97%E5%88%B0%E5%88%86%E8%A7%A3%E7%9A%84%E6%AF%8F%E4%B8%AA%E7%AE%97%E6%B3%95%E7%9A%84%E7%BB%93%E6%9E%9C%EF%BC%8C%E8%BF%9B%E8%A1%8C%E7%BB%93%E6%9E%9C%E5%90%88%E5%B9%B6%0A%20%20%20%20%7D%0A%60%60%60%0A%23%23%20%E5%8F%AF%E5%BA%94%E7%94%A8%E7%9A%84%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98%0A%0A%EF%BC%881%EF%BC%89%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2%0A%EF%BC%882%EF%BC%89%E5%A4%A7%E6%95%B4%E6%95%B0%E4%B9%98%E6%B3%95%0A%EF%BC%883%EF%BC%89Strassen%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95%0A%EF%BC%884%EF%BC%89%E6%A3%8B%E7%9B%98%E8%A6%86%E7%9B%96%0A%EF%BC%885%EF%BC%89%E5%90%88%E5%B9%B6%E6%8E%92%E5%BA%8F%0A%EF%BC%886%EF%BC%89%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%0A%EF%BC%887%EF%BC%89%E7%BA%BF%E6%80%A7%E6%97%B6%E9%97%B4%E9%80%89%E6%8B%A9%0A%EF%BC%888%EF%BC%89%E6%9C%80%E6%8E%A5%E8%BF%91%E7%82%B9%E5%AF%B9%E9%97%AE%E9%A2%98%0A%EF%BC%889%EF%BC%89%E5%BE%AA%E7%8E%AF%E8%B5%9B%E6%97%A5%E7%A8%8B%E8%A1%A8%0A%EF%BC%8810%EF%BC%89%E6%B1%89%E8%AF%BA%E5%A1%94%0A%0A%20%20%20%20%0A</center></span>
+</div></body></html> 

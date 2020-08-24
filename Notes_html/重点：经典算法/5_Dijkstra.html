@@ -1,0 +1,121 @@
+<html>
+<head>
+  <title>5_Dijkstra</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/601392 (zh-CN, DDL); Windows/10.0.0 (Win64); EDAMVersion=V2;"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="10056"/>
+<h1>5_Dijkstra</h1>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h1 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 41px; border-bottom: 3px double #999; color: #000; margin-top: 14px;">Dijkstra</h1>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">作用</h2>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">求解单源最短路径</p>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">步骤</h2>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">条件：graph[][] graph[x][y]表示x到y的距离，如果不通用Integer.MAX_VIEW或者负数表示</p>
+<ol style="line-height: 160%; box-sizing: content-box; display: block; padding-left: 30px; margin: 6px 0 10px; color: #333; list-style-type: decimal;">
+<li style="line-height: 160%; box-sizing: content-box;">创建数组S[]表示节点状态，T表示已被遍历、F表示未被遍历</li>
+<li style="line-height: 160%; box-sizing: content-box;">创建数组D[]表示到源点的最短距离</li>
+<li style="line-height: 160%; box-sizing: content-box;">初始化D[]，源点自己设置为0，其他设置为Integer.MAX_VIEW</li>
+<li style="line-height: 160%; box-sizing: content-box;">用变量存刚求出来的节点cur，初始为源点自己</li>
+<li style="line-height: 160%; box-sizing: content-box;">从cur开始遍历，直到S[]中全部都为T 可以while或者用计数
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">//遍历cur到所有节点i，如果i没被访问，且cur有到i的路径
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">D[i] = Math.min(D[i],D[cur]+graph[cur][i])</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">//遍历D结果，找到minIndex和minDIs记录此轮找到的距离源点最近的元素的位置和元素
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">如果minIndex认为默认值，说明次轮中没找到能到达的新节点，说明剩余节点都不可达</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">cur等于新的节点，cur = minIndex</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">标记cur已被访问</li>
+</ul>
+</li>
+</ol>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;"><strong style="line-height: 160%; box-sizing: content-box; font-weight: 700;">leetcode：743. 网络延迟时间</strong></p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">
+    //传入，n*n矩阵，graph[x][y]表示从x节点到y节点的距离，当不通时设置为Integer.MAX_VALUE
+    public  int[] dijkstra(int[][] graph, int n, int k){
+        //visited 表示是被访问,0表示未被访问,1表示访问过，相当于算法中存储已完成节点的集合
+        int[] visited = new int[n];
+        //distance 表示到源点的位置
+        int[] distance = new int[n];
+        //初始化，默认源点已被访问到
+        visited[k]=1;
+        Arrays.fill(distance,Integer.MAX_VALUE);
+        distance[k]=0;//距离源点距离为0
+        //使用cur表示当前向外扩散的元素
+        int cur = k;
+        //使用x表示已经被访问的元素
+        int x = 1;
+        while(x&lt;n){
+            //遍历节点的所有向外的路，将此点能到达的路的路径设置为最小的情况（如果已经有更小的路，则不换，没有则替换）
+            for(int i = 0;i&lt;n;i++){
+                if(visited[i]==0 &amp;&amp; graph[cur][i]!=Integer.MAX_VALUE){
+                    //distance[i] 和 distance[cur] +graph[cur][i]对比
+                    //说明从节点转过去更近
+                    distance[i] = distance[i]&lt;distance[cur] +graph[cur][i]?distance[i]:distance[cur]+graph[cur][i];
+                }
+            }
+            //用于保存此轮找到的下一个最近的节点
+            int minIndex = -1;
+            //用于保存次轮找到的最近节点的距离
+            int minDis = Integer.MAX_VALUE;
+            for(int i = 0;i&lt;n;i++){
+                if(visited[i]==0 &amp;&amp; minDis&gt;distance[i]){
+                    minDis=distance[i];
+                    minIndex=i;
+                }
+            }
+            //如果遍历一次距离结果之后发现minIndex=-1，说明剩下的元素都是到达不了的，此时已经完成了所有最小距离的求解
+            if(minIndex==-1) return distance;
+            cur = minIndex;
+            visited[cur]=1;
+            x++;
+        }
+        return distance;
+    }
+</code></pre>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">求解有最多转移次数要求的最短路径问题</li>
+</ul>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;"><span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;"><span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">public</span> <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span> <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">findCheapestPrice</span><span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">(<span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span> n, <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span>[][] flights, <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span> src, <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span> dst, <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span> K)</span> </span>{
+        <span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//记录从i到j的距离</span>
+        <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span>[][] grap = <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">new</span> <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span>[n][n];
+        <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">for</span>(<span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span>[] filght : flights){
+            grap[filght[<span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">0</span>]][filght[<span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">1</span>]]=filght[<span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">2</span>];
+        }
+        <span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//队列中数组的含义，[0]位置表示本轮从哪个元素中转，[1]表示剩余的中转次数，[2]表示已经走过的路</span>
+        PriorityQueue&lt;<span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span>[]&gt; queue = <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">new</span> PriorityQueue&lt;<span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span>[]&gt;((a,b)-&gt;a[<span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">2</span>]-b[<span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">2</span>]);
+        queue.offer(<span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">new</span> <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span>[]{src,K,<span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">0</span>});
+        <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">while</span>(!queue.isEmpty()){
+            <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span>[] info = queue.poll();
+            <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span> cur = info[<span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">0</span>], remaink=info[<span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">1</span>], value=info[<span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">2</span>] ;
+            <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">if</span>(cur==dst) <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">return</span> value;
+            <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">if</span>(remaink&gt;=<span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">0</span>){
+                <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">for</span>(<span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span> i = <span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">0</span>;i&lt;n;i++){
+                    <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">if</span>(grap[cur][i]&gt;<span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">0</span>){
+                        queue.offer(<span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">new</span> <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span>[]{i,remaink-<span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">1</span>,value+grap[cur][i]});
+                    }
+                }
+            }
+        }
+        <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">return</span> -<span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">1</span>;
+    }
+}
+
+
+</code></pre>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%20Dijkstra%0A%23%23%20%E4%BD%9C%E7%94%A8%0A%E6%B1%82%E8%A7%A3%E5%8D%95%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%0A%23%23%20%E6%AD%A5%E9%AA%A4%0A%E6%9D%A1%E4%BB%B6%EF%BC%9Agraph%5B%5D%5B%5D%20graph%5Bx%5D%5By%5D%E8%A1%A8%E7%A4%BAx%E5%88%B0y%E7%9A%84%E8%B7%9D%E7%A6%BB%EF%BC%8C%E5%A6%82%E6%9E%9C%E4%B8%8D%E9%80%9A%E7%94%A8Integer.MAX_VIEW%E6%88%96%E8%80%85%E8%B4%9F%E6%95%B0%E8%A1%A8%E7%A4%BA%0A1.%20%E5%88%9B%E5%BB%BA%E6%95%B0%E7%BB%84S%5B%5D%E8%A1%A8%E7%A4%BA%E8%8A%82%E7%82%B9%E7%8A%B6%E6%80%81%EF%BC%8CT%E8%A1%A8%E7%A4%BA%E5%B7%B2%E8%A2%AB%E9%81%8D%E5%8E%86%E3%80%81F%E8%A1%A8%E7%A4%BA%E6%9C%AA%E8%A2%AB%E9%81%8D%E5%8E%86%0A2.%20%E5%88%9B%E5%BB%BA%E6%95%B0%E7%BB%84D%5B%5D%E8%A1%A8%E7%A4%BA%E5%88%B0%E6%BA%90%E7%82%B9%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%9D%E7%A6%BB%0A3.%20%E5%88%9D%E5%A7%8B%E5%8C%96D%5B%5D%EF%BC%8C%E6%BA%90%E7%82%B9%E8%87%AA%E5%B7%B1%E8%AE%BE%E7%BD%AE%E4%B8%BA0%EF%BC%8C%E5%85%B6%E4%BB%96%E8%AE%BE%E7%BD%AE%E4%B8%BAInteger.MAX_VIEW%0A4.%20%E7%94%A8%E5%8F%98%E9%87%8F%E5%AD%98%E5%88%9A%E6%B1%82%E5%87%BA%E6%9D%A5%E7%9A%84%E8%8A%82%E7%82%B9cur%EF%BC%8C%E5%88%9D%E5%A7%8B%E4%B8%BA%E6%BA%90%E7%82%B9%E8%87%AA%E5%B7%B1%0A5.%20%E4%BB%8Ecur%E5%BC%80%E5%A7%8B%E9%81%8D%E5%8E%86%EF%BC%8C%E7%9B%B4%E5%88%B0S%5B%5D%E4%B8%AD%E5%85%A8%E9%83%A8%E9%83%BD%E4%B8%BAT%20%E5%8F%AF%E4%BB%A5while%E6%88%96%E8%80%85%E7%94%A8%E8%AE%A1%E6%95%B0%0A%20%20%20%20*%20%2F%2F%E9%81%8D%E5%8E%86cur%E5%88%B0%E6%89%80%E6%9C%89%E8%8A%82%E7%82%B9i%EF%BC%8C%E5%A6%82%E6%9E%9Ci%E6%B2%A1%E8%A2%AB%E8%AE%BF%E9%97%AE%EF%BC%8C%E4%B8%94cur%E6%9C%89%E5%88%B0i%E7%9A%84%E8%B7%AF%E5%BE%84%0A%20%20%20%20%20%20%20%20*%20D%5Bi%5D%20%3D%20Math.min(D%5Bi%5D%2CD%5Bcur%5D%2Bgraph%5Bcur%5D%5Bi%5D)%0A%20%20%20%20*%20%2F%2F%E9%81%8D%E5%8E%86D%E7%BB%93%E6%9E%9C%EF%BC%8C%E6%89%BE%E5%88%B0minIndex%E5%92%8CminDIs%E8%AE%B0%E5%BD%95%E6%AD%A4%E8%BD%AE%E6%89%BE%E5%88%B0%E7%9A%84%E8%B7%9D%E7%A6%BB%E6%BA%90%E7%82%B9%E6%9C%80%E8%BF%91%E7%9A%84%E5%85%83%E7%B4%A0%E7%9A%84%E4%BD%8D%E7%BD%AE%E5%92%8C%E5%85%83%E7%B4%A0%0A%20%20%20%20%20%20%20%20*%20%E5%A6%82%E6%9E%9CminIndex%E8%AE%A4%E4%B8%BA%E9%BB%98%E8%AE%A4%E5%80%BC%EF%BC%8C%E8%AF%B4%E6%98%8E%E6%AC%A1%E8%BD%AE%E4%B8%AD%E6%B2%A1%E6%89%BE%E5%88%B0%E8%83%BD%E5%88%B0%E8%BE%BE%E7%9A%84%E6%96%B0%E8%8A%82%E7%82%B9%EF%BC%8C%E8%AF%B4%E6%98%8E%E5%89%A9%E4%BD%99%E8%8A%82%E7%82%B9%E9%83%BD%E4%B8%8D%E5%8F%AF%E8%BE%BE%0A%20%20%20%20*%20cur%E7%AD%89%E4%BA%8E%E6%96%B0%E7%9A%84%E8%8A%82%E7%82%B9%EF%BC%8Ccur%20%3D%20minIndex%0A%20%20%20%20*%20%E6%A0%87%E8%AE%B0cur%E5%B7%B2%E8%A2%AB%E8%AE%BF%E9%97%AE%0A%20%20%20%20%0A%20%20%20%20%0A**leetcode%EF%BC%9A743.%20%E7%BD%91%E7%BB%9C%E5%BB%B6%E8%BF%9F%E6%97%B6%E9%97%B4**%0A%60%60%60java%0A%0A%C2%A0%C2%A0%C2%A0%C2%A0%2F%2F%E4%BC%A0%E5%85%A5%EF%BC%8Cn*n%E7%9F%A9%E9%98%B5%EF%BC%8Cgraph%5Bx%5D%5By%5D%E8%A1%A8%E7%A4%BA%E4%BB%8Ex%E8%8A%82%E7%82%B9%E5%88%B0y%E8%8A%82%E7%82%B9%E7%9A%84%E8%B7%9D%E7%A6%BB%EF%BC%8C%E5%BD%93%E4%B8%8D%E9%80%9A%E6%97%B6%E8%AE%BE%E7%BD%AE%E4%B8%BAInteger.MAX_VALUE%0A%C2%A0%C2%A0%C2%A0%C2%A0public%C2%A0%C2%A0int%5B%5D%C2%A0dijkstra(int%5B%5D%5B%5D%C2%A0graph%2C%C2%A0int%C2%A0n%2C%C2%A0int%C2%A0k)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2Fvisited%C2%A0%E8%A1%A8%E7%A4%BA%E6%98%AF%E8%A2%AB%E8%AE%BF%E9%97%AE%2C0%E8%A1%A8%E7%A4%BA%E6%9C%AA%E8%A2%AB%E8%AE%BF%E9%97%AE%2C1%E8%A1%A8%E7%A4%BA%E8%AE%BF%E9%97%AE%E8%BF%87%EF%BC%8C%E7%9B%B8%E5%BD%93%E4%BA%8E%E7%AE%97%E6%B3%95%E4%B8%AD%E5%AD%98%E5%82%A8%E5%B7%B2%E5%AE%8C%E6%88%90%E8%8A%82%E7%82%B9%E7%9A%84%E9%9B%86%E5%90%88%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0int%5B%5D%C2%A0visited%C2%A0%3D%C2%A0new%C2%A0int%5Bn%5D%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2Fdistance%C2%A0%E8%A1%A8%E7%A4%BA%E5%88%B0%E6%BA%90%E7%82%B9%E7%9A%84%E4%BD%8D%E7%BD%AE%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0int%5B%5D%C2%A0distance%C2%A0%3D%C2%A0new%C2%A0int%5Bn%5D%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2F%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%8C%E9%BB%98%E8%AE%A4%E6%BA%90%E7%82%B9%E5%B7%B2%E8%A2%AB%E8%AE%BF%E9%97%AE%E5%88%B0%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0visited%5Bk%5D%3D1%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0Arrays.fill(distance%2CInteger.MAX_VALUE)%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0distance%5Bk%5D%3D0%3B%2F%2F%E8%B7%9D%E7%A6%BB%E6%BA%90%E7%82%B9%E8%B7%9D%E7%A6%BB%E4%B8%BA0%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2F%E4%BD%BF%E7%94%A8cur%E8%A1%A8%E7%A4%BA%E5%BD%93%E5%89%8D%E5%90%91%E5%A4%96%E6%89%A9%E6%95%A3%E7%9A%84%E5%85%83%E7%B4%A0%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0int%C2%A0cur%C2%A0%3D%C2%A0k%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2F%E4%BD%BF%E7%94%A8x%E8%A1%A8%E7%A4%BA%E5%B7%B2%E7%BB%8F%E8%A2%AB%E8%AE%BF%E9%97%AE%E7%9A%84%E5%85%83%E7%B4%A0%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0int%C2%A0x%C2%A0%3D%C2%A01%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0while(x%3Cn)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2F%E9%81%8D%E5%8E%86%E8%8A%82%E7%82%B9%E7%9A%84%E6%89%80%E6%9C%89%E5%90%91%E5%A4%96%E7%9A%84%E8%B7%AF%EF%BC%8C%E5%B0%86%E6%AD%A4%E7%82%B9%E8%83%BD%E5%88%B0%E8%BE%BE%E7%9A%84%E8%B7%AF%E7%9A%84%E8%B7%AF%E5%BE%84%E8%AE%BE%E7%BD%AE%E4%B8%BA%E6%9C%80%E5%B0%8F%E7%9A%84%E6%83%85%E5%86%B5%EF%BC%88%E5%A6%82%E6%9E%9C%E5%B7%B2%E7%BB%8F%E6%9C%89%E6%9B%B4%E5%B0%8F%E7%9A%84%E8%B7%AF%EF%BC%8C%E5%88%99%E4%B8%8D%E6%8D%A2%EF%BC%8C%E6%B2%A1%E6%9C%89%E5%88%99%E6%9B%BF%E6%8D%A2%EF%BC%89%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0for(int%C2%A0i%C2%A0%3D%C2%A00%3Bi%3Cn%3Bi%2B%2B)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0if(visited%5Bi%5D%3D%3D0%C2%A0%26%26%C2%A0graph%5Bcur%5D%5Bi%5D!%3DInteger.MAX_VALUE)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2Fdistance%5Bi%5D%C2%A0%E5%92%8C%C2%A0distance%5Bcur%5D%C2%A0%2Bgraph%5Bcur%5D%5Bi%5D%E5%AF%B9%E6%AF%94%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2F%E8%AF%B4%E6%98%8E%E4%BB%8E%E8%8A%82%E7%82%B9%E8%BD%AC%E8%BF%87%E5%8E%BB%E6%9B%B4%E8%BF%91%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0distance%5Bi%5D%C2%A0%3D%C2%A0distance%5Bi%5D%3Cdistance%5Bcur%5D%C2%A0%2Bgraph%5Bcur%5D%5Bi%5D%3Fdistance%5Bi%5D%3Adistance%5Bcur%5D%2Bgraph%5Bcur%5D%5Bi%5D%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2F%E7%94%A8%E4%BA%8E%E4%BF%9D%E5%AD%98%E6%AD%A4%E8%BD%AE%E6%89%BE%E5%88%B0%E7%9A%84%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9C%80%E8%BF%91%E7%9A%84%E8%8A%82%E7%82%B9%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0int%C2%A0minIndex%C2%A0%3D%C2%A0-1%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2F%E7%94%A8%E4%BA%8E%E4%BF%9D%E5%AD%98%E6%AC%A1%E8%BD%AE%E6%89%BE%E5%88%B0%E7%9A%84%E6%9C%80%E8%BF%91%E8%8A%82%E7%82%B9%E7%9A%84%E8%B7%9D%E7%A6%BB%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0int%C2%A0minDis%C2%A0%3D%C2%A0Integer.MAX_VALUE%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0for(int%C2%A0i%C2%A0%3D%C2%A00%3Bi%3Cn%3Bi%2B%2B)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0if(visited%5Bi%5D%3D%3D0%C2%A0%26%26%C2%A0minDis%3Edistance%5Bi%5D)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0minDis%3Ddistance%5Bi%5D%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0minIndex%3Di%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2F%E5%A6%82%E6%9E%9C%E9%81%8D%E5%8E%86%E4%B8%80%E6%AC%A1%E8%B7%9D%E7%A6%BB%E7%BB%93%E6%9E%9C%E4%B9%8B%E5%90%8E%E5%8F%91%E7%8E%B0minIndex%3D-1%EF%BC%8C%E8%AF%B4%E6%98%8E%E5%89%A9%E4%B8%8B%E7%9A%84%E5%85%83%E7%B4%A0%E9%83%BD%E6%98%AF%E5%88%B0%E8%BE%BE%E4%B8%8D%E4%BA%86%E7%9A%84%EF%BC%8C%E6%AD%A4%E6%97%B6%E5%B7%B2%E7%BB%8F%E5%AE%8C%E6%88%90%E4%BA%86%E6%89%80%E6%9C%89%E6%9C%80%E5%B0%8F%E8%B7%9D%E7%A6%BB%E7%9A%84%E6%B1%82%E8%A7%A3%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0if(minIndex%3D%3D-1)%C2%A0return%C2%A0distance%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0cur%C2%A0%3D%C2%A0minIndex%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0visited%5Bcur%5D%3D1%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0x%2B%2B%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0return%C2%A0distance%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%60%60%60%0A*%20%E6%B1%82%E8%A7%A3%E6%9C%89%E6%9C%80%E5%A4%9A%E8%BD%AC%E7%A7%BB%E6%AC%A1%E6%95%B0%E8%A6%81%E6%B1%82%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98%0A%60%60%60%20java%0Apublic%C2%A0int%C2%A0findCheapestPrice(int%C2%A0n%2C%C2%A0int%5B%5D%5B%5D%C2%A0flights%2C%C2%A0int%C2%A0src%2C%C2%A0int%C2%A0dst%2C%C2%A0int%C2%A0K)%C2%A0%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2F%E8%AE%B0%E5%BD%95%E4%BB%8Ei%E5%88%B0j%E7%9A%84%E8%B7%9D%E7%A6%BB%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0int%5B%5D%5B%5D%C2%A0grap%C2%A0%3D%C2%A0new%C2%A0int%5Bn%5D%5Bn%5D%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0for(int%5B%5D%C2%A0filght%C2%A0%3A%C2%A0flights)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0grap%5Bfilght%5B0%5D%5D%5Bfilght%5B1%5D%5D%3Dfilght%5B2%5D%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2F%E9%98%9F%E5%88%97%E4%B8%AD%E6%95%B0%E7%BB%84%E7%9A%84%E5%90%AB%E4%B9%89%EF%BC%8C%5B0%5D%E4%BD%8D%E7%BD%AE%E8%A1%A8%E7%A4%BA%E6%9C%AC%E8%BD%AE%E4%BB%8E%E5%93%AA%E4%B8%AA%E5%85%83%E7%B4%A0%E4%B8%AD%E8%BD%AC%EF%BC%8C%5B1%5D%E8%A1%A8%E7%A4%BA%E5%89%A9%E4%BD%99%E7%9A%84%E4%B8%AD%E8%BD%AC%E6%AC%A1%E6%95%B0%EF%BC%8C%5B2%5D%E8%A1%A8%E7%A4%BA%E5%B7%B2%E7%BB%8F%E8%B5%B0%E8%BF%87%E7%9A%84%E8%B7%AF%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0PriorityQueue%3Cint%5B%5D%3E%C2%A0queue%C2%A0%3D%C2%A0new%C2%A0PriorityQueue%3Cint%5B%5D%3E((a%2Cb)-%3Ea%5B2%5D-b%5B2%5D)%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0queue.offer(new%C2%A0int%5B%5D%7Bsrc%2CK%2C0%7D)%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0while(!queue.isEmpty())%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0int%5B%5D%C2%A0info%C2%A0%3D%C2%A0queue.poll()%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0int%C2%A0cur%C2%A0%3D%C2%A0info%5B0%5D%2C%C2%A0remaink%3Dinfo%5B1%5D%2C%C2%A0value%3Dinfo%5B2%5D%C2%A0%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0if(cur%3D%3Ddst)%C2%A0return%C2%A0value%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0if(remaink%3E%3D0)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0for(int%C2%A0i%C2%A0%3D%C2%A00%3Bi%3Cn%3Bi%2B%2B)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0if(grap%5Bcur%5D%5Bi%5D%3E0)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0queue.offer(new%C2%A0int%5B%5D%7Bi%2Cremaink-1%2Cvalue%2Bgrap%5Bcur%5D%5Bi%5D%7D)%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0return%C2%A0-1%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%7D%0A%0A%0A%60%60%60%0A</center></span>
+</div></body></html> 

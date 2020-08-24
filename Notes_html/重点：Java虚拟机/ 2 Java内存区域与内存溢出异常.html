@@ -1,0 +1,177 @@
+<html>
+<head>
+  <title># 2 Java内存区域与内存溢出异常</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/601392 (zh-CN, DDL); Windows/10.0.0 (Win64); EDAMVersion=V2;"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="9576"/>
+<h1># 2 Java内存区域与内存溢出异常</h1>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h1 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 41px; border-bottom: 3px double #999; color: #000; margin-top: 14px;">2 Java内存区域与内存溢出异常</h1>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">2.1运行时数据区</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2.2.1程序计数器</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">大小<br/>
+一块较小的内存空间</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">作用<br/>
+当前线程所执行的字节码的行号指示器，通过改变这个计数器的值选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复都需要这个计数器来完成</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">生命周期<br/>
+线程私有，随着线程产生和死亡</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">存储内容<br/>
+执行Java方法时，记录的是正在执行的是虚拟机字节码指令的地址；执行Native方法时，记录的是Undefined</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">异常<br/>
+此部分是唯一没有规定OutOfMemoryError的区域</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2.2.2Java虚拟机栈</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">作用<br/>
+描述方法执行的内存模型，一个方法的执行和结束对应着一个栈帧在Java虚拟机栈的入栈和出栈</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">生命周期<br/>
+线程私有，随着线程产生和死亡</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">存储内容
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">栈帧：局部变量表、操作数栈、动态链接、方法出口</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">局部变量表：存储this、方法参数、局部变量，使用slot槽作为存储单位，long和double占用两个槽，引用类型变量存储的是对象在堆中的地址，如果使用对象调用方法时会将this放在第一个槽，局部变量表从入栈时就确定了大小</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">操作数栈：在方法计算时，通过将局部变量入栈、计算、出栈实现局部变量表数据的修改</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">动态链接：存储运行时常量池中类、方法等的动态链接</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">方法出口：存储返回值地址</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">异常<br/>
+OutOfMemoryError：java虚拟机栈动态扩展申请不到内存时报错<br/>
+StackOverFlowError：方法请求深度大于虚拟机所允许的深度时报错</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2.2.3本地方法栈</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">作用<br/>
+执行Native本地方法</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">生命周期<br/>
+线程私有，随着线程产生和死亡</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">异常<br/>
+OutOfMemoryError<br/>
+StackOverFlowError</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2.2.4Java堆</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">
+<p style="line-height: 160%; box-sizing: content-box; color: #333; margin: 0;">大小<br/>
+数据最大的一块</p>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">
+<p style="line-height: 160%; box-sizing: content-box; color: #333; margin: 0;">作用<br/>
+存放对象实例和数组，是垃圾回收器管理的主要区域，物理上可以不连续、内存上连续、可扩展</p>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">
+<p style="line-height: 160%; box-sizing: content-box; color: #333; margin: 0;">生命周期<br/>
+线程共享，虚拟机启动时创建</p>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">
+<p style="line-height: 160%; box-sizing: content-box; color: #333; margin: 0;">存储内容（具体内容见垃圾回收章节）</p>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">新生代：
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">Eden区</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">Survivior区
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">FromSurvivor区</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">ToSurvivor区</li>
+</ul>
+</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">老年代：</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">
+<p style="line-height: 160%; box-sizing: content-box; color: #333; margin: 0;">异常<br/>
+OutOfMemoryError：堆中没有内容完成实例分配，且堆无法扩展时抛出</p>
+</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2.2.5方法区</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">作用<br/>
+存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码， 此部分的内存回收主要是针对常量池的回收和对类型的卸载</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">生命周期<br/>
+线程共享，虚拟机启动时创建</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">存储内容<br/>
+类信息、敞亮、静态变量、即时编译器编译后的代码、运行时常量池</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">异常<br/>
+OutOfMemoryError</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2.2.6运行时常量池：</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">作用<br/>
+方法区的一部分，用于存储编译器生成的各种字面量和符号引用</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">生命周期</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">存储内容</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2.3对象和虚拟机</h3>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2.3.1new对应虚拟机的操作</h3>
+<ol style="line-height: 160%; box-sizing: content-box; display: block; padding-left: 30px; margin: 6px 0 10px; color: #333; list-style-type: decimal;">
+<li style="line-height: 160%; box-sizing: content-box;"><strong style="line-height: 160%; box-sizing: content-box; font-weight: 700;">类加载检查</strong>：检查运行时常量池中能否对应到类的符号引用，并检查类是否已加载，没有则进行类加载</li>
+<li style="line-height: 160%; box-sizing: content-box;">为新生对象<strong style="line-height: 160%; box-sizing: content-box; font-weight: 700;">分配内存</strong>
+<ol style="line-height: 160%; box-sizing: content-box; display: block; padding-left: 30px; margin: 6px 0 10px; color: #333; list-style-type: decimal; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box;">如果堆内存规整（一边内存已用，一边内存未用，中间用指针划分），采用指针碰撞方法分配，直接将指针移动对象大小的位置</li>
+<li style="line-height: 160%; box-sizing: content-box;">如果堆内存不规整（内存已用和未用区间不连续，维护列表记录未使用区域），采用空闲列表方法分配，查找链表将合适大小的内存分配给新生对象<br/>
+扩展：是否规整由垃圾收集器是否具有压缩整理功能决定，Serial、ParNew使用指针碰撞，CMS采用空闲列表</li>
+<li style="line-height: 160%; box-sizing: content-box;">TLAB，为防止多个线程将一块内存同时分配给不同的对象，造成线程安全问题。采用本地线程分配缓存——TLAB（Thread Local Allocation Buffer），每个线程在堆中预先分配一小块内存，只有在TLAB用完需要再分配 需要同步锁定</li>
+</ol>
+</li>
+<li style="line-height: 160%; box-sizing: content-box;">分配完成后将分配的内存空间都<strong style="line-height: 160%; box-sizing: content-box; font-weight: 700;">初始化为零值</strong>（如int的零值是0，引用类型的零值是null）</li>
+<li style="line-height: 160%; box-sizing: content-box;"><strong style="line-height: 160%; box-sizing: content-box; font-weight: 700;">设置对象头</strong></li>
+<li style="line-height: 160%; box-sizing: content-box;">对象初始化&lt;Init&gt;，内存空间数据设置为new<strong style="line-height: 160%; box-sizing: content-box; font-weight: 700;">设置的初值</strong></li>
+</ol>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2.3.2对象的内存布局</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">对象头
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">内容：hashCode、GC分代年龄、锁状态标志、线程持有的锁、偏向线程id、偏向时间戳、类型指针（虚拟机通过此部分确定对象属于的类）</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">实例数据
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">本类及父类的基本类型数据和引用类型数据指针</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">对齐填充
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">HotSpot要求对象实例的大小是8字节的整数倍，对象头是8或者16字节，实例数据有可能不是，需要补充字节使总数为8的倍数，起到占位的作用</li>
+</ul>
+</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2.3.3对象的访问定位</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">使用句柄
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">堆中划分出一块内存作为句柄池，栈中引用指向句柄指针，句柄包含指向堆中实例数据的指针和指向对象的具体类型的指针</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">好处：堆中对象位置调整时，只需要改变句柄中的对象指针</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">直接定位
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">栈中引用直接指向堆中对象的地址，堆中实例对象的对象头中包含对象的类型数据</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">好处：减少了一次指针定位的开销，速度更快</li>
+</ul>
+</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">2.4OutOfMemoryError</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2.4.1 Java堆溢出</h3>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">一直new直到超过了设置的堆没有内存可分配给对象</p>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2.4.2 虚拟机栈和本地方法栈溢出</h3>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">虚拟机在扩展栈时无法审定到足够的内存空间<br/>
+举例：死循环创建线程，每个线程的run方法执行死循环代码<br/>
+测试的时候导致电脑假死了</p>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">2.4.3 方法区和运行常量池溢出</h3>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">动态生成类，造成方法区没有内存空间存储新的类信息<br/>
+向运行时常量池加入常量，直到没有区间分配给新的常量</p>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%202%20Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E4%B8%8E%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%BC%82%E5%B8%B8%0A%23%23%202.1%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA%0A%23%23%23%202.2.1%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8%0A*%20%E5%A4%A7%E5%B0%8F%0A%20%20%20%20%E4%B8%80%E5%9D%97%E8%BE%83%E5%B0%8F%E7%9A%84%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%0A*%20%E4%BD%9C%E7%94%A8%0A%20%20%20%20%E5%BD%93%E5%89%8D%E7%BA%BF%E7%A8%8B%E6%89%80%E6%89%A7%E8%A1%8C%E7%9A%84%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84%E8%A1%8C%E5%8F%B7%E6%8C%87%E7%A4%BA%E5%99%A8%EF%BC%8C%E9%80%9A%E8%BF%87%E6%94%B9%E5%8F%98%E8%BF%99%E4%B8%AA%E8%AE%A1%E6%95%B0%E5%99%A8%E7%9A%84%E5%80%BC%E9%80%89%E5%8F%96%E4%B8%8B%E4%B8%80%E6%9D%A1%E9%9C%80%E8%A6%81%E6%89%A7%E8%A1%8C%E7%9A%84%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4%EF%BC%8C%E5%88%86%E6%94%AF%E3%80%81%E5%BE%AA%E7%8E%AF%E3%80%81%E8%B7%B3%E8%BD%AC%E3%80%81%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E3%80%81%E7%BA%BF%E7%A8%8B%E6%81%A2%E5%A4%8D%E9%83%BD%E9%9C%80%E8%A6%81%E8%BF%99%E4%B8%AA%E8%AE%A1%E6%95%B0%E5%99%A8%E6%9D%A5%E5%AE%8C%E6%88%90%0A*%20%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%0A%20%20%20%20%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%EF%BC%8C%E9%9A%8F%E7%9D%80%E7%BA%BF%E7%A8%8B%E4%BA%A7%E7%94%9F%E5%92%8C%E6%AD%BB%E4%BA%A1%0A*%20%E5%AD%98%E5%82%A8%E5%86%85%E5%AE%B9%0A%20%20%20%20%E6%89%A7%E8%A1%8CJava%E6%96%B9%E6%B3%95%E6%97%B6%EF%BC%8C%E8%AE%B0%E5%BD%95%E7%9A%84%E6%98%AF%E6%AD%A3%E5%9C%A8%E6%89%A7%E8%A1%8C%E7%9A%84%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4%E7%9A%84%E5%9C%B0%E5%9D%80%EF%BC%9B%E6%89%A7%E8%A1%8CNative%E6%96%B9%E6%B3%95%E6%97%B6%EF%BC%8C%E8%AE%B0%E5%BD%95%E7%9A%84%E6%98%AFUndefined%0A*%20%E5%BC%82%E5%B8%B8%0A%20%20%20%20%E6%AD%A4%E9%83%A8%E5%88%86%E6%98%AF%E5%94%AF%E4%B8%80%E6%B2%A1%E6%9C%89%E8%A7%84%E5%AE%9AOutOfMemoryError%E7%9A%84%E5%8C%BA%E5%9F%9F%0A%23%23%23%202.2.2Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%0A%0A*%20%E4%BD%9C%E7%94%A8%0A%20%20%20%20%E6%8F%8F%E8%BF%B0%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%EF%BC%8C%E4%B8%80%E4%B8%AA%E6%96%B9%E6%B3%95%E7%9A%84%E6%89%A7%E8%A1%8C%E5%92%8C%E7%BB%93%E6%9D%9F%E5%AF%B9%E5%BA%94%E7%9D%80%E4%B8%80%E4%B8%AA%E6%A0%88%E5%B8%A7%E5%9C%A8Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%E7%9A%84%E5%85%A5%E6%A0%88%E5%92%8C%E5%87%BA%E6%A0%88%0A*%20%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%0A%20%20%20%20%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%EF%BC%8C%E9%9A%8F%E7%9D%80%E7%BA%BF%E7%A8%8B%E4%BA%A7%E7%94%9F%E5%92%8C%E6%AD%BB%E4%BA%A1%0A*%20%E5%AD%98%E5%82%A8%E5%86%85%E5%AE%B9%0A%20%20%20%20*%20%E6%A0%88%E5%B8%A7%EF%BC%9A%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8%E3%80%81%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%88%E3%80%81%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E3%80%81%E6%96%B9%E6%B3%95%E5%87%BA%E5%8F%A3%0A%20%20%20%20*%20%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8%EF%BC%9A%E5%AD%98%E5%82%A8this%E3%80%81%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0%E3%80%81%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%EF%BC%8C%E4%BD%BF%E7%94%A8slot%E6%A7%BD%E4%BD%9C%E4%B8%BA%E5%AD%98%E5%82%A8%E5%8D%95%E4%BD%8D%EF%BC%8Clong%E5%92%8Cdouble%E5%8D%A0%E7%94%A8%E4%B8%A4%E4%B8%AA%E6%A7%BD%EF%BC%8C%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E5%AD%98%E5%82%A8%E7%9A%84%E6%98%AF%E5%AF%B9%E8%B1%A1%E5%9C%A8%E5%A0%86%E4%B8%AD%E7%9A%84%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%A6%82%E6%9E%9C%E4%BD%BF%E7%94%A8%E5%AF%B9%E8%B1%A1%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95%E6%97%B6%E4%BC%9A%E5%B0%86this%E6%94%BE%E5%9C%A8%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%A7%BD%EF%BC%8C%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8%E4%BB%8E%E5%85%A5%E6%A0%88%E6%97%B6%E5%B0%B1%E7%A1%AE%E5%AE%9A%E4%BA%86%E5%A4%A7%E5%B0%8F%0A%20%20%20%20*%20%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%88%EF%BC%9A%E5%9C%A8%E6%96%B9%E6%B3%95%E8%AE%A1%E7%AE%97%E6%97%B6%EF%BC%8C%E9%80%9A%E8%BF%87%E5%B0%86%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E5%85%A5%E6%A0%88%E3%80%81%E8%AE%A1%E7%AE%97%E3%80%81%E5%87%BA%E6%A0%88%E5%AE%9E%E7%8E%B0%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BF%AE%E6%94%B9%0A%20%20%20%20*%20%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%EF%BC%9A%E5%AD%98%E5%82%A8%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%E4%B8%AD%E7%B1%BB%E3%80%81%E6%96%B9%E6%B3%95%E7%AD%89%E7%9A%84%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%0A%20%20%20%20*%20%E6%96%B9%E6%B3%95%E5%87%BA%E5%8F%A3%EF%BC%9A%E5%AD%98%E5%82%A8%E8%BF%94%E5%9B%9E%E5%80%BC%E5%9C%B0%E5%9D%80%0A*%20%E5%BC%82%E5%B8%B8%0A%20%20%20%20OutOfMemoryError%EF%BC%9Ajava%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%E5%8A%A8%E6%80%81%E6%89%A9%E5%B1%95%E7%94%B3%E8%AF%B7%E4%B8%8D%E5%88%B0%E5%86%85%E5%AD%98%E6%97%B6%E6%8A%A5%E9%94%99%0A%20%20%20%20StackOverFlowError%EF%BC%9A%E6%96%B9%E6%B3%95%E8%AF%B7%E6%B1%82%E6%B7%B1%E5%BA%A6%E5%A4%A7%E4%BA%8E%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%89%80%E5%85%81%E8%AE%B8%E7%9A%84%E6%B7%B1%E5%BA%A6%E6%97%B6%E6%8A%A5%E9%94%99%0A%23%23%23%202.2.3%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88%0A*%20%E4%BD%9C%E7%94%A8%0A%20%20%20%E6%89%A7%E8%A1%8CNative%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%0A*%20%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%0A%20%20%20%20%E7%BA%BF%E7%A8%8B%E7%A7%81%E6%9C%89%EF%BC%8C%E9%9A%8F%E7%9D%80%E7%BA%BF%E7%A8%8B%E4%BA%A7%E7%94%9F%E5%92%8C%E6%AD%BB%E4%BA%A1%0A*%20%E5%BC%82%E5%B8%B8%0A%20%20%20%20OutOfMemoryError%20%20%20%20%0A%20%20%20%20StackOverFlowError%0A%23%23%23%202.2.4Java%E5%A0%86%0A*%20%E5%A4%A7%E5%B0%8F%0A%20%20%20%20%E6%95%B0%E6%8D%AE%E6%9C%80%E5%A4%A7%E7%9A%84%E4%B8%80%E5%9D%97%0A*%20%E4%BD%9C%E7%94%A8%0A%20%20%20%20%E5%AD%98%E6%94%BE%E5%AF%B9%E8%B1%A1%E5%AE%9E%E4%BE%8B%E5%92%8C%E6%95%B0%E7%BB%84%EF%BC%8C%E6%98%AF%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%E7%AE%A1%E7%90%86%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8C%BA%E5%9F%9F%EF%BC%8C%E7%89%A9%E7%90%86%E4%B8%8A%E5%8F%AF%E4%BB%A5%E4%B8%8D%E8%BF%9E%E7%BB%AD%E3%80%81%E5%86%85%E5%AD%98%E4%B8%8A%E8%BF%9E%E7%BB%AD%E3%80%81%E5%8F%AF%E6%89%A9%E5%B1%95%0A*%20%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%0A%20%20%20%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB%EF%BC%8C%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E6%97%B6%E5%88%9B%E5%BB%BA%0A*%20%E5%AD%98%E5%82%A8%E5%86%85%E5%AE%B9%EF%BC%88%E5%85%B7%E4%BD%93%E5%86%85%E5%AE%B9%E8%A7%81%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AB%A0%E8%8A%82%EF%BC%89%0A%20%20%20%20*%20%E6%96%B0%E7%94%9F%E4%BB%A3%EF%BC%9A%0A%20%20%20%20%20%20%20%20*%20Eden%E5%8C%BA%0A%20%20%20%20%20%20%20%20*%20Survivior%E5%8C%BA%0A%20%20%20%20%20%20%20%20%20%20%20%20*%20FromSurvivor%E5%8C%BA%0A%20%20%20%20%20%20%20%20%20%20%20%20*%20ToSurvivor%E5%8C%BA%0A%20%20%20%20*%20%E8%80%81%E5%B9%B4%E4%BB%A3%EF%BC%9A%0A%20%20%20%20%0A*%20%E5%BC%82%E5%B8%B8%0A%20%20%20%20OutOfMemoryError%EF%BC%9A%E5%A0%86%E4%B8%AD%E6%B2%A1%E6%9C%89%E5%86%85%E5%AE%B9%E5%AE%8C%E6%88%90%E5%AE%9E%E4%BE%8B%E5%88%86%E9%85%8D%EF%BC%8C%E4%B8%94%E5%A0%86%E6%97%A0%E6%B3%95%E6%89%A9%E5%B1%95%E6%97%B6%E6%8A%9B%E5%87%BA%0A%23%23%23%202.2.5%E6%96%B9%E6%B3%95%E5%8C%BA%0A*%20%E4%BD%9C%E7%94%A8%0A%20%20%20%20%E5%AD%98%E5%82%A8%E5%B7%B2%E8%A2%AB%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%8A%A0%E8%BD%BD%E7%9A%84%E7%B1%BB%E4%BF%A1%E6%81%AF%E3%80%81%E5%B8%B8%E9%87%8F%E3%80%81%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%E3%80%81%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91%E5%99%A8%E7%BC%96%E8%AF%91%E5%90%8E%E7%9A%84%E4%BB%A3%E7%A0%81%EF%BC%8C%20%E6%AD%A4%E9%83%A8%E5%88%86%E7%9A%84%E5%86%85%E5%AD%98%E5%9B%9E%E6%94%B6%E4%B8%BB%E8%A6%81%E6%98%AF%E9%92%88%E5%AF%B9%E5%B8%B8%E9%87%8F%E6%B1%A0%E7%9A%84%E5%9B%9E%E6%94%B6%E5%92%8C%E5%AF%B9%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%8D%B8%E8%BD%BD%0A*%20%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%0A%20%20%20%20%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB%EF%BC%8C%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E6%97%B6%E5%88%9B%E5%BB%BA%0A*%20%E5%AD%98%E5%82%A8%E5%86%85%E5%AE%B9%0A%20%20%20%20%E7%B1%BB%E4%BF%A1%E6%81%AF%E3%80%81%E6%95%9E%E4%BA%AE%E3%80%81%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%E3%80%81%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91%E5%99%A8%E7%BC%96%E8%AF%91%E5%90%8E%E7%9A%84%E4%BB%A3%E7%A0%81%E3%80%81%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%0A*%20%E5%BC%82%E5%B8%B8%0A%20%20%20%20OutOfMemoryError%0A%23%23%23%202.2.6%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%EF%BC%9A%0A*%20%E4%BD%9C%E7%94%A8%0A%20%20%20%20%E6%96%B9%E6%B3%95%E5%8C%BA%E7%9A%84%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%8C%E7%94%A8%E4%BA%8E%E5%AD%98%E5%82%A8%E7%BC%96%E8%AF%91%E5%99%A8%E7%94%9F%E6%88%90%E7%9A%84%E5%90%84%E7%A7%8D%E5%AD%97%E9%9D%A2%E9%87%8F%E5%92%8C%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%0A*%20%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%0A*%20%E5%AD%98%E5%82%A8%E5%86%85%E5%AE%B9%0A%20%20%20%20%0A%23%23%23%202.3%E5%AF%B9%E8%B1%A1%E5%92%8C%E8%99%9A%E6%8B%9F%E6%9C%BA%0A%23%23%23%202.3.1new%E5%AF%B9%E5%BA%94%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E6%93%8D%E4%BD%9C%0A1.%20**%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%A3%80%E6%9F%A5**%EF%BC%9A%E6%A3%80%E6%9F%A5%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%E4%B8%AD%E8%83%BD%E5%90%A6%E5%AF%B9%E5%BA%94%E5%88%B0%E7%B1%BB%E7%9A%84%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%EF%BC%8C%E5%B9%B6%E6%A3%80%E6%9F%A5%E7%B1%BB%E6%98%AF%E5%90%A6%E5%B7%B2%E5%8A%A0%E8%BD%BD%EF%BC%8C%E6%B2%A1%E6%9C%89%E5%88%99%E8%BF%9B%E8%A1%8C%E7%B1%BB%E5%8A%A0%E8%BD%BD%0A2.%20%E4%B8%BA%E6%96%B0%E7%94%9F%E5%AF%B9%E8%B1%A1**%E5%88%86%E9%85%8D%E5%86%85%E5%AD%98**%0A%20%20%20%201.%20%E5%A6%82%E6%9E%9C%E5%A0%86%E5%86%85%E5%AD%98%E8%A7%84%E6%95%B4%EF%BC%88%E4%B8%80%E8%BE%B9%E5%86%85%E5%AD%98%E5%B7%B2%E7%94%A8%EF%BC%8C%E4%B8%80%E8%BE%B9%E5%86%85%E5%AD%98%E6%9C%AA%E7%94%A8%EF%BC%8C%E4%B8%AD%E9%97%B4%E7%94%A8%E6%8C%87%E9%92%88%E5%88%92%E5%88%86%EF%BC%89%EF%BC%8C%E9%87%87%E7%94%A8%E6%8C%87%E9%92%88%E7%A2%B0%E6%92%9E%E6%96%B9%E6%B3%95%E5%88%86%E9%85%8D%EF%BC%8C%E7%9B%B4%E6%8E%A5%E5%B0%86%E6%8C%87%E9%92%88%E7%A7%BB%E5%8A%A8%E5%AF%B9%E8%B1%A1%E5%A4%A7%E5%B0%8F%E7%9A%84%E4%BD%8D%E7%BD%AE%0A%20%20%20%202.%20%E5%A6%82%E6%9E%9C%E5%A0%86%E5%86%85%E5%AD%98%E4%B8%8D%E8%A7%84%E6%95%B4%EF%BC%88%E5%86%85%E5%AD%98%E5%B7%B2%E7%94%A8%E5%92%8C%E6%9C%AA%E7%94%A8%E5%8C%BA%E9%97%B4%E4%B8%8D%E8%BF%9E%E7%BB%AD%EF%BC%8C%E7%BB%B4%E6%8A%A4%E5%88%97%E8%A1%A8%E8%AE%B0%E5%BD%95%E6%9C%AA%E4%BD%BF%E7%94%A8%E5%8C%BA%E5%9F%9F%EF%BC%89%EF%BC%8C%E9%87%87%E7%94%A8%E7%A9%BA%E9%97%B2%E5%88%97%E8%A1%A8%E6%96%B9%E6%B3%95%E5%88%86%E9%85%8D%EF%BC%8C%E6%9F%A5%E6%89%BE%E9%93%BE%E8%A1%A8%E5%B0%86%E5%90%88%E9%80%82%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%BB%99%E6%96%B0%E7%94%9F%E5%AF%B9%E8%B1%A1%0A%20%20%20%20%E6%89%A9%E5%B1%95%EF%BC%9A%E6%98%AF%E5%90%A6%E8%A7%84%E6%95%B4%E7%94%B1%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E6%98%AF%E5%90%A6%E5%85%B7%E6%9C%89%E5%8E%8B%E7%BC%A9%E6%95%B4%E7%90%86%E5%8A%9F%E8%83%BD%E5%86%B3%E5%AE%9A%EF%BC%8CSerial%E3%80%81ParNew%E4%BD%BF%E7%94%A8%E6%8C%87%E9%92%88%E7%A2%B0%E6%92%9E%EF%BC%8CCMS%E9%87%87%E7%94%A8%E7%A9%BA%E9%97%B2%E5%88%97%E8%A1%A8%0A%20%20%20%203.%20TLAB%EF%BC%8C%E4%B8%BA%E9%98%B2%E6%AD%A2%E5%A4%9A%E4%B8%AA%E7%BA%BF%E7%A8%8B%E5%B0%86%E4%B8%80%E5%9D%97%E5%86%85%E5%AD%98%E5%90%8C%E6%97%B6%E5%88%86%E9%85%8D%E7%BB%99%E4%B8%8D%E5%90%8C%E7%9A%84%E5%AF%B9%E8%B1%A1%EF%BC%8C%E9%80%A0%E6%88%90%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98%E3%80%82%E9%87%87%E7%94%A8%E6%9C%AC%E5%9C%B0%E7%BA%BF%E7%A8%8B%E5%88%86%E9%85%8D%E7%BC%93%E5%AD%98%E2%80%94%E2%80%94TLAB%EF%BC%88Thread%20Local%20Allocation%20Buffer%EF%BC%89%EF%BC%8C%E6%AF%8F%E4%B8%AA%E7%BA%BF%E7%A8%8B%E5%9C%A8%E5%A0%86%E4%B8%AD%E9%A2%84%E5%85%88%E5%88%86%E9%85%8D%E4%B8%80%E5%B0%8F%E5%9D%97%E5%86%85%E5%AD%98%EF%BC%8C%E5%8F%AA%E6%9C%89%E5%9C%A8TLAB%E7%94%A8%E5%AE%8C%E9%9C%80%E8%A6%81%E5%86%8D%E5%88%86%E9%85%8D%E6%97%B6%E9%9C%80%E8%A6%81%E5%90%8C%E6%AD%A5%E9%94%81%E5%AE%9A%0A3.%20%E5%88%86%E9%85%8D%E5%AE%8C%E6%88%90%E5%90%8E%E5%B0%86%E5%88%86%E9%85%8D%E7%9A%84%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E9%83%BD**%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%BA%E9%9B%B6%E5%80%BC**%EF%BC%88%E5%A6%82int%E7%9A%84%E9%9B%B6%E5%80%BC%E6%98%AF0%EF%BC%8C%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E7%9A%84%E9%9B%B6%E5%80%BC%E6%98%AFnull%EF%BC%89%0A4.%20**%E8%AE%BE%E7%BD%AE%E5%AF%B9%E8%B1%A1%E5%A4%B4**%0A5.%20%E5%AF%B9%E8%B1%A1%E5%88%9D%E5%A7%8B%E5%8C%96%3CInit%3E%EF%BC%8C%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E8%AE%BE%E7%BD%AE%E4%B8%BAnew**%E8%AE%BE%E7%BD%AE%E7%9A%84%E5%88%9D%E5%80%BC**%0A%23%23%23%202.3.2%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%0A*%20%E5%AF%B9%E8%B1%A1%E5%A4%B4%0A%20%20%20%20*%20%E5%86%85%E5%AE%B9%EF%BC%9AhashCode%E3%80%81GC%E5%88%86%E4%BB%A3%E5%B9%B4%E9%BE%84%E3%80%81%E9%94%81%E7%8A%B6%E6%80%81%E6%A0%87%E5%BF%97%E3%80%81%E7%BA%BF%E7%A8%8B%E6%8C%81%E6%9C%89%E7%9A%84%E9%94%81%E3%80%81%E5%81%8F%E5%90%91%E7%BA%BF%E7%A8%8Bid%E3%80%81%E5%81%8F%E5%90%91%E6%97%B6%E9%97%B4%E6%88%B3%E3%80%81%E7%B1%BB%E5%9E%8B%E6%8C%87%E9%92%88%EF%BC%88%E8%99%9A%E6%8B%9F%E6%9C%BA%E9%80%9A%E8%BF%87%E6%AD%A4%E9%83%A8%E5%88%86%E7%A1%AE%E5%AE%9A%E5%AF%B9%E8%B1%A1%E5%B1%9E%E4%BA%8E%E7%9A%84%E7%B1%BB%EF%BC%89%0A*%20%E5%AE%9E%E4%BE%8B%E6%95%B0%E6%8D%AE%0A%20%20%20%20*%20%E6%9C%AC%E7%B1%BB%E5%8F%8A%E7%88%B6%E7%B1%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%92%8C%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E6%8C%87%E9%92%88%0A*%20%E5%AF%B9%E9%BD%90%E5%A1%AB%E5%85%85%0A%20%20%20%20*%20HotSpot%E8%A6%81%E6%B1%82%E5%AF%B9%E8%B1%A1%E5%AE%9E%E4%BE%8B%E7%9A%84%E5%A4%A7%E5%B0%8F%E6%98%AF8%E5%AD%97%E8%8A%82%E7%9A%84%E6%95%B4%E6%95%B0%E5%80%8D%EF%BC%8C%E5%AF%B9%E8%B1%A1%E5%A4%B4%E6%98%AF8%E6%88%96%E8%80%8516%E5%AD%97%E8%8A%82%EF%BC%8C%E5%AE%9E%E4%BE%8B%E6%95%B0%E6%8D%AE%E6%9C%89%E5%8F%AF%E8%83%BD%E4%B8%8D%E6%98%AF%EF%BC%8C%E9%9C%80%E8%A6%81%E8%A1%A5%E5%85%85%E5%AD%97%E8%8A%82%E4%BD%BF%E6%80%BB%E6%95%B0%E4%B8%BA8%E7%9A%84%E5%80%8D%E6%95%B0%EF%BC%8C%E8%B5%B7%E5%88%B0%E5%8D%A0%E4%BD%8D%E7%9A%84%E4%BD%9C%E7%94%A8%0A%23%23%23%202.3.3%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D%0A*%20%E4%BD%BF%E7%94%A8%E5%8F%A5%E6%9F%84%0A%20%20%20%20*%20%E5%A0%86%E4%B8%AD%E5%88%92%E5%88%86%E5%87%BA%E4%B8%80%E5%9D%97%E5%86%85%E5%AD%98%E4%BD%9C%E4%B8%BA%E5%8F%A5%E6%9F%84%E6%B1%A0%EF%BC%8C%E6%A0%88%E4%B8%AD%E5%BC%95%E7%94%A8%E6%8C%87%E5%90%91%E5%8F%A5%E6%9F%84%E6%8C%87%E9%92%88%EF%BC%8C%E5%8F%A5%E6%9F%84%E5%8C%85%E5%90%AB%E6%8C%87%E5%90%91%E5%A0%86%E4%B8%AD%E5%AE%9E%E4%BE%8B%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8C%87%E9%92%88%E5%92%8C%E6%8C%87%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%85%B7%E4%BD%93%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%8C%87%E9%92%88%0A%20%20%20%20*%20%E5%A5%BD%E5%A4%84%EF%BC%9A%E5%A0%86%E4%B8%AD%E5%AF%B9%E8%B1%A1%E4%BD%8D%E7%BD%AE%E8%B0%83%E6%95%B4%E6%97%B6%EF%BC%8C%E5%8F%AA%E9%9C%80%E8%A6%81%E6%94%B9%E5%8F%98%E5%8F%A5%E6%9F%84%E4%B8%AD%E7%9A%84%E5%AF%B9%E8%B1%A1%E6%8C%87%E9%92%88%0A*%20%E7%9B%B4%E6%8E%A5%E5%AE%9A%E4%BD%8D%0A%20%20%20%20*%20%E6%A0%88%E4%B8%AD%E5%BC%95%E7%94%A8%E7%9B%B4%E6%8E%A5%E6%8C%87%E5%90%91%E5%A0%86%E4%B8%AD%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%A0%86%E4%B8%AD%E5%AE%9E%E4%BE%8B%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%A4%B4%E4%B8%AD%E5%8C%85%E5%90%AB%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%0A%20%20%20%20*%20%E5%A5%BD%E5%A4%84%EF%BC%9A%E5%87%8F%E5%B0%91%E4%BA%86%E4%B8%80%E6%AC%A1%E6%8C%87%E9%92%88%E5%AE%9A%E4%BD%8D%E7%9A%84%E5%BC%80%E9%94%80%EF%BC%8C%E9%80%9F%E5%BA%A6%E6%9B%B4%E5%BF%AB%0A%23%23%202.4OutOfMemoryError%0A%23%23%23%202.4.1%20Java%E5%A0%86%E6%BA%A2%E5%87%BA%0A%E4%B8%80%E7%9B%B4new%E7%9B%B4%E5%88%B0%E8%B6%85%E8%BF%87%E4%BA%86%E8%AE%BE%E7%BD%AE%E7%9A%84%E5%A0%86%E6%B2%A1%E6%9C%89%E5%86%85%E5%AD%98%E5%8F%AF%E5%88%86%E9%85%8D%E7%BB%99%E5%AF%B9%E8%B1%A1%0A%23%23%23%202.4.2%20%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%E5%92%8C%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88%E6%BA%A2%E5%87%BA%0A%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%9C%A8%E6%89%A9%E5%B1%95%E6%A0%88%E6%97%B6%E6%97%A0%E6%B3%95%E5%AE%A1%E5%AE%9A%E5%88%B0%E8%B6%B3%E5%A4%9F%E7%9A%84%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%0A%E4%B8%BE%E4%BE%8B%EF%BC%9A%E6%AD%BB%E5%BE%AA%E7%8E%AF%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%EF%BC%8C%E6%AF%8F%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%9A%84run%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E6%AD%BB%E5%BE%AA%E7%8E%AF%E4%BB%A3%E7%A0%81%0A%E6%B5%8B%E8%AF%95%E7%9A%84%E6%97%B6%E5%80%99%E5%AF%BC%E8%87%B4%E7%94%B5%E8%84%91%E5%81%87%E6%AD%BB%E4%BA%86%0A%23%23%23%202.4.3%20%E6%96%B9%E6%B3%95%E5%8C%BA%E5%92%8C%E8%BF%90%E8%A1%8C%E5%B8%B8%E9%87%8F%E6%B1%A0%E6%BA%A2%E5%87%BA%0A%E5%8A%A8%E6%80%81%E7%94%9F%E6%88%90%E7%B1%BB%EF%BC%8C%E9%80%A0%E6%88%90%E6%96%B9%E6%B3%95%E5%8C%BA%E6%B2%A1%E6%9C%89%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E5%AD%98%E5%82%A8%E6%96%B0%E7%9A%84%E7%B1%BB%E4%BF%A1%E6%81%AF%0A%E5%90%91%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%E5%8A%A0%E5%85%A5%E5%B8%B8%E9%87%8F%EF%BC%8C%E7%9B%B4%E5%88%B0%E6%B2%A1%E6%9C%89%E5%8C%BA%E9%97%B4%E5%88%86%E9%85%8D%E7%BB%99%E6%96%B0%E7%9A%84%E5%B8%B8%E9%87%8F</center></span>
+</div></body></html> 

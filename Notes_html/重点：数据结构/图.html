@@ -1,0 +1,181 @@
+<html>
+<head>
+  <title>图</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/601392 (zh-CN, DDL); Windows/10.0.0 (Win64); EDAMVersion=V2;"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="9439"/>
+<h1>图</h1>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h1 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 41px; border-bottom: 3px double #999; color: #000; margin-top: 14px;">图</h1>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">分类</h2>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">是否有向</h4>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">有向图（x,y）=（y,x）</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">无向图 &lt;x,y&gt;!=&lt;y,x&gt;</li>
+</ul>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">顶点与边的数量</h4>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">完全图
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">无向图：n个结点，n(n-1)/2条边</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">有向图：n个结点，n(n-1)条边</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">稠密图
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">接近完全图</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">稀疏图
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">边少</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">网
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">边带有权重</li>
+</ul>
+</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">术语</h2>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">子图：
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">图的一部分</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">邻接点：
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">无向图中被一条边链接的顶点叫邻接点</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">度：
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">无向图中与一个顶点连接的边的数量</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">路径：
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">两个顶点之间的路径</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">路径长度
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">路径中边的个数</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">简单路径
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">不包含重复顶点的路径</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">回路
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">起点和结尾是同一个的路径</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">简单回路
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">没有其他重复顶点的回路</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">连通图
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">无向图中，任意两个顶点之间有路径</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">连通分量
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">无向图中，小的尽量连的连通图的个数（要包含所有顶点）</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">强连通图
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">有向图中，任意两个顶点之间有有向路径</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">强连通分量
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">有向图中，尽量连的强连接图的个数（要包含所有顶点）</li>
+</ul>
+</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">存储结构</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">邻接矩阵</h3>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;"><img src="图_files/Image.png" type="image/png" data-filename="Image.png"/><br/>
+<img src="图_files/Image [1].png" type="image/png" data-filename="Image.png"/></p>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">邻接表</h3>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">邻接表（Adjacency List）是图的一种顺序存储与链式存储结合的存储方法。对于图G中的每个顶点Vi，将所有邻接于Vi的顶点Vj链成一个单链表，这个单链表就称为顶点Vi的邻接表，再将所有顶点的邻接表表头放到数组中，就构成了图的邻接表。在邻接表表示中，包括两种结点结构。一个是顶点结点，每个顶点结点由2个域组成，其中data域存储顶点Vi的名或其相关信息，firstArc指向顶点Vi的第一个邻接点的边结点；第二个是边结点，边结点由3个域组成。其中abjVex域存放与Vi邻接的点的序号，nextArc指向Vi下一个邻接点的边结点，info域存储和边或弧相关的信息，如权值<br/>
+<img src="图_files/Image [2].png" type="image/png" data-filename="Image.png"/><br/>
+在有向图中，第i个链表的邻接表中的结点数只是顶点Vi的出度，为求入度，必须遍历整个邻接表。在所有邻接表中其邻接顶点域的值为i的结点的个数是顶点Vi的入度。所以，为了便于确定顶点的入度或者以顶点Vi为头的弧，可以建立一个有向图的逆邻接表，即对每个顶点Vi建立一个以Vi为头的弧的邻接表。如图6.12所示，图（b）所示为邻接表，也称出边表，图（c）所示为逆邻接表，也称入边表。<br/>
+<img src="图_files/Image [3].png" type="image/png" data-filename="Image.png"/></p>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">图的遍历</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">深度优先搜索DFS</h3>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">则深度优先搜索遍历可定义为：<br/>
+（1）首先访问出发点V。<br/>
+（2）然后依次从V出发搜索V的每个邻接点W，若W未曾访问过，则以W为新的出发点继续进行深度优先搜索遍历，直至图中所有和源点V有路径相通的顶点（也称为从源点可达的顶点）均已被访问为止。<br/>
+（3）若此时图中仍有未访问的顶点，则另选一个尚未访问的顶点作为新的源点重复上述过程，直至图中所有顶点均已被访问为止。</p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">DFS(String[][] arr, int i, int j){
+    //判断越界和访问过标志 ，访问过标志可以用特殊符号替换原值等，使能检测出
+    if( i 越界|| j越界 || arr[i][j] 访问过)
+        return;
+
+    //访问数据
+    sout(arr[i][j]);
+    //标记已访问过
+    arr[i][j] = &quot;访问过&quot;;
+    
+    //对邻接结点做DFS
+    DFS(arr, i,j+1);
+    DFS(arr, i,j-1);
+    DFS(arr, i+1,j);
+    DFS(arr, i-1,j);    
+}
+</code></pre>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">广度优先搜索BFS</h3>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">则广度优先搜索遍历过程为：<br/>
+（1）首先访问出发点V。<br/>
+（2）接着依次访问顶点V的所有邻接点V1，V2，…，Vt。<br/>
+（3）然后再依次访问顶点V1，V2，…，Vt的所有邻接点。<br/>
+（4）依次类推，直至图中所有的顶点都被访问到。</p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">BFS(String[][] arr, int i, int j){
+    
+    //定义队列
+    Queue&lt;int[]&gt; q = new LinkedList&lt;Integer&gt;();
+    //结点入队
+    q.offer(new int[i][j])
+    
+    while(!q.isEmpty()){
+        int size = q.size();
+        //一次循环取出队中所有的点，并遍历讲下一级的邻接点入队
+        for(int k = 0;k&lt;size;k++){
+            int[] cur = q.poll();
+            //判断越界和访问过标志 ，访问过标志可以用特殊符号替换原值等，使能检测出
+            if( cur[0] 越界|| cur[1]越界 || arr[cur[0]][cur[1]] 访问过)
+                continue;
+            //访问结点
+            soutarr[cur[0]][cur[1]]);
+            arr[cur[0]][cur[1]] =&quot;被访问过&quot;
+                
+            //邻接点入队
+            q.offer(new int[]{cur[0],cur[1]+1});
+           q.offer(new int[]{cur[0],cur[1]-1});
+           q.offer(new int[]{cur[0]+1,cur[1]});
+           q.offer(new int[]{cur[0]-1,cur[1]});
+        
+        }
+    }
+}
+</code></pre>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%20%E5%9B%BE%0A%23%23%20%E5%88%86%E7%B1%BB%0A%23%23%23%23%20%E6%98%AF%E5%90%A6%E6%9C%89%E5%90%91%0A*%20%E6%9C%89%E5%90%91%E5%9B%BE%EF%BC%88x%2Cy%EF%BC%89%3D%EF%BC%88y%2Cx%EF%BC%89%20%0A*%20%E6%97%A0%E5%90%91%E5%9B%BE%20%3Cx%2Cy%3E!%3D%3Cy%2Cx%3E%0A%23%23%23%23%20%E9%A1%B6%E7%82%B9%E4%B8%8E%E8%BE%B9%E7%9A%84%E6%95%B0%E9%87%8F%0A*%20%E5%AE%8C%E5%85%A8%E5%9B%BE%0A%20%20%20%20*%20%20%E6%97%A0%E5%90%91%E5%9B%BE%EF%BC%9An%E4%B8%AA%E7%BB%93%E7%82%B9%EF%BC%8Cn(n-1)%2F2%E6%9D%A1%E8%BE%B9%0A%20%20%20%20*%20%20%E6%9C%89%E5%90%91%E5%9B%BE%EF%BC%9An%E4%B8%AA%E7%BB%93%E7%82%B9%EF%BC%8Cn(n-1)%E6%9D%A1%E8%BE%B9%0A*%20%E7%A8%A0%E5%AF%86%E5%9B%BE%0A%20%20%20%20*%20%E6%8E%A5%E8%BF%91%E5%AE%8C%E5%85%A8%E5%9B%BE%0A*%20%E7%A8%80%E7%96%8F%E5%9B%BE%0A%20%20%20%20*%20%E8%BE%B9%E5%B0%91%0A*%20%E7%BD%91%0A%20%20%20%20*%20%E8%BE%B9%E5%B8%A6%E6%9C%89%E6%9D%83%E9%87%8D%0A%23%23%20%E6%9C%AF%E8%AF%AD%0A*%20%E5%AD%90%E5%9B%BE%EF%BC%9A%0A%20%20%20%20*%20%E5%9B%BE%E7%9A%84%E4%B8%80%E9%83%A8%E5%88%86%0A*%20%E9%82%BB%E6%8E%A5%E7%82%B9%EF%BC%9A%0A%20%20%20%20*%20%E6%97%A0%E5%90%91%E5%9B%BE%E4%B8%AD%E8%A2%AB%E4%B8%80%E6%9D%A1%E8%BE%B9%E9%93%BE%E6%8E%A5%E7%9A%84%E9%A1%B6%E7%82%B9%E5%8F%AB%E9%82%BB%E6%8E%A5%E7%82%B9%0A*%20%E5%BA%A6%EF%BC%9A%0A%20%20%20%20*%20%E6%97%A0%E5%90%91%E5%9B%BE%E4%B8%AD%E4%B8%8E%E4%B8%80%E4%B8%AA%E9%A1%B6%E7%82%B9%E8%BF%9E%E6%8E%A5%E7%9A%84%E8%BE%B9%E7%9A%84%E6%95%B0%E9%87%8F%0A*%20%E8%B7%AF%E5%BE%84%EF%BC%9A%0A%20%20%20%20*%20%E4%B8%A4%E4%B8%AA%E9%A1%B6%E7%82%B9%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%AF%E5%BE%84%0A*%20%E8%B7%AF%E5%BE%84%E9%95%BF%E5%BA%A6%0A%20%20%20%20*%20%E8%B7%AF%E5%BE%84%E4%B8%AD%E8%BE%B9%E7%9A%84%E4%B8%AA%E6%95%B0%0A*%20%E7%AE%80%E5%8D%95%E8%B7%AF%E5%BE%84%0A%20%20%20%20*%20%E4%B8%8D%E5%8C%85%E5%90%AB%E9%87%8D%E5%A4%8D%E9%A1%B6%E7%82%B9%E7%9A%84%E8%B7%AF%E5%BE%84%0A*%20%E5%9B%9E%E8%B7%AF%0A%20%20%20%20*%20%E8%B5%B7%E7%82%B9%E5%92%8C%E7%BB%93%E5%B0%BE%E6%98%AF%E5%90%8C%E4%B8%80%E4%B8%AA%E7%9A%84%E8%B7%AF%E5%BE%84%0A*%20%E7%AE%80%E5%8D%95%E5%9B%9E%E8%B7%AF%0A%20%20%20%20*%20%E6%B2%A1%E6%9C%89%E5%85%B6%E4%BB%96%E9%87%8D%E5%A4%8D%E9%A1%B6%E7%82%B9%E7%9A%84%E5%9B%9E%E8%B7%AF%0A*%20%E8%BF%9E%E9%80%9A%E5%9B%BE%0A%20%20%20%20*%20%E6%97%A0%E5%90%91%E5%9B%BE%E4%B8%AD%EF%BC%8C%E4%BB%BB%E6%84%8F%E4%B8%A4%E4%B8%AA%E9%A1%B6%E7%82%B9%E4%B9%8B%E9%97%B4%E6%9C%89%E8%B7%AF%E5%BE%84%0A*%20%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F%0A%20%20%20%20*%20%E6%97%A0%E5%90%91%E5%9B%BE%E4%B8%AD%EF%BC%8C%E5%B0%8F%E7%9A%84%E5%B0%BD%E9%87%8F%E8%BF%9E%E7%9A%84%E8%BF%9E%E9%80%9A%E5%9B%BE%E7%9A%84%E4%B8%AA%E6%95%B0%EF%BC%88%E8%A6%81%E5%8C%85%E5%90%AB%E6%89%80%E6%9C%89%E9%A1%B6%E7%82%B9%EF%BC%89%0A*%20%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%9B%BE%0A%20%20%20%20*%20%E6%9C%89%E5%90%91%E5%9B%BE%E4%B8%AD%EF%BC%8C%E4%BB%BB%E6%84%8F%E4%B8%A4%E4%B8%AA%E9%A1%B6%E7%82%B9%E4%B9%8B%E9%97%B4%E6%9C%89%E6%9C%89%E5%90%91%E8%B7%AF%E5%BE%84%0A*%20%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F%0A%20%20%20%20*%20%E6%9C%89%E5%90%91%E5%9B%BE%E4%B8%AD%EF%BC%8C%E5%B0%BD%E9%87%8F%E8%BF%9E%E7%9A%84%E5%BC%BA%E8%BF%9E%E6%8E%A5%E5%9B%BE%E7%9A%84%E4%B8%AA%E6%95%B0%EF%BC%88%E8%A6%81%E5%8C%85%E5%90%AB%E6%89%80%E6%9C%89%E9%A1%B6%E7%82%B9%EF%BC%89%0A%23%23%20%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%0A%23%23%23%20%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%0A!%5B32a7cb46ef237bccef0efd3f587f04cb.png%5D(en-resource%3A%2F%2Fdatabase%2F3583%3A1)%0A!%5B17e77a12d7b86aa2d2c2bbbc5596e858.png%5D(en-resource%3A%2F%2Fdatabase%2F3581%3A1)%0A%23%23%23%20%E9%82%BB%E6%8E%A5%E8%A1%A8%0A%E9%82%BB%E6%8E%A5%E8%A1%A8%EF%BC%88Adjacency%20List%EF%BC%89%E6%98%AF%E5%9B%BE%E7%9A%84%E4%B8%80%E7%A7%8D%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%8E%E9%93%BE%E5%BC%8F%E5%AD%98%E5%82%A8%E7%BB%93%E5%90%88%E7%9A%84%E5%AD%98%E5%82%A8%E6%96%B9%E6%B3%95%E3%80%82%E5%AF%B9%E4%BA%8E%E5%9B%BEG%E4%B8%AD%E7%9A%84%E6%AF%8F%E4%B8%AA%E9%A1%B6%E7%82%B9Vi%EF%BC%8C%E5%B0%86%E6%89%80%E6%9C%89%E9%82%BB%E6%8E%A5%E4%BA%8EVi%E7%9A%84%E9%A1%B6%E7%82%B9Vj%E9%93%BE%E6%88%90%E4%B8%80%E4%B8%AA%E5%8D%95%E9%93%BE%E8%A1%A8%EF%BC%8C%E8%BF%99%E4%B8%AA%E5%8D%95%E9%93%BE%E8%A1%A8%E5%B0%B1%E7%A7%B0%E4%B8%BA%E9%A1%B6%E7%82%B9Vi%E7%9A%84%E9%82%BB%E6%8E%A5%E8%A1%A8%EF%BC%8C%E5%86%8D%E5%B0%86%E6%89%80%E6%9C%89%E9%A1%B6%E7%82%B9%E7%9A%84%E9%82%BB%E6%8E%A5%E8%A1%A8%E8%A1%A8%E5%A4%B4%E6%94%BE%E5%88%B0%E6%95%B0%E7%BB%84%E4%B8%AD%EF%BC%8C%E5%B0%B1%E6%9E%84%E6%88%90%E4%BA%86%E5%9B%BE%E7%9A%84%E9%82%BB%E6%8E%A5%E8%A1%A8%E3%80%82%E5%9C%A8%E9%82%BB%E6%8E%A5%E8%A1%A8%E8%A1%A8%E7%A4%BA%E4%B8%AD%EF%BC%8C%E5%8C%85%E6%8B%AC%E4%B8%A4%E7%A7%8D%E7%BB%93%E7%82%B9%E7%BB%93%E6%9E%84%E3%80%82%E4%B8%80%E4%B8%AA%E6%98%AF%E9%A1%B6%E7%82%B9%E7%BB%93%E7%82%B9%EF%BC%8C%E6%AF%8F%E4%B8%AA%E9%A1%B6%E7%82%B9%E7%BB%93%E7%82%B9%E7%94%B12%E4%B8%AA%E5%9F%9F%E7%BB%84%E6%88%90%EF%BC%8C%E5%85%B6%E4%B8%ADdata%E5%9F%9F%E5%AD%98%E5%82%A8%E9%A1%B6%E7%82%B9Vi%E7%9A%84%E5%90%8D%E6%88%96%E5%85%B6%E7%9B%B8%E5%85%B3%E4%BF%A1%E6%81%AF%EF%BC%8CfirstArc%E6%8C%87%E5%90%91%E9%A1%B6%E7%82%B9Vi%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%82%BB%E6%8E%A5%E7%82%B9%E7%9A%84%E8%BE%B9%E7%BB%93%E7%82%B9%EF%BC%9B%E7%AC%AC%E4%BA%8C%E4%B8%AA%E6%98%AF%E8%BE%B9%E7%BB%93%E7%82%B9%EF%BC%8C%E8%BE%B9%E7%BB%93%E7%82%B9%E7%94%B13%E4%B8%AA%E5%9F%9F%E7%BB%84%E6%88%90%E3%80%82%E5%85%B6%E4%B8%ADabjVex%E5%9F%9F%E5%AD%98%E6%94%BE%E4%B8%8EVi%E9%82%BB%E6%8E%A5%E7%9A%84%E7%82%B9%E7%9A%84%E5%BA%8F%E5%8F%B7%EF%BC%8CnextArc%E6%8C%87%E5%90%91Vi%E4%B8%8B%E4%B8%80%E4%B8%AA%E9%82%BB%E6%8E%A5%E7%82%B9%E7%9A%84%E8%BE%B9%E7%BB%93%E7%82%B9%EF%BC%8Cinfo%E5%9F%9F%E5%AD%98%E5%82%A8%E5%92%8C%E8%BE%B9%E6%88%96%E5%BC%A7%E7%9B%B8%E5%85%B3%E7%9A%84%E4%BF%A1%E6%81%AF%EF%BC%8C%E5%A6%82%E6%9D%83%E5%80%BC%0A!%5B25460194ac69be0e94dc4e43b9e328c0.png%5D(en-resource%3A%2F%2Fdatabase%2F3585%3A1)%0A%E5%9C%A8%E6%9C%89%E5%90%91%E5%9B%BE%E4%B8%AD%EF%BC%8C%E7%AC%ACi%E4%B8%AA%E9%93%BE%E8%A1%A8%E7%9A%84%E9%82%BB%E6%8E%A5%E8%A1%A8%E4%B8%AD%E7%9A%84%E7%BB%93%E7%82%B9%E6%95%B0%E5%8F%AA%E6%98%AF%E9%A1%B6%E7%82%B9Vi%E7%9A%84%E5%87%BA%E5%BA%A6%EF%BC%8C%E4%B8%BA%E6%B1%82%E5%85%A5%E5%BA%A6%EF%BC%8C%E5%BF%85%E9%A1%BB%E9%81%8D%E5%8E%86%E6%95%B4%E4%B8%AA%E9%82%BB%E6%8E%A5%E8%A1%A8%E3%80%82%E5%9C%A8%E6%89%80%E6%9C%89%E9%82%BB%E6%8E%A5%E8%A1%A8%E4%B8%AD%E5%85%B6%E9%82%BB%E6%8E%A5%E9%A1%B6%E7%82%B9%E5%9F%9F%E7%9A%84%E5%80%BC%E4%B8%BAi%E7%9A%84%E7%BB%93%E7%82%B9%E7%9A%84%E4%B8%AA%E6%95%B0%E6%98%AF%E9%A1%B6%E7%82%B9Vi%E7%9A%84%E5%85%A5%E5%BA%A6%E3%80%82%E6%89%80%E4%BB%A5%EF%BC%8C%E4%B8%BA%E4%BA%86%E4%BE%BF%E4%BA%8E%E7%A1%AE%E5%AE%9A%E9%A1%B6%E7%82%B9%E7%9A%84%E5%85%A5%E5%BA%A6%E6%88%96%E8%80%85%E4%BB%A5%E9%A1%B6%E7%82%B9Vi%E4%B8%BA%E5%A4%B4%E7%9A%84%E5%BC%A7%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E6%9C%89%E5%90%91%E5%9B%BE%E7%9A%84%E9%80%86%E9%82%BB%E6%8E%A5%E8%A1%A8%EF%BC%8C%E5%8D%B3%E5%AF%B9%E6%AF%8F%E4%B8%AA%E9%A1%B6%E7%82%B9Vi%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E4%BB%A5Vi%E4%B8%BA%E5%A4%B4%E7%9A%84%E5%BC%A7%E7%9A%84%E9%82%BB%E6%8E%A5%E8%A1%A8%E3%80%82%E5%A6%82%E5%9B%BE6.12%E6%89%80%E7%A4%BA%EF%BC%8C%E5%9B%BE%EF%BC%88b%EF%BC%89%E6%89%80%E7%A4%BA%E4%B8%BA%E9%82%BB%E6%8E%A5%E8%A1%A8%EF%BC%8C%E4%B9%9F%E7%A7%B0%E5%87%BA%E8%BE%B9%E8%A1%A8%EF%BC%8C%E5%9B%BE%EF%BC%88c%EF%BC%89%E6%89%80%E7%A4%BA%E4%B8%BA%E9%80%86%E9%82%BB%E6%8E%A5%E8%A1%A8%EF%BC%8C%E4%B9%9F%E7%A7%B0%E5%85%A5%E8%BE%B9%E8%A1%A8%E3%80%82%0A!%5B0585ae0bb2f8e4e0ce787d5a0326d86a.png%5D(en-resource%3A%2F%2Fdatabase%2F3587%3A1)%0A%0A%23%23%20%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86%0A%23%23%23%20%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2DFS%0A%E5%88%99%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%E9%81%8D%E5%8E%86%E5%8F%AF%E5%AE%9A%E4%B9%89%E4%B8%BA%EF%BC%9A%0A%EF%BC%881%EF%BC%89%E9%A6%96%E5%85%88%E8%AE%BF%E9%97%AE%E5%87%BA%E5%8F%91%E7%82%B9V%E3%80%82%0A%EF%BC%882%EF%BC%89%E7%84%B6%E5%90%8E%E4%BE%9D%E6%AC%A1%E4%BB%8EV%E5%87%BA%E5%8F%91%E6%90%9C%E7%B4%A2V%E7%9A%84%E6%AF%8F%E4%B8%AA%E9%82%BB%E6%8E%A5%E7%82%B9W%EF%BC%8C%E8%8B%A5W%E6%9C%AA%E6%9B%BE%E8%AE%BF%E9%97%AE%E8%BF%87%EF%BC%8C%E5%88%99%E4%BB%A5W%E4%B8%BA%E6%96%B0%E7%9A%84%E5%87%BA%E5%8F%91%E7%82%B9%E7%BB%A7%E7%BB%AD%E8%BF%9B%E8%A1%8C%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%E9%81%8D%E5%8E%86%EF%BC%8C%E7%9B%B4%E8%87%B3%E5%9B%BE%E4%B8%AD%E6%89%80%E6%9C%89%E5%92%8C%E6%BA%90%E7%82%B9V%E6%9C%89%E8%B7%AF%E5%BE%84%E7%9B%B8%E9%80%9A%E7%9A%84%E9%A1%B6%E7%82%B9%EF%BC%88%E4%B9%9F%E7%A7%B0%E4%B8%BA%E4%BB%8E%E6%BA%90%E7%82%B9%E5%8F%AF%E8%BE%BE%E7%9A%84%E9%A1%B6%E7%82%B9%EF%BC%89%E5%9D%87%E5%B7%B2%E8%A2%AB%E8%AE%BF%E9%97%AE%E4%B8%BA%E6%AD%A2%E3%80%82%0A%EF%BC%883%EF%BC%89%E8%8B%A5%E6%AD%A4%E6%97%B6%E5%9B%BE%E4%B8%AD%E4%BB%8D%E6%9C%89%E6%9C%AA%E8%AE%BF%E9%97%AE%E7%9A%84%E9%A1%B6%E7%82%B9%EF%BC%8C%E5%88%99%E5%8F%A6%E9%80%89%E4%B8%80%E4%B8%AA%E5%B0%9A%E6%9C%AA%E8%AE%BF%E9%97%AE%E7%9A%84%E9%A1%B6%E7%82%B9%E4%BD%9C%E4%B8%BA%E6%96%B0%E7%9A%84%E6%BA%90%E7%82%B9%E9%87%8D%E5%A4%8D%E4%B8%8A%E8%BF%B0%E8%BF%87%E7%A8%8B%EF%BC%8C%E7%9B%B4%E8%87%B3%E5%9B%BE%E4%B8%AD%E6%89%80%E6%9C%89%E9%A1%B6%E7%82%B9%E5%9D%87%E5%B7%B2%E8%A2%AB%E8%AE%BF%E9%97%AE%E4%B8%BA%E6%AD%A2%E3%80%82%0A%0A%60%60%60%0ADFS(String%5B%5D%5B%5D%20arr%2C%20int%20i%2C%20int%20j)%7B%0A%20%20%20%20%2F%2F%E5%88%A4%E6%96%AD%E8%B6%8A%E7%95%8C%E5%92%8C%E8%AE%BF%E9%97%AE%E8%BF%87%E6%A0%87%E5%BF%97%20%EF%BC%8C%E8%AE%BF%E9%97%AE%E8%BF%87%E6%A0%87%E5%BF%97%E5%8F%AF%E4%BB%A5%E7%94%A8%E7%89%B9%E6%AE%8A%E7%AC%A6%E5%8F%B7%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%80%BC%E7%AD%89%EF%BC%8C%E4%BD%BF%E8%83%BD%E6%A3%80%E6%B5%8B%E5%87%BA%0A%20%20%20%20if(%20i%20%E8%B6%8A%E7%95%8C%7C%7C%20j%E8%B6%8A%E7%95%8C%20%7C%7C%20arr%5Bi%5D%5Bj%5D%20%E8%AE%BF%E9%97%AE%E8%BF%87)%0A%20%20%20%20%20%20%20%20return%3B%0A%0A%20%20%20%20%2F%2F%E8%AE%BF%E9%97%AE%E6%95%B0%E6%8D%AE%0A%20%20%20%20sout(arr%5Bi%5D%5Bj%5D)%3B%0A%20%20%20%20%2F%2F%E6%A0%87%E8%AE%B0%E5%B7%B2%E8%AE%BF%E9%97%AE%E8%BF%87%0A%20%20%20%20arr%5Bi%5D%5Bj%5D%20%3D%20%22%E8%AE%BF%E9%97%AE%E8%BF%87%22%3B%0A%20%20%20%20%0A%20%20%20%20%2F%2F%E5%AF%B9%E9%82%BB%E6%8E%A5%E7%BB%93%E7%82%B9%E5%81%9ADFS%0A%20%20%20%20DFS(arr%2C%20i%2Cj%2B1)%3B%0A%20%20%20%20DFS(arr%2C%20i%2Cj-1)%3B%0A%20%20%20%20DFS(arr%2C%20i%2B1%2Cj)%3B%0A%20%20%20%20DFS(arr%2C%20i-1%2Cj)%3B%20%20%20%20%0A%7D%0A%60%60%60%0A%23%23%23%20%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2BFS%0A%E5%88%99%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%E9%81%8D%E5%8E%86%E8%BF%87%E7%A8%8B%E4%B8%BA%EF%BC%9A%0A%EF%BC%881%EF%BC%89%E9%A6%96%E5%85%88%E8%AE%BF%E9%97%AE%E5%87%BA%E5%8F%91%E7%82%B9V%E3%80%82%0A%EF%BC%882%EF%BC%89%E6%8E%A5%E7%9D%80%E4%BE%9D%E6%AC%A1%E8%AE%BF%E9%97%AE%E9%A1%B6%E7%82%B9V%E7%9A%84%E6%89%80%E6%9C%89%E9%82%BB%E6%8E%A5%E7%82%B9V1%EF%BC%8CV2%EF%BC%8C%E2%80%A6%EF%BC%8CVt%E3%80%82%0A%EF%BC%883%EF%BC%89%E7%84%B6%E5%90%8E%E5%86%8D%E4%BE%9D%E6%AC%A1%E8%AE%BF%E9%97%AE%E9%A1%B6%E7%82%B9V1%EF%BC%8CV2%EF%BC%8C%E2%80%A6%EF%BC%8CVt%E7%9A%84%E6%89%80%E6%9C%89%E9%82%BB%E6%8E%A5%E7%82%B9%E3%80%82%0A%EF%BC%884%EF%BC%89%E4%BE%9D%E6%AC%A1%E7%B1%BB%E6%8E%A8%EF%BC%8C%E7%9B%B4%E8%87%B3%E5%9B%BE%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E9%A1%B6%E7%82%B9%E9%83%BD%E8%A2%AB%E8%AE%BF%E9%97%AE%E5%88%B0%E3%80%82%0A%0A%60%60%60%0ABFS(String%5B%5D%5B%5D%20arr%2C%20int%20i%2C%20int%20j)%7B%0A%20%20%20%20%0A%20%20%20%20%2F%2F%E5%AE%9A%E4%B9%89%E9%98%9F%E5%88%97%0A%20%20%20%20Queue%3Cint%5B%5D%3E%20q%20%3D%20new%20LinkedList%3CInteger%3E()%3B%0A%20%20%20%20%2F%2F%E7%BB%93%E7%82%B9%E5%85%A5%E9%98%9F%0A%20%20%20%20q.offer(new%20int%5Bi%5D%5Bj%5D)%0A%20%20%20%20%0A%20%20%20%20while(!q.isEmpty())%7B%0A%20%20%20%20%20%20%20%20int%20size%20%3D%20q.size()%3B%0A%20%20%20%20%20%20%20%20%2F%2F%E4%B8%80%E6%AC%A1%E5%BE%AA%E7%8E%AF%E5%8F%96%E5%87%BA%E9%98%9F%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E7%82%B9%EF%BC%8C%E5%B9%B6%E9%81%8D%E5%8E%86%E8%AE%B2%E4%B8%8B%E4%B8%80%E7%BA%A7%E7%9A%84%E9%82%BB%E6%8E%A5%E7%82%B9%E5%85%A5%E9%98%9F%0A%20%20%20%20%20%20%20%20for(int%20k%20%3D%200%3Bk%3Csize%3Bk%2B%2B)%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20int%5B%5D%20cur%20%3D%20q.poll()%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%E5%88%A4%E6%96%AD%E8%B6%8A%E7%95%8C%E5%92%8C%E8%AE%BF%E9%97%AE%E8%BF%87%E6%A0%87%E5%BF%97%20%EF%BC%8C%E8%AE%BF%E9%97%AE%E8%BF%87%E6%A0%87%E5%BF%97%E5%8F%AF%E4%BB%A5%E7%94%A8%E7%89%B9%E6%AE%8A%E7%AC%A6%E5%8F%B7%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%80%BC%E7%AD%89%EF%BC%8C%E4%BD%BF%E8%83%BD%E6%A3%80%E6%B5%8B%E5%87%BA%0A%20%20%20%20%20%20%20%20%20%20%20%20if(%20cur%5B0%5D%20%E8%B6%8A%E7%95%8C%7C%7C%20cur%5B1%5D%E8%B6%8A%E7%95%8C%20%7C%7C%20arr%5Bcur%5B0%5D%5D%5Bcur%5B1%5D%5D%20%E8%AE%BF%E9%97%AE%E8%BF%87)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20continue%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%E8%AE%BF%E9%97%AE%E7%BB%93%E7%82%B9%0A%20%20%20%20%20%20%20%20%20%20%20%20soutarr%5Bcur%5B0%5D%5D%5Bcur%5B1%5D%5D)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20arr%5Bcur%5B0%5D%5D%5Bcur%5B1%5D%5D%20%3D%22%E8%A2%AB%E8%AE%BF%E9%97%AE%E8%BF%87%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%E9%82%BB%E6%8E%A5%E7%82%B9%E5%85%A5%E9%98%9F%0A%20%20%20%20%20%20%20%20%20%20%20%20q.offer(new%20int%5B%5D%7Bcur%5B0%5D%2Ccur%5B1%5D%2B1%7D)%3B%0A%20%20%20%20%20%20%20%20%20%20%20q.offer(new%20int%5B%5D%7Bcur%5B0%5D%2Ccur%5B1%5D-1%7D)%3B%0A%20%20%20%20%20%20%20%20%20%20%20q.offer(new%20int%5B%5D%7Bcur%5B0%5D%2B1%2Ccur%5B1%5D%7D)%3B%0A%20%20%20%20%20%20%20%20%20%20%20q.offer(new%20int%5B%5D%7Bcur%5B0%5D-1%2Ccur%5B1%5D%7D)%3B%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%60%60%60</center></span>
+</div></body></html> 

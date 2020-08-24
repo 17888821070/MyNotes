@@ -1,0 +1,292 @@
+<html>
+<head>
+  <title># 3 垃圾收集器与内存分配策略</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/601392 (zh-CN, DDL); Windows/10.0.0 (Win64); EDAMVersion=V2;"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="10032"/>
+<h1># 3 垃圾收集器与内存分配策略</h1>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h1 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 41px; border-bottom: 3px double #999; color: #000; margin-top: 14px;">3 垃圾收集器与内存分配策略</h1>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">3.1对象是否垃圾</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.1.1 引用计数法</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述：给对象添加一个计数器，被引用时计数+1，引用失效时计数-1，如果一个对象的计数为0表示垃圾对象</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">缺陷：当对象循环引用时会导致对象无法回收</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.1.2 可达性分析法</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述：维护一些以GCRoot对象为起点的引用数，从GCRoot到对象的路径叫做引用链，当不能找到某个对象的引用链时表示此对象是垃圾</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">可以作为GCRoots的对象
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">局部变量对象（虚拟机栈局部变量表中的引用对象）</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">类的静态成员（方法区的静态属性的引用对象）</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">类的常量成员（方法区中常量的引用对象）</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">本地方法对象（本地方法栈中Native引用的对象）</li>
+</ul>
+</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.1.3 引用类型</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">强引用
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">普遍存在的对象，如new出来的对象，只要强引用还在，垃圾收集器就不会回收被引用的对象</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">软引用
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">有用但并不是必须的，在系统将要发生内存溢出时会对被软引用的对象进行回收，如果还不够才会报内存溢出异常，使用SoftReference实现</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">软引用
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述非必须对象，存活到下次垃圾收集的时候，垃圾回收时不管内存是否足够都会将只有弱引用的对象回收，使用，使用WeakReference实现</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">虚引用
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">最弱的引用，不会对对象回收造成影响，没有别的引用的话，就相当于没有引用，作用是在此对象被回收时得到一个系统通知，PhantomReference实现</li>
+</ul>
+</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.1.4 对象被标记后不是非死不可</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述：
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">对象在经过可达性分析后没有找到引用链后，第一次标记为垃圾对象；此时进行一次筛选，此对象是否有必要执行他的finalize()方法，（有必要：覆写了finalize方法，并且没执过），如果finalize()方法中将对象重新连接到引用链上，则移除准备回收的标记</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">注意：
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">finalize()方法只能执行一次，所以只能自救一次</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">finalize()是对象逃离死亡命运的最后一次机会</li>
+</ul>
+</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.1.5 回收方法区</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">回收常量池常量
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">判定方法：没有对象持有常量池中常量的引用</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">（可以）回收无用类
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">判定方法：1、该类的所有实例都被回收；2、加载该类的ClassLoader已被回收；3、java.lang.Class对象没被任何地方引用，无法在任何地方通过反射访问该类的方法</li>
+</ul>
+</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.1.6 垃圾回收的时机</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">枚举根节点
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">使用OopMap数据结构对GCRoots进行枚举存于内存中，需要GC时根据OopMap就能获得根节点</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">安全点<br/>
+在一段指令间隔标记一个SafePoint，到此SafePoint时可以通过OopMap获取到GCRoots
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">抢先式触发<br/>
+用户线程正常执行，GC需要回收时，中断所有线程，判断出有线程没到SafePoint时放行，知道执行到SafePoint，不常使用此方式</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">主动式触发<br/>
+GC需要回收时，设置一个需要回收了的标志位，用户线程轮询的检查此标志位，当检测到此标志位时暂停工作</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">安全区域
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">某些用户线程本身就是处于暂停状态的，不能等他去执行到safePoint，所以这种线程就设置一个安全区域，处于安全区域的</li>
+</ul>
+</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">3.2 垃圾回收算法</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.2.1 标记-清除法</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述：标记垃圾、清除垃圾</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">缺点：产生大量碎片化内存空间，标记和清除效率都不高</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.2.2 复制法</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述：将堆内存分成两部分，一部分一直不存对象，当另一部分满了之后，将存活的对象复制到另一块上，清空满的那块</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">缺点：有一半内存不存对象，十分浪费内存空间</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">说明：商用虚拟机都使用此种方法回收新生代（新生代分为Eden和From Survivor和To Survivor，当Eden满了，将Eden和From Suivivor中存活的复制到To Suivivor，清除Eden和From Survivor，From Survivor和To Survivor调换）</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.2.3 标记-整理法</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述：标记垃圾、向一端整理存活对象，清除边界外的对象</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">缺点：慢</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">说明：用于老年代的垃圾回收</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.2.4 分代收集算法</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述：将内存分为多个四个区域，新生代（Eden，From Survivor，To Survivor）和老年代，新生代使用复制算法，将Eden和From Suivivor中存活的复制到To Suivivor，清除Eden和From Survivor，From Survivor和To Survivor调换，如果To Suivivor存放存活对象存不下，直接存到老年代。老年代使用标记清除或者标记整理法处理</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">3.3 垃圾收集器</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.3.1 Serial收集器（串行收集器）</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述：最基本的收集器，进行垃圾回收时，必须暂停其他所有的工作线程，直到收集结束</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">回收过程：
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">Serial在新生代收集时，暂停所有线程，使用复制法完成垃圾收集回收，恢复线程</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">SerialOld在老年代收集时，暂停所有线程，使用标记整理法完成垃圾收集回收，恢复线程</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">优点：对于运行在Client模式下的虚拟机来说是很好的选择，（停顿时间短可以接受）</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.3.2 ParNew收集器</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述：Serial收集器的的多线程版本，垃圾回收时暂停所有线程</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">回收过程
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">ParNew在新生代收集时，暂停所有线程，使用复制法完成垃圾收集回收（多线程操作），恢复线程</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">ParNew Old在老年代收集时，暂停所有线程，使用标记整理法完成垃圾收集回收（多线程操作），恢复线程</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">优点：能与CMS收集器合作使用，且在多CPU情况下比Serial快速</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.3.3 Parallel Scavenge收集器</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述：与ParNew类似，并行、使用复制算法、多线程，但关注点不同，Parallel Scavenge关注吞吐量（高效的利用CPU）</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">回收过程
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">新生代复制、老年代标记整理</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">优点：CPU利用率高，适用于后台运算，不需太多交互的任务</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.3.4 Serial Old收集器</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述：Serial收集器的老年代版本</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">回收过程
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">使用标记整理方式回收</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">使用场景：主要用于Client模式下的虚拟机</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.3.5 Parallel Old收集器</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述：Parallel Scavenge收集器的老年代版本，使用多线程和标记整理法</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">优点：搭配Parallel Scanvenge收集器使用，实现对吞吐量的优先组合</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.3.6 CMS收集器</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">描述：Concurrent Mark Sweep，以获取最短回收停顿时间为目标的收集器</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">使用场景：用户交互频繁，要求快速响应的情况</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">回收过程
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">初始标记（Strop the world）
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">暂停所有其他线程，对直接与GCRoots项链的对象进行标记，速度很快</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">并发标记（与用户线程并发）
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">与其他线程并发进行，记录可达对象，此部分无法保证所有对象被标记，因为此部分是并发进行的，此阶段可能用户线程又修改了对象引用，但会记录引用更新的地方</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">重新标记（Strop the world）
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">暂停所有线程，对并发标记期间修改的引用进行可达性分析，进行标记，此部分时间比初始标记长，比并发标记短</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">并发清除（与用户线程并发）
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">开启用户线程，对标记过的区域进行清扫</li>
+</ul>
+</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">优点：并发、低停顿</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">缺点：
+<ol style="line-height: 160%; box-sizing: content-box; display: block; padding-left: 30px; margin: 6px 0 10px; color: #333; list-style-type: decimal; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">对CPU资源非常敏感</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">无法处理浮动垃圾，在并发清理期间产生的垃圾需要在下一次垃圾收集时清理</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">使用了标记清除方式收集垃圾，有碎片空间产生</li>
+</ol>
+</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.3.7 G1收集器</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">回收过程：
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">将堆分成多个大小相等的独立区域Region，跟踪各个Region的价值（回收得到的空间和需要的时间的经验值），每次根据允许收集时间优先回收价值最大的Region，保证了有限时间内尽可能高的收集效率</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">步骤：
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">初始标记（Stop the world）
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">标记与GCRoots直接相连的对象，很快</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">并发标记（与用户线程并发运行）
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">并发标记可达对象</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">最终标记（Stop the world）
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">暂停所有线程，将并发标记部分更新的引用进行标记</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">筛选回收（Stop the world）
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">暂停所有线程（非必须），对Region价值排序，按照用户设定的回收计划对Region回收</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">优点
+<ol style="line-height: 160%; box-sizing: content-box; display: block; padding-left: 30px; margin: 6px 0 10px; color: #333; list-style-type: decimal; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">并行与并发：缩短了stop-the-world的时间</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">分代收集：能够处理新生代和老年代的垃圾，能够以不同的方式处理新对象，熬过几次GC得旧对象</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">空间整合：整体上看使用了标记整理算法，局部采用复制算法，防止空间碎片化</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">可预测的停顿：可以指定在M时间内，不能在垃圾收集上消耗超过N</li>
+</ol>
+</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">3.4 内存分配与回收策略</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.4.1 内存分配策略</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">对象优先分配在Eden
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">新创建的对象优先进入Eden区，Eden区空间不够时，发起一次Minor GC</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">大对象直接进入老年代
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">大对象例如大数组，直接进入老年代，老年代空间不够时，发起一次Major GC</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">长期存活的对象进入老年代
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">经过多次minor GC，并存活的对象，超过设定的年龄的对象进入老年代</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">Survivor中年龄相同对象超过内存一半，大于等于此年龄的进入老年代
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">如果Survivor区汇中年龄相同的对象超过了Survivor内存的一半，则无视年龄，将大于或等于此年龄的对象放入老年代</li>
+</ul>
+</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.4.2 回收策略</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">Minor GC：新生代的垃圾收集动作，频繁且快速</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">Major GC/Full GC：老年代的垃圾收集动作，至少会伴随一次minor GC</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">对象存活年龄：对象设有一个存活年龄，新生代中，对象经过一次Minor GC并存活，存活年龄加1岁</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">3.4.3 空间分配担保</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">minor GC之前，判断老年代空间是否大于新生代所有对象总和（是则minor GC），判断参数是否允许担保失败并且老年代空间是否大于历次计入老年代的对象的平均值（是则minor GC），否则发起Major GC</li>
+</ul>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%203%20%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5%0A%23%23%203.1%E5%AF%B9%E8%B1%A1%E6%98%AF%E5%90%A6%E5%9E%83%E5%9C%BE%0A%23%23%23%203.1.1%20%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E6%B3%95%0A*%20%E6%8F%8F%E8%BF%B0%EF%BC%9A%E7%BB%99%E5%AF%B9%E8%B1%A1%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E8%AE%A1%E6%95%B0%E5%99%A8%EF%BC%8C%E8%A2%AB%E5%BC%95%E7%94%A8%E6%97%B6%E8%AE%A1%E6%95%B0%2B1%EF%BC%8C%E5%BC%95%E7%94%A8%E5%A4%B1%E6%95%88%E6%97%B6%E8%AE%A1%E6%95%B0-1%EF%BC%8C%E5%A6%82%E6%9E%9C%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%A1%E6%95%B0%E4%B8%BA0%E8%A1%A8%E7%A4%BA%E5%9E%83%E5%9C%BE%E5%AF%B9%E8%B1%A1%0A*%20%E7%BC%BA%E9%99%B7%EF%BC%9A%E5%BD%93%E5%AF%B9%E8%B1%A1%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8%E6%97%B6%E4%BC%9A%E5%AF%BC%E8%87%B4%E5%AF%B9%E8%B1%A1%E6%97%A0%E6%B3%95%E5%9B%9E%E6%94%B6%0A%23%23%23%203.1.2%20%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%E6%B3%95%0A*%20%E6%8F%8F%E8%BF%B0%EF%BC%9A%E7%BB%B4%E6%8A%A4%E4%B8%80%E4%BA%9B%E4%BB%A5GCRoot%E5%AF%B9%E8%B1%A1%E4%B8%BA%E8%B5%B7%E7%82%B9%E7%9A%84%E5%BC%95%E7%94%A8%E6%95%B0%EF%BC%8C%E4%BB%8EGCRoot%E5%88%B0%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%B7%AF%E5%BE%84%E5%8F%AB%E5%81%9A%E5%BC%95%E7%94%A8%E9%93%BE%EF%BC%8C%E5%BD%93%E4%B8%8D%E8%83%BD%E6%89%BE%E5%88%B0%E6%9F%90%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%BC%95%E7%94%A8%E9%93%BE%E6%97%B6%E8%A1%A8%E7%A4%BA%E6%AD%A4%E5%AF%B9%E8%B1%A1%E6%98%AF%E5%9E%83%E5%9C%BE%0A*%20%E5%8F%AF%E4%BB%A5%E4%BD%9C%E4%B8%BAGCRoots%E7%9A%84%E5%AF%B9%E8%B1%A1%0A%20%20%20%20*%20%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E5%AF%B9%E8%B1%A1%EF%BC%88%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E5%AF%B9%E8%B1%A1%EF%BC%89%0A%20%20%20%20*%20%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%EF%BC%88%E6%96%B9%E6%B3%95%E5%8C%BA%E7%9A%84%E9%9D%99%E6%80%81%E5%B1%9E%E6%80%A7%E7%9A%84%E5%BC%95%E7%94%A8%E5%AF%B9%E8%B1%A1%EF%BC%89%0A%20%20%20%20*%20%E7%B1%BB%E7%9A%84%E5%B8%B8%E9%87%8F%E6%88%90%E5%91%98%EF%BC%88%E6%96%B9%E6%B3%95%E5%8C%BA%E4%B8%AD%E5%B8%B8%E9%87%8F%E7%9A%84%E5%BC%95%E7%94%A8%E5%AF%B9%E8%B1%A1%EF%BC%89%0A%20%20%20%20*%20%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E5%AF%B9%E8%B1%A1%EF%BC%88%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88%E4%B8%ADNative%E5%BC%95%E7%94%A8%E7%9A%84%E5%AF%B9%E8%B1%A1%EF%BC%89%0A%23%23%23%203.1.3%20%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%0A*%20%E5%BC%BA%E5%BC%95%E7%94%A8%0A%20%20%20%20*%20%E6%99%AE%E9%81%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E5%AF%B9%E8%B1%A1%EF%BC%8C%E5%A6%82new%E5%87%BA%E6%9D%A5%E7%9A%84%E5%AF%B9%E8%B1%A1%EF%BC%8C%E5%8F%AA%E8%A6%81%E5%BC%BA%E5%BC%95%E7%94%A8%E8%BF%98%E5%9C%A8%EF%BC%8C%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E5%B0%B1%E4%B8%8D%E4%BC%9A%E5%9B%9E%E6%94%B6%E8%A2%AB%E5%BC%95%E7%94%A8%E7%9A%84%E5%AF%B9%E8%B1%A1%0A*%20%E8%BD%AF%E5%BC%95%E7%94%A8%0A%20%20%20%20*%20%E6%9C%89%E7%94%A8%E4%BD%86%E5%B9%B6%E4%B8%8D%E6%98%AF%E5%BF%85%E9%A1%BB%E7%9A%84%EF%BC%8C%E5%9C%A8%E7%B3%BB%E7%BB%9F%E5%B0%86%E8%A6%81%E5%8F%91%E7%94%9F%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E6%97%B6%E4%BC%9A%E5%AF%B9%E8%A2%AB%E8%BD%AF%E5%BC%95%E7%94%A8%E7%9A%84%E5%AF%B9%E8%B1%A1%E8%BF%9B%E8%A1%8C%E5%9B%9E%E6%94%B6%EF%BC%8C%E5%A6%82%E6%9E%9C%E8%BF%98%E4%B8%8D%E5%A4%9F%E6%89%8D%E4%BC%9A%E6%8A%A5%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%BC%82%E5%B8%B8%EF%BC%8C%E4%BD%BF%E7%94%A8SoftReference%E5%AE%9E%E7%8E%B0%0A*%20%E8%BD%AF%E5%BC%95%E7%94%A8%0A%20%20%20%20*%20%E6%8F%8F%E8%BF%B0%E9%9D%9E%E5%BF%85%E9%A1%BB%E5%AF%B9%E8%B1%A1%EF%BC%8C%E5%AD%98%E6%B4%BB%E5%88%B0%E4%B8%8B%E6%AC%A1%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%97%B6%E4%B8%8D%E7%AE%A1%E5%86%85%E5%AD%98%E6%98%AF%E5%90%A6%E8%B6%B3%E5%A4%9F%E9%83%BD%E4%BC%9A%E5%B0%86%E5%8F%AA%E6%9C%89%E5%BC%B1%E5%BC%95%E7%94%A8%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%9B%9E%E6%94%B6%EF%BC%8C%E4%BD%BF%E7%94%A8%EF%BC%8C%E4%BD%BF%E7%94%A8WeakReference%E5%AE%9E%E7%8E%B0%0A*%20%E8%99%9A%E5%BC%95%E7%94%A8%0A%20%20%20%20*%20%E6%9C%80%E5%BC%B1%E7%9A%84%E5%BC%95%E7%94%A8%EF%BC%8C%E4%B8%8D%E4%BC%9A%E5%AF%B9%E5%AF%B9%E8%B1%A1%E5%9B%9E%E6%94%B6%E9%80%A0%E6%88%90%E5%BD%B1%E5%93%8D%EF%BC%8C%E6%B2%A1%E6%9C%89%E5%88%AB%E7%9A%84%E5%BC%95%E7%94%A8%E7%9A%84%E8%AF%9D%EF%BC%8C%E5%B0%B1%E7%9B%B8%E5%BD%93%E4%BA%8E%E6%B2%A1%E6%9C%89%E5%BC%95%E7%94%A8%EF%BC%8C%E4%BD%9C%E7%94%A8%E6%98%AF%E5%9C%A8%E6%AD%A4%E5%AF%B9%E8%B1%A1%E8%A2%AB%E5%9B%9E%E6%94%B6%E6%97%B6%E5%BE%97%E5%88%B0%E4%B8%80%E4%B8%AA%E7%B3%BB%E7%BB%9F%E9%80%9A%E7%9F%A5%EF%BC%8CPhantomReference%E5%AE%9E%E7%8E%B0%0A%23%23%23%203.1.4%20%E5%AF%B9%E8%B1%A1%E8%A2%AB%E6%A0%87%E8%AE%B0%E5%90%8E%E4%B8%8D%E6%98%AF%E9%9D%9E%E6%AD%BB%E4%B8%8D%E5%8F%AF%0A*%20%E6%8F%8F%E8%BF%B0%EF%BC%9A%0A%20%20%20%20*%20%E5%AF%B9%E8%B1%A1%E5%9C%A8%E7%BB%8F%E8%BF%87%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%E5%90%8E%E6%B2%A1%E6%9C%89%E6%89%BE%E5%88%B0%E5%BC%95%E7%94%A8%E9%93%BE%E5%90%8E%EF%BC%8C%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%A0%87%E8%AE%B0%E4%B8%BA%E5%9E%83%E5%9C%BE%E5%AF%B9%E8%B1%A1%EF%BC%9B%E6%AD%A4%E6%97%B6%E8%BF%9B%E8%A1%8C%E4%B8%80%E6%AC%A1%E7%AD%9B%E9%80%89%EF%BC%8C%E6%AD%A4%E5%AF%B9%E8%B1%A1%E6%98%AF%E5%90%A6%E6%9C%89%E5%BF%85%E8%A6%81%E6%89%A7%E8%A1%8C%E4%BB%96%E7%9A%84finalize()%E6%96%B9%E6%B3%95%EF%BC%8C%EF%BC%88%E6%9C%89%E5%BF%85%E8%A6%81%EF%BC%9A%E8%A6%86%E5%86%99%E4%BA%86finalize%E6%96%B9%E6%B3%95%EF%BC%8C%E5%B9%B6%E4%B8%94%E6%B2%A1%E6%89%A7%E8%BF%87%EF%BC%89%EF%BC%8C%E5%A6%82%E6%9E%9Cfinalize()%E6%96%B9%E6%B3%95%E4%B8%AD%E5%B0%86%E5%AF%B9%E8%B1%A1%E9%87%8D%E6%96%B0%E8%BF%9E%E6%8E%A5%E5%88%B0%E5%BC%95%E7%94%A8%E9%93%BE%E4%B8%8A%EF%BC%8C%E5%88%99%E7%A7%BB%E9%99%A4%E5%87%86%E5%A4%87%E5%9B%9E%E6%94%B6%E7%9A%84%E6%A0%87%E8%AE%B0%0A*%20%E6%B3%A8%E6%84%8F%EF%BC%9A%0A%20%20%20%20*%20finalize()%E6%96%B9%E6%B3%95%E5%8F%AA%E8%83%BD%E6%89%A7%E8%A1%8C%E4%B8%80%E6%AC%A1%EF%BC%8C%E6%89%80%E4%BB%A5%E5%8F%AA%E8%83%BD%E8%87%AA%E6%95%91%E4%B8%80%E6%AC%A1%0A%20%20%20%20*%20finalize()%E6%98%AF%E5%AF%B9%E8%B1%A1%E9%80%83%E7%A6%BB%E6%AD%BB%E4%BA%A1%E5%91%BD%E8%BF%90%E7%9A%84%E6%9C%80%E5%90%8E%E4%B8%80%E6%AC%A1%E6%9C%BA%E4%BC%9A%0A%23%23%23%203.1.5%20%E5%9B%9E%E6%94%B6%E6%96%B9%E6%B3%95%E5%8C%BA%0A*%20%E5%9B%9E%E6%94%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%E5%B8%B8%E9%87%8F%0A%20%20%20%20*%20%E5%88%A4%E5%AE%9A%E6%96%B9%E6%B3%95%EF%BC%9A%E6%B2%A1%E6%9C%89%E5%AF%B9%E8%B1%A1%E6%8C%81%E6%9C%89%E5%B8%B8%E9%87%8F%E6%B1%A0%E4%B8%AD%E5%B8%B8%E9%87%8F%E7%9A%84%E5%BC%95%E7%94%A8%0A*%20%EF%BC%88%E5%8F%AF%E4%BB%A5%EF%BC%89%E5%9B%9E%E6%94%B6%E6%97%A0%E7%94%A8%E7%B1%BB%0A%20%20%20%20*%20%E5%88%A4%E5%AE%9A%E6%96%B9%E6%B3%95%EF%BC%9A1%E3%80%81%E8%AF%A5%E7%B1%BB%E7%9A%84%E6%89%80%E6%9C%89%E5%AE%9E%E4%BE%8B%E9%83%BD%E8%A2%AB%E5%9B%9E%E6%94%B6%EF%BC%9B2%E3%80%81%E5%8A%A0%E8%BD%BD%E8%AF%A5%E7%B1%BB%E7%9A%84ClassLoader%E5%B7%B2%E8%A2%AB%E5%9B%9E%E6%94%B6%EF%BC%9B3%E3%80%81java.lang.Class%E5%AF%B9%E8%B1%A1%E6%B2%A1%E8%A2%AB%E4%BB%BB%E4%BD%95%E5%9C%B0%E6%96%B9%E5%BC%95%E7%94%A8%EF%BC%8C%E6%97%A0%E6%B3%95%E5%9C%A8%E4%BB%BB%E4%BD%95%E5%9C%B0%E6%96%B9%E9%80%9A%E8%BF%87%E5%8F%8D%E5%B0%84%E8%AE%BF%E9%97%AE%E8%AF%A5%E7%B1%BB%E7%9A%84%E6%96%B9%E6%B3%95%0A%23%23%23%203.1.6%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%9A%84%E6%97%B6%E6%9C%BA%0A*%20%E6%9E%9A%E4%B8%BE%E6%A0%B9%E8%8A%82%E7%82%B9%0A%20%20%20%20*%20%E4%BD%BF%E7%94%A8OopMap%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%AF%B9GCRoots%E8%BF%9B%E8%A1%8C%E6%9E%9A%E4%B8%BE%E5%AD%98%E4%BA%8E%E5%86%85%E5%AD%98%E4%B8%AD%EF%BC%8C%E9%9C%80%E8%A6%81GC%E6%97%B6%E6%A0%B9%E6%8D%AEOopMap%E5%B0%B1%E8%83%BD%E8%8E%B7%E5%BE%97%E6%A0%B9%E8%8A%82%E7%82%B9%0A*%20%E5%AE%89%E5%85%A8%E7%82%B9%0A%20%20%20%20%E5%9C%A8%E4%B8%80%E6%AE%B5%E6%8C%87%E4%BB%A4%E9%97%B4%E9%9A%94%E6%A0%87%E8%AE%B0%E4%B8%80%E4%B8%AASafePoint%EF%BC%8C%E5%88%B0%E6%AD%A4SafePoint%E6%97%B6%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87OopMap%E8%8E%B7%E5%8F%96%E5%88%B0GCRoots%0A%20%20%20%20*%20%E6%8A%A2%E5%85%88%E5%BC%8F%E8%A7%A6%E5%8F%91%0A%20%20%20%20%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B%E6%AD%A3%E5%B8%B8%E6%89%A7%E8%A1%8C%EF%BC%8CGC%E9%9C%80%E8%A6%81%E5%9B%9E%E6%94%B6%E6%97%B6%EF%BC%8C%E4%B8%AD%E6%96%AD%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B%EF%BC%8C%E5%88%A4%E6%96%AD%E5%87%BA%E6%9C%89%E7%BA%BF%E7%A8%8B%E6%B2%A1%E5%88%B0SafePoint%E6%97%B6%E6%94%BE%E8%A1%8C%EF%BC%8C%E7%9F%A5%E9%81%93%E6%89%A7%E8%A1%8C%E5%88%B0SafePoint%EF%BC%8C%E4%B8%8D%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%AD%A4%E6%96%B9%E5%BC%8F%0A%20%20%20%20*%20%E4%B8%BB%E5%8A%A8%E5%BC%8F%E8%A7%A6%E5%8F%91%0A%20%20%20%20GC%E9%9C%80%E8%A6%81%E5%9B%9E%E6%94%B6%E6%97%B6%EF%BC%8C%E8%AE%BE%E7%BD%AE%E4%B8%80%E4%B8%AA%E9%9C%80%E8%A6%81%E5%9B%9E%E6%94%B6%E4%BA%86%E7%9A%84%E6%A0%87%E5%BF%97%E4%BD%8D%EF%BC%8C%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B%E8%BD%AE%E8%AF%A2%E7%9A%84%E6%A3%80%E6%9F%A5%E6%AD%A4%E6%A0%87%E5%BF%97%E4%BD%8D%EF%BC%8C%E5%BD%93%E6%A3%80%E6%B5%8B%E5%88%B0%E6%AD%A4%E6%A0%87%E5%BF%97%E4%BD%8D%E6%97%B6%E6%9A%82%E5%81%9C%E5%B7%A5%E4%BD%9C%0A*%20%E5%AE%89%E5%85%A8%E5%8C%BA%E5%9F%9F%0A%20%20%20%20*%20%E6%9F%90%E4%BA%9B%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B%E6%9C%AC%E8%BA%AB%E5%B0%B1%E6%98%AF%E5%A4%84%E4%BA%8E%E6%9A%82%E5%81%9C%E7%8A%B6%E6%80%81%E7%9A%84%EF%BC%8C%E4%B8%8D%E8%83%BD%E7%AD%89%E4%BB%96%E5%8E%BB%E6%89%A7%E8%A1%8C%E5%88%B0safePoint%EF%BC%8C%E6%89%80%E4%BB%A5%E8%BF%99%E7%A7%8D%E7%BA%BF%E7%A8%8B%E5%B0%B1%E8%AE%BE%E7%BD%AE%E4%B8%80%E4%B8%AA%E5%AE%89%E5%85%A8%E5%8C%BA%E5%9F%9F%EF%BC%8C%E5%A4%84%E4%BA%8E%E5%AE%89%E5%85%A8%E5%8C%BA%E5%9F%9F%E7%9A%84%0A%0A%23%23%203.2%20%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%0A%23%23%23%203.2.1%20%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E6%B3%95%0A*%20%E6%8F%8F%E8%BF%B0%EF%BC%9A%E6%A0%87%E8%AE%B0%E5%9E%83%E5%9C%BE%E3%80%81%E6%B8%85%E9%99%A4%E5%9E%83%E5%9C%BE%0A*%20%E7%BC%BA%E7%82%B9%EF%BC%9A%E4%BA%A7%E7%94%9F%E5%A4%A7%E9%87%8F%E7%A2%8E%E7%89%87%E5%8C%96%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%EF%BC%8C%E6%A0%87%E8%AE%B0%E5%92%8C%E6%B8%85%E9%99%A4%E6%95%88%E7%8E%87%E9%83%BD%E4%B8%8D%E9%AB%98%0A%23%23%23%203.2.2%20%E5%A4%8D%E5%88%B6%E6%B3%95%0A*%20%E6%8F%8F%E8%BF%B0%EF%BC%9A%E5%B0%86%E5%A0%86%E5%86%85%E5%AD%98%E5%88%86%E6%88%90%E4%B8%A4%E9%83%A8%E5%88%86%EF%BC%8C%E4%B8%80%E9%83%A8%E5%88%86%E4%B8%80%E7%9B%B4%E4%B8%8D%E5%AD%98%E5%AF%B9%E8%B1%A1%EF%BC%8C%E5%BD%93%E5%8F%A6%E4%B8%80%E9%83%A8%E5%88%86%E6%BB%A1%E4%BA%86%E4%B9%8B%E5%90%8E%EF%BC%8C%E5%B0%86%E5%AD%98%E6%B4%BB%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%A4%8D%E5%88%B6%E5%88%B0%E5%8F%A6%E4%B8%80%E5%9D%97%E4%B8%8A%EF%BC%8C%E6%B8%85%E7%A9%BA%E6%BB%A1%E7%9A%84%E9%82%A3%E5%9D%97%0A*%20%E7%BC%BA%E7%82%B9%EF%BC%9A%E6%9C%89%E4%B8%80%E5%8D%8A%E5%86%85%E5%AD%98%E4%B8%8D%E5%AD%98%E5%AF%B9%E8%B1%A1%EF%BC%8C%E5%8D%81%E5%88%86%E6%B5%AA%E8%B4%B9%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%0A*%20%E8%AF%B4%E6%98%8E%EF%BC%9A%E5%95%86%E7%94%A8%E8%99%9A%E6%8B%9F%E6%9C%BA%E9%83%BD%E4%BD%BF%E7%94%A8%E6%AD%A4%E7%A7%8D%E6%96%B9%E6%B3%95%E5%9B%9E%E6%94%B6%E6%96%B0%E7%94%9F%E4%BB%A3%EF%BC%88%E6%96%B0%E7%94%9F%E4%BB%A3%E5%88%86%E4%B8%BAEden%E5%92%8CFrom%20Survivor%E5%92%8CTo%20Survivor%EF%BC%8C%E5%BD%93Eden%E6%BB%A1%E4%BA%86%EF%BC%8C%E5%B0%86Eden%E5%92%8CFrom%20Suivivor%E4%B8%AD%E5%AD%98%E6%B4%BB%E7%9A%84%E5%A4%8D%E5%88%B6%E5%88%B0To%20Suivivor%EF%BC%8C%E6%B8%85%E9%99%A4Eden%E5%92%8CFrom%20Survivor%EF%BC%8CFrom%20Survivor%E5%92%8CTo%20Survivor%E8%B0%83%E6%8D%A2%EF%BC%89%0A%23%23%23%203.2.3%20%E6%A0%87%E8%AE%B0-%E6%95%B4%E7%90%86%E6%B3%95%0A*%20%E6%8F%8F%E8%BF%B0%EF%BC%9A%E6%A0%87%E8%AE%B0%E5%9E%83%E5%9C%BE%E3%80%81%E5%90%91%E4%B8%80%E7%AB%AF%E6%95%B4%E7%90%86%E5%AD%98%E6%B4%BB%E5%AF%B9%E8%B1%A1%EF%BC%8C%E6%B8%85%E9%99%A4%E8%BE%B9%E7%95%8C%E5%A4%96%E7%9A%84%E5%AF%B9%E8%B1%A1%0A*%20%E7%BC%BA%E7%82%B9%EF%BC%9A%E6%85%A2%0A*%20%E8%AF%B4%E6%98%8E%EF%BC%9A%E7%94%A8%E4%BA%8E%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%0A%23%23%23%203.2.4%20%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95%0A*%20%E6%8F%8F%E8%BF%B0%EF%BC%9A%E5%B0%86%E5%86%85%E5%AD%98%E5%88%86%E4%B8%BA%E5%A4%9A%E4%B8%AA%E5%9B%9B%E4%B8%AA%E5%8C%BA%E5%9F%9F%EF%BC%8C%E6%96%B0%E7%94%9F%E4%BB%A3%EF%BC%88Eden%EF%BC%8CFrom%20Survivor%EF%BC%8CTo%20Survivor%EF%BC%89%E5%92%8C%E8%80%81%E5%B9%B4%E4%BB%A3%EF%BC%8C%E6%96%B0%E7%94%9F%E4%BB%A3%E4%BD%BF%E7%94%A8%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95%EF%BC%8C%E5%B0%86Eden%E5%92%8CFrom%20Suivivor%E4%B8%AD%E5%AD%98%E6%B4%BB%E7%9A%84%E5%A4%8D%E5%88%B6%E5%88%B0To%20Suivivor%EF%BC%8C%E6%B8%85%E9%99%A4Eden%E5%92%8CFrom%20Survivor%EF%BC%8CFrom%20Survivor%E5%92%8CTo%20Survivor%E8%B0%83%E6%8D%A2%EF%BC%8C%E5%A6%82%E6%9E%9CTo%20Suivivor%E5%AD%98%E6%94%BE%E5%AD%98%E6%B4%BB%E5%AF%B9%E8%B1%A1%E5%AD%98%E4%B8%8D%E4%B8%8B%EF%BC%8C%E7%9B%B4%E6%8E%A5%E5%AD%98%E5%88%B0%E8%80%81%E5%B9%B4%E4%BB%A3%E3%80%82%E8%80%81%E5%B9%B4%E4%BB%A3%E4%BD%BF%E7%94%A8%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4%E6%88%96%E8%80%85%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86%E6%B3%95%E5%A4%84%E7%90%86%0A%23%23%203.3%20%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%0A%23%23%23%203.3.1%20Serial%E6%94%B6%E9%9B%86%E5%99%A8%EF%BC%88%E4%B8%B2%E8%A1%8C%E6%94%B6%E9%9B%86%E5%99%A8%EF%BC%89%0A*%20%E6%8F%8F%E8%BF%B0%EF%BC%9A%E6%9C%80%E5%9F%BA%E6%9C%AC%E7%9A%84%E6%94%B6%E9%9B%86%E5%99%A8%EF%BC%8C%E8%BF%9B%E8%A1%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%97%B6%EF%BC%8C%E5%BF%85%E9%A1%BB%E6%9A%82%E5%81%9C%E5%85%B6%E4%BB%96%E6%89%80%E6%9C%89%E7%9A%84%E5%B7%A5%E4%BD%9C%E7%BA%BF%E7%A8%8B%EF%BC%8C%E7%9B%B4%E5%88%B0%E6%94%B6%E9%9B%86%E7%BB%93%E6%9D%9F%0A*%20%E5%9B%9E%E6%94%B6%E8%BF%87%E7%A8%8B%EF%BC%9A%0A%20%20%20%20*%20%20Serial%E5%9C%A8%E6%96%B0%E7%94%9F%E4%BB%A3%E6%94%B6%E9%9B%86%E6%97%B6%EF%BC%8C%E6%9A%82%E5%81%9C%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B%EF%BC%8C%E4%BD%BF%E7%94%A8%E5%A4%8D%E5%88%B6%E6%B3%95%E5%AE%8C%E6%88%90%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%9B%9E%E6%94%B6%EF%BC%8C%E6%81%A2%E5%A4%8D%E7%BA%BF%E7%A8%8B%0A%20%20%20%20*%20SerialOld%E5%9C%A8%E8%80%81%E5%B9%B4%E4%BB%A3%E6%94%B6%E9%9B%86%E6%97%B6%EF%BC%8C%E6%9A%82%E5%81%9C%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B%EF%BC%8C%E4%BD%BF%E7%94%A8%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86%E6%B3%95%E5%AE%8C%E6%88%90%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%9B%9E%E6%94%B6%EF%BC%8C%E6%81%A2%E5%A4%8D%E7%BA%BF%E7%A8%8B%0A*%20%E4%BC%98%E7%82%B9%EF%BC%9A%E5%AF%B9%E4%BA%8E%E8%BF%90%E8%A1%8C%E5%9C%A8Client%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%9D%A5%E8%AF%B4%E6%98%AF%E5%BE%88%E5%A5%BD%E7%9A%84%E9%80%89%E6%8B%A9%EF%BC%8C%EF%BC%88%E5%81%9C%E9%A1%BF%E6%97%B6%E9%97%B4%E7%9F%AD%E5%8F%AF%E4%BB%A5%E6%8E%A5%E5%8F%97%EF%BC%89%0A%23%23%23%203.3.2%20ParNew%E6%94%B6%E9%9B%86%E5%99%A8%0A*%20%E6%8F%8F%E8%BF%B0%EF%BC%9ASerial%E6%94%B6%E9%9B%86%E5%99%A8%E7%9A%84%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%89%88%E6%9C%AC%EF%BC%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%97%B6%E6%9A%82%E5%81%9C%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B%0A*%20%E5%9B%9E%E6%94%B6%E8%BF%87%E7%A8%8B%0A%20%20%20%20*%20ParNew%E5%9C%A8%E6%96%B0%E7%94%9F%E4%BB%A3%E6%94%B6%E9%9B%86%E6%97%B6%EF%BC%8C%E6%9A%82%E5%81%9C%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B%EF%BC%8C%E4%BD%BF%E7%94%A8%E5%A4%8D%E5%88%B6%E6%B3%95%E5%AE%8C%E6%88%90%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%9B%9E%E6%94%B6%EF%BC%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%93%8D%E4%BD%9C%EF%BC%89%EF%BC%8C%E6%81%A2%E5%A4%8D%E7%BA%BF%E7%A8%8B%0A%20%20%20%20*%20ParNew%20Old%E5%9C%A8%E8%80%81%E5%B9%B4%E4%BB%A3%E6%94%B6%E9%9B%86%E6%97%B6%EF%BC%8C%E6%9A%82%E5%81%9C%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B%EF%BC%8C%E4%BD%BF%E7%94%A8%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86%E6%B3%95%E5%AE%8C%E6%88%90%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%9B%9E%E6%94%B6%EF%BC%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%93%8D%E4%BD%9C%EF%BC%89%EF%BC%8C%E6%81%A2%E5%A4%8D%E7%BA%BF%E7%A8%8B%0A*%20%E4%BC%98%E7%82%B9%EF%BC%9A%E8%83%BD%E4%B8%8ECMS%E6%94%B6%E9%9B%86%E5%99%A8%E5%90%88%E4%BD%9C%E4%BD%BF%E7%94%A8%EF%BC%8C%E4%B8%94%E5%9C%A8%E5%A4%9ACPU%E6%83%85%E5%86%B5%E4%B8%8B%E6%AF%94Serial%E5%BF%AB%E9%80%9F%0A%23%23%23%203.3.3%20Parallel%20Scavenge%E6%94%B6%E9%9B%86%E5%99%A8%0A*%20%E6%8F%8F%E8%BF%B0%EF%BC%9A%E4%B8%8EParNew%E7%B1%BB%E4%BC%BC%EF%BC%8C%E5%B9%B6%E8%A1%8C%E3%80%81%E4%BD%BF%E7%94%A8%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%8C%E4%BD%86%E5%85%B3%E6%B3%A8%E7%82%B9%E4%B8%8D%E5%90%8C%EF%BC%8CParallel%20Scavenge%E5%85%B3%E6%B3%A8%E5%90%9E%E5%90%90%E9%87%8F%EF%BC%88%E9%AB%98%E6%95%88%E7%9A%84%E5%88%A9%E7%94%A8CPU%EF%BC%89%0A*%20%E5%9B%9E%E6%94%B6%E8%BF%87%E7%A8%8B%0A%20%20%20%20*%20%E6%96%B0%E7%94%9F%E4%BB%A3%E5%A4%8D%E5%88%B6%E3%80%81%E8%80%81%E5%B9%B4%E4%BB%A3%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86%0A*%20%E4%BC%98%E7%82%B9%EF%BC%9ACPU%E5%88%A9%E7%94%A8%E7%8E%87%E9%AB%98%EF%BC%8C%E9%80%82%E7%94%A8%E4%BA%8E%E5%90%8E%E5%8F%B0%E8%BF%90%E7%AE%97%EF%BC%8C%E4%B8%8D%E9%9C%80%E5%A4%AA%E5%A4%9A%E4%BA%A4%E4%BA%92%E7%9A%84%E4%BB%BB%E5%8A%A1%0A%23%23%23%203.3.4%20Serial%20Old%E6%94%B6%E9%9B%86%E5%99%A8%0A*%20%E6%8F%8F%E8%BF%B0%EF%BC%9ASerial%E6%94%B6%E9%9B%86%E5%99%A8%E7%9A%84%E8%80%81%E5%B9%B4%E4%BB%A3%E7%89%88%E6%9C%AC%0A*%20%E5%9B%9E%E6%94%B6%E8%BF%87%E7%A8%8B%0A%20%20%20%20*%20%E4%BD%BF%E7%94%A8%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86%E6%96%B9%E5%BC%8F%E5%9B%9E%E6%94%B6%0A*%20%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A%E4%B8%BB%E8%A6%81%E7%94%A8%E4%BA%8EClient%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA%0A%23%23%23%203.3.5%20Parallel%20Old%E6%94%B6%E9%9B%86%E5%99%A8%0A*%20%E6%8F%8F%E8%BF%B0%EF%BC%9AParallel%20Scavenge%E6%94%B6%E9%9B%86%E5%99%A8%E7%9A%84%E8%80%81%E5%B9%B4%E4%BB%A3%E7%89%88%E6%9C%AC%EF%BC%8C%E4%BD%BF%E7%94%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86%E6%B3%95%0A*%20%E4%BC%98%E7%82%B9%EF%BC%9A%E6%90%AD%E9%85%8DParallel%20Scanvenge%E6%94%B6%E9%9B%86%E5%99%A8%E4%BD%BF%E7%94%A8%EF%BC%8C%E5%AE%9E%E7%8E%B0%E5%AF%B9%E5%90%9E%E5%90%90%E9%87%8F%E7%9A%84%E4%BC%98%E5%85%88%E7%BB%84%E5%90%88%0A%23%23%23%203.3.6%20CMS%E6%94%B6%E9%9B%86%E5%99%A8%0A*%20%E6%8F%8F%E8%BF%B0%EF%BC%9AConcurrent%20Mark%20Sweep%EF%BC%8C%E4%BB%A5%E8%8E%B7%E5%8F%96%E6%9C%80%E7%9F%AD%E5%9B%9E%E6%94%B6%E5%81%9C%E9%A1%BF%E6%97%B6%E9%97%B4%E4%B8%BA%E7%9B%AE%E6%A0%87%E7%9A%84%E6%94%B6%E9%9B%86%E5%99%A8%0A*%20%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A%E7%94%A8%E6%88%B7%E4%BA%A4%E4%BA%92%E9%A2%91%E7%B9%81%EF%BC%8C%E8%A6%81%E6%B1%82%E5%BF%AB%E9%80%9F%E5%93%8D%E5%BA%94%E7%9A%84%E6%83%85%E5%86%B5%0A*%20%E5%9B%9E%E6%94%B6%E8%BF%87%E7%A8%8B%0A%20%20%20%20*%20%E5%88%9D%E5%A7%8B%E6%A0%87%E8%AE%B0%EF%BC%88Strop%20the%20world%EF%BC%89%0A%20%20%20%20%20%20%20%20*%20%E6%9A%82%E5%81%9C%E6%89%80%E6%9C%89%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%EF%BC%8C%E5%AF%B9%E7%9B%B4%E6%8E%A5%E4%B8%8EGCRoots%E9%A1%B9%E9%93%BE%E7%9A%84%E5%AF%B9%E8%B1%A1%E8%BF%9B%E8%A1%8C%E6%A0%87%E8%AE%B0%EF%BC%8C%E9%80%9F%E5%BA%A6%E5%BE%88%E5%BF%AB%0A%20%20%20%20*%20%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0%EF%BC%88%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91%EF%BC%89%0A%20%20%20%20%20%20%20%20*%20%E4%B8%8E%E5%85%B6%E4%BB%96%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91%E8%BF%9B%E8%A1%8C%EF%BC%8C%E8%AE%B0%E5%BD%95%E5%8F%AF%E8%BE%BE%E5%AF%B9%E8%B1%A1%EF%BC%8C%E6%AD%A4%E9%83%A8%E5%88%86%E6%97%A0%E6%B3%95%E4%BF%9D%E8%AF%81%E6%89%80%E6%9C%89%E5%AF%B9%E8%B1%A1%E8%A2%AB%E6%A0%87%E8%AE%B0%EF%BC%8C%E5%9B%A0%E4%B8%BA%E6%AD%A4%E9%83%A8%E5%88%86%E6%98%AF%E5%B9%B6%E5%8F%91%E8%BF%9B%E8%A1%8C%E7%9A%84%EF%BC%8C%E6%AD%A4%E9%98%B6%E6%AE%B5%E5%8F%AF%E8%83%BD%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B%E5%8F%88%E4%BF%AE%E6%94%B9%E4%BA%86%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8%EF%BC%8C%E4%BD%86%E4%BC%9A%E8%AE%B0%E5%BD%95%E5%BC%95%E7%94%A8%E6%9B%B4%E6%96%B0%E7%9A%84%E5%9C%B0%E6%96%B9%0A%20%20%20%20*%20%E9%87%8D%E6%96%B0%E6%A0%87%E8%AE%B0%EF%BC%88Strop%20the%20world%EF%BC%89%0A%20%20%20%20%20%20%20%20*%20%E6%9A%82%E5%81%9C%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B%EF%BC%8C%E5%AF%B9%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0%E6%9C%9F%E9%97%B4%E4%BF%AE%E6%94%B9%E7%9A%84%E5%BC%95%E7%94%A8%E8%BF%9B%E8%A1%8C%E5%8F%AF%E8%BE%BE%E6%80%A7%E5%88%86%E6%9E%90%EF%BC%8C%E8%BF%9B%E8%A1%8C%E6%A0%87%E8%AE%B0%EF%BC%8C%E6%AD%A4%E9%83%A8%E5%88%86%E6%97%B6%E9%97%B4%E6%AF%94%E5%88%9D%E5%A7%8B%E6%A0%87%E8%AE%B0%E9%95%BF%EF%BC%8C%E6%AF%94%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0%E7%9F%AD%0A%20%20%20%20*%20%E5%B9%B6%E5%8F%91%E6%B8%85%E9%99%A4%EF%BC%88%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91%EF%BC%89%0A%20%20%20%20%20%20%20%20*%20%E5%BC%80%E5%90%AF%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B%EF%BC%8C%E5%AF%B9%E6%A0%87%E8%AE%B0%E8%BF%87%E7%9A%84%E5%8C%BA%E5%9F%9F%E8%BF%9B%E8%A1%8C%E6%B8%85%E6%89%AB%0A*%20%E4%BC%98%E7%82%B9%EF%BC%9A%E5%B9%B6%E5%8F%91%E3%80%81%E4%BD%8E%E5%81%9C%E9%A1%BF%0A*%20%E7%BC%BA%E7%82%B9%EF%BC%9A%0A%20%20%20%201.%20%E5%AF%B9CPU%E8%B5%84%E6%BA%90%E9%9D%9E%E5%B8%B8%E6%95%8F%E6%84%9F%0A%20%20%20%202.%20%E6%97%A0%E6%B3%95%E5%A4%84%E7%90%86%E6%B5%AE%E5%8A%A8%E5%9E%83%E5%9C%BE%EF%BC%8C%E5%9C%A8%E5%B9%B6%E5%8F%91%E6%B8%85%E7%90%86%E6%9C%9F%E9%97%B4%E4%BA%A7%E7%94%9F%E7%9A%84%E5%9E%83%E5%9C%BE%E9%9C%80%E8%A6%81%E5%9C%A8%E4%B8%8B%E4%B8%80%E6%AC%A1%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E6%97%B6%E6%B8%85%E7%90%86%0A%20%20%20%203.%20%E4%BD%BF%E7%94%A8%E4%BA%86%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4%E6%96%B9%E5%BC%8F%E6%94%B6%E9%9B%86%E5%9E%83%E5%9C%BE%EF%BC%8C%E6%9C%89%E7%A2%8E%E7%89%87%E7%A9%BA%E9%97%B4%E4%BA%A7%E7%94%9F%0A%23%23%23%203.3.7%20G1%E6%94%B6%E9%9B%86%E5%99%A8%0A*%20%E5%9B%9E%E6%94%B6%E8%BF%87%E7%A8%8B%EF%BC%9A%0A%20%20%20%20*%20%E5%B0%86%E5%A0%86%E5%88%86%E6%88%90%E5%A4%9A%E4%B8%AA%E5%A4%A7%E5%B0%8F%E7%9B%B8%E7%AD%89%E7%9A%84%E7%8B%AC%E7%AB%8B%E5%8C%BA%E5%9F%9FRegion%EF%BC%8C%E8%B7%9F%E8%B8%AA%E5%90%84%E4%B8%AARegion%E7%9A%84%E4%BB%B7%E5%80%BC%EF%BC%88%E5%9B%9E%E6%94%B6%E5%BE%97%E5%88%B0%E7%9A%84%E7%A9%BA%E9%97%B4%E5%92%8C%E9%9C%80%E8%A6%81%E7%9A%84%E6%97%B6%E9%97%B4%E7%9A%84%E7%BB%8F%E9%AA%8C%E5%80%BC%EF%BC%89%EF%BC%8C%E6%AF%8F%E6%AC%A1%E6%A0%B9%E6%8D%AE%E5%85%81%E8%AE%B8%E6%94%B6%E9%9B%86%E6%97%B6%E9%97%B4%E4%BC%98%E5%85%88%E5%9B%9E%E6%94%B6%E4%BB%B7%E5%80%BC%E6%9C%80%E5%A4%A7%E7%9A%84Region%EF%BC%8C%E4%BF%9D%E8%AF%81%E4%BA%86%E6%9C%89%E9%99%90%E6%97%B6%E9%97%B4%E5%86%85%E5%B0%BD%E5%8F%AF%E8%83%BD%E9%AB%98%E7%9A%84%E6%94%B6%E9%9B%86%E6%95%88%E7%8E%87%0A%20%20%20%20*%20%E6%AD%A5%E9%AA%A4%EF%BC%9A%0A%20%20%20%20%20%20%20%20*%20%E5%88%9D%E5%A7%8B%E6%A0%87%E8%AE%B0%EF%BC%88Stop%20the%20world%EF%BC%89%0A%20%20%20%20%20%20%20%20%20%20%20%20*%20%E6%A0%87%E8%AE%B0%E4%B8%8EGCRoots%E7%9B%B4%E6%8E%A5%E7%9B%B8%E8%BF%9E%E7%9A%84%E5%AF%B9%E8%B1%A1%EF%BC%8C%E5%BE%88%E5%BF%AB%0A%20%20%20%20%20%20%20%20*%20%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0%EF%BC%88%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91%E8%BF%90%E8%A1%8C%EF%BC%89%0A%20%20%20%20%20%20%20%20%20%20%20%20*%20%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0%E5%8F%AF%E8%BE%BE%E5%AF%B9%E8%B1%A1%0A%20%20%20%20%20%20%20%20*%20%E6%9C%80%E7%BB%88%E6%A0%87%E8%AE%B0%EF%BC%88Stop%20the%20world%EF%BC%89%0A%20%20%20%20%20%20%20%20%20%20%20%20*%20%E6%9A%82%E5%81%9C%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B%EF%BC%8C%E5%B0%86%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0%E9%83%A8%E5%88%86%E6%9B%B4%E6%96%B0%E7%9A%84%E5%BC%95%E7%94%A8%E8%BF%9B%E8%A1%8C%E6%A0%87%E8%AE%B0%0A%20%20%20%20%20%20%20%20*%20%E7%AD%9B%E9%80%89%E5%9B%9E%E6%94%B6%EF%BC%88Stop%20the%20world%EF%BC%89%0A%20%20%20%20%20%20%20%20%20%20%20%20*%20%E6%9A%82%E5%81%9C%E6%89%80%E6%9C%89%E7%BA%BF%E7%A8%8B%EF%BC%88%E9%9D%9E%E5%BF%85%E9%A1%BB%EF%BC%89%EF%BC%8C%E5%AF%B9Region%E4%BB%B7%E5%80%BC%E6%8E%92%E5%BA%8F%EF%BC%8C%E6%8C%89%E7%85%A7%E7%94%A8%E6%88%B7%E8%AE%BE%E5%AE%9A%E7%9A%84%E5%9B%9E%E6%94%B6%E8%AE%A1%E5%88%92%E5%AF%B9Region%E5%9B%9E%E6%94%B6%0A*%20%E4%BC%98%E7%82%B9%0A%20%20%20%201.%20%E5%B9%B6%E8%A1%8C%E4%B8%8E%E5%B9%B6%E5%8F%91%EF%BC%9A%E7%BC%A9%E7%9F%AD%E4%BA%86stop-the-world%E7%9A%84%E6%97%B6%E9%97%B4%0A%20%20%20%202.%20%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%EF%BC%9A%E8%83%BD%E5%A4%9F%E5%A4%84%E7%90%86%E6%96%B0%E7%94%9F%E4%BB%A3%E5%92%8C%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E5%9E%83%E5%9C%BE%EF%BC%8C%E8%83%BD%E5%A4%9F%E4%BB%A5%E4%B8%8D%E5%90%8C%E7%9A%84%E6%96%B9%E5%BC%8F%E5%A4%84%E7%90%86%E6%96%B0%E5%AF%B9%E8%B1%A1%EF%BC%8C%E7%86%AC%E8%BF%87%E5%87%A0%E6%AC%A1GC%E5%BE%97%E6%97%A7%E5%AF%B9%E8%B1%A1%0A%20%20%20%203.%20%E7%A9%BA%E9%97%B4%E6%95%B4%E5%90%88%EF%BC%9A%E6%95%B4%E4%BD%93%E4%B8%8A%E7%9C%8B%E4%BD%BF%E7%94%A8%E4%BA%86%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95%EF%BC%8C%E5%B1%80%E9%83%A8%E9%87%87%E7%94%A8%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95%EF%BC%8C%E9%98%B2%E6%AD%A2%E7%A9%BA%E9%97%B4%E7%A2%8E%E7%89%87%E5%8C%96%0A%20%20%20%204.%20%E5%8F%AF%E9%A2%84%E6%B5%8B%E7%9A%84%E5%81%9C%E9%A1%BF%EF%BC%9A%E5%8F%AF%E4%BB%A5%E6%8C%87%E5%AE%9A%E5%9C%A8M%E6%97%B6%E9%97%B4%E5%86%85%EF%BC%8C%E4%B8%8D%E8%83%BD%E5%9C%A8%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E4%B8%8A%E6%B6%88%E8%80%97%E8%B6%85%E8%BF%87N%0A%23%23%203.4%20%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E5%9B%9E%E6%94%B6%E7%AD%96%E7%95%A5%0A%23%23%23%203.4.1%20%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5%0A*%20%E5%AF%B9%E8%B1%A1%E4%BC%98%E5%85%88%E5%88%86%E9%85%8D%E5%9C%A8Eden%0A%20%20%20%20*%20%E6%96%B0%E5%88%9B%E5%BB%BA%E7%9A%84%E5%AF%B9%E8%B1%A1%E4%BC%98%E5%85%88%E8%BF%9B%E5%85%A5Eden%E5%8C%BA%EF%BC%8CEden%E5%8C%BA%E7%A9%BA%E9%97%B4%E4%B8%8D%E5%A4%9F%E6%97%B6%EF%BC%8C%E5%8F%91%E8%B5%B7%E4%B8%80%E6%AC%A1Minor%20GC%0A*%20%E5%A4%A7%E5%AF%B9%E8%B1%A1%E7%9B%B4%E6%8E%A5%E8%BF%9B%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3%0A%20%20%20%20*%20%E5%A4%A7%E5%AF%B9%E8%B1%A1%E4%BE%8B%E5%A6%82%E5%A4%A7%E6%95%B0%E7%BB%84%EF%BC%8C%E7%9B%B4%E6%8E%A5%E8%BF%9B%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3%EF%BC%8C%E8%80%81%E5%B9%B4%E4%BB%A3%E7%A9%BA%E9%97%B4%E4%B8%8D%E5%A4%9F%E6%97%B6%EF%BC%8C%E5%8F%91%E8%B5%B7%E4%B8%80%E6%AC%A1Major%20GC%0A*%20%E9%95%BF%E6%9C%9F%E5%AD%98%E6%B4%BB%E7%9A%84%E5%AF%B9%E8%B1%A1%E8%BF%9B%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3%0A%20%20%20%20*%20%E7%BB%8F%E8%BF%87%E5%A4%9A%E6%AC%A1minor%20GC%EF%BC%8C%E5%B9%B6%E5%AD%98%E6%B4%BB%E7%9A%84%E5%AF%B9%E8%B1%A1%EF%BC%8C%E8%B6%85%E8%BF%87%E8%AE%BE%E5%AE%9A%E7%9A%84%E5%B9%B4%E9%BE%84%E7%9A%84%E5%AF%B9%E8%B1%A1%E8%BF%9B%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3%0A*%20Survivor%E4%B8%AD%E5%B9%B4%E9%BE%84%E7%9B%B8%E5%90%8C%E5%AF%B9%E8%B1%A1%E8%B6%85%E8%BF%87%E5%86%85%E5%AD%98%E4%B8%80%E5%8D%8A%EF%BC%8C%E5%A4%A7%E4%BA%8E%E7%AD%89%E4%BA%8E%E6%AD%A4%E5%B9%B4%E9%BE%84%E7%9A%84%E8%BF%9B%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3%0A%20%20%20%20*%20%E5%A6%82%E6%9E%9CSurvivor%E5%8C%BA%E6%B1%87%E4%B8%AD%E5%B9%B4%E9%BE%84%E7%9B%B8%E5%90%8C%E7%9A%84%E5%AF%B9%E8%B1%A1%E8%B6%85%E8%BF%87%E4%BA%86Survivor%E5%86%85%E5%AD%98%E7%9A%84%E4%B8%80%E5%8D%8A%EF%BC%8C%E5%88%99%E6%97%A0%E8%A7%86%E5%B9%B4%E9%BE%84%EF%BC%8C%E5%B0%86%E5%A4%A7%E4%BA%8E%E6%88%96%E7%AD%89%E4%BA%8E%E6%AD%A4%E5%B9%B4%E9%BE%84%E7%9A%84%E5%AF%B9%E8%B1%A1%E6%94%BE%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3%0A%23%23%23%203.4.2%20%E5%9B%9E%E6%94%B6%E7%AD%96%E7%95%A5%0A*%20Minor%20GC%EF%BC%9A%E6%96%B0%E7%94%9F%E4%BB%A3%E7%9A%84%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%8A%A8%E4%BD%9C%EF%BC%8C%E9%A2%91%E7%B9%81%E4%B8%94%E5%BF%AB%E9%80%9F%0A*%20Major%20GC%2FFull%20GC%EF%BC%9A%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%8A%A8%E4%BD%9C%EF%BC%8C%E8%87%B3%E5%B0%91%E4%BC%9A%E4%BC%B4%E9%9A%8F%E4%B8%80%E6%AC%A1minor%20GC%0A*%20%E5%AF%B9%E8%B1%A1%E5%AD%98%E6%B4%BB%E5%B9%B4%E9%BE%84%EF%BC%9A%E5%AF%B9%E8%B1%A1%E8%AE%BE%E6%9C%89%E4%B8%80%E4%B8%AA%E5%AD%98%E6%B4%BB%E5%B9%B4%E9%BE%84%EF%BC%8C%E6%96%B0%E7%94%9F%E4%BB%A3%E4%B8%AD%EF%BC%8C%E5%AF%B9%E8%B1%A1%E7%BB%8F%E8%BF%87%E4%B8%80%E6%AC%A1Minor%20GC%E5%B9%B6%E5%AD%98%E6%B4%BB%EF%BC%8C%E5%AD%98%E6%B4%BB%E5%B9%B4%E9%BE%84%E5%8A%A01%E5%B2%81%0A%23%23%23%203.4.3%20%E7%A9%BA%E9%97%B4%E5%88%86%E9%85%8D%E6%8B%85%E4%BF%9D%0A*%20minor%20GC%E4%B9%8B%E5%89%8D%EF%BC%8C%E5%88%A4%E6%96%AD%E8%80%81%E5%B9%B4%E4%BB%A3%E7%A9%BA%E9%97%B4%E6%98%AF%E5%90%A6%E5%A4%A7%E4%BA%8E%E6%96%B0%E7%94%9F%E4%BB%A3%E6%89%80%E6%9C%89%E5%AF%B9%E8%B1%A1%E6%80%BB%E5%92%8C%EF%BC%88%E6%98%AF%E5%88%99minor%20GC%EF%BC%89%EF%BC%8C%E5%88%A4%E6%96%AD%E5%8F%82%E6%95%B0%E6%98%AF%E5%90%A6%E5%85%81%E8%AE%B8%E6%8B%85%E4%BF%9D%E5%A4%B1%E8%B4%A5%E5%B9%B6%E4%B8%94%E8%80%81%E5%B9%B4%E4%BB%A3%E7%A9%BA%E9%97%B4%E6%98%AF%E5%90%A6%E5%A4%A7%E4%BA%8E%E5%8E%86%E6%AC%A1%E8%AE%A1%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B9%B3%E5%9D%87%E5%80%BC%EF%BC%88%E6%98%AF%E5%88%99minor%20GC%EF%BC%89%EF%BC%8C%E5%90%A6%E5%88%99%E5%8F%91%E8%B5%B7Major%20GC</center></span>
+</div></body></html> 

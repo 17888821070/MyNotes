@@ -1,0 +1,66 @@
+<html>
+<head>
+  <title>7_Floyd</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/601392 (zh-CN, DDL); Windows/10.0.0 (Win64); EDAMVersion=V2;"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="10060"/>
+<h1>7_Floyd</h1>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h1 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 41px; border-bottom: 3px double #999; color: #000; margin-top: 14px;">Floyd</h1>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">作用</h2>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">图中任意两点之间的距离，即多源最短路径<br/>
+https://www.cnblogs.com/wangyuliang/p/9216365.html</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">动态规划</h2>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">i到j的最短路不经过k；<br/>
+i到j的最短路经过了k。</p>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">不经过点k的最短路情况下，d[k][i][j]=d[k-1][i][j]。<br/>
+经过点k的最短路情况下，d[k][i][j]=d[k-1][i][k]+d[k-1][k][j]</p>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">因此，综合上述两种情况，便可以得到Floyd算法的动态转移方程：<br/>
+d[k][i][j] = min(d[k-1][i][j], d[k-1][i][k]+d[k-1][k][j])（k,i,j∈[1,n]）<br/>
+初始条件：d[0][i][j]=w(i, j)，d[k][0][j]=0,d[k][i][0]=0</p>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">步骤</h2>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">forforfor<br/>
+使用graph[x][y] 表示可以经过0-k点时x到y的最短路径</p>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;">for(k从0遍历到n，表示可以经过0-k){
+    for(i从0遍历到n，表示起始点i){
+        for(j从0遍历到n，表示终止点j){
+            graph[i][j] = 当前graph[i][j] 或者经过k graph[i][k] + graph[k][j]中较小的那个//注意，如果用最大值占位是需要判断一下            
+        }
+    }
+}
+</code></pre>
+<pre style="line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code style="display: block; overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: pre-wrap;"><span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//graph[x][y] 表示从x到y的最短距离，默认为图，如1-1设为0,1-2如果没有边设为Integer.MAX_VALUE</span>
+<span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//</span>
+    <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;"><span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">public</span>  <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">void</span> <span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">floyd</span><span style="color: #dcdcdc; line-height: 160%; box-sizing: content-box;">(<span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span>[][] graph ,<span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span> n)</span></span>{
+        <span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//不经过任何点转移时，点到点的最短路径就是默认图</span>
+        <span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//        //只能同意0点转移的时候最小的 (推导过程，指经过0的情况)</span>
+        <span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//        for(int i = 0;i&lt;n;i++){</span>
+        <span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//            for(int j = 0;j&lt;n;j++){</span>
+        <span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//                if(graph[i][0]!=Integer.MAX_VALUE || graph[0][j]!=Integer.MAX_VALUE)</span>
+        <span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//                    graph[i][j] = Math.min(graph[i][0] + graph[0][j] , graph[i][j]);</span>
+        <span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//            }</span>
+        <span style="color: #57a64a; font-style: italic; line-height: 160%; box-sizing: content-box;">//        }</span>
+        <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">for</span>(<span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span> k = <span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">0</span>;k&lt;n;k++){
+            <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">for</span>(<span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span> i = <span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">0</span>;i&lt;n;i++){
+                <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">for</span>(<span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">int</span> j = <span style="color: #b8d7a3; line-height: 160%; box-sizing: content-box;">0</span>;j&lt;n;j++){
+                    <span style="color: #569cd6; line-height: 160%; box-sizing: content-box;">if</span>(graph[i][k]!=Integer.MAX_VALUE &amp;&amp; graph[k][j]!=Integer.MAX_VALUE)
+                        graph[i][j] = Math.min(graph[i][k] + graph[k][j] , graph[i][j]);
+                }
+            }
+        }
+    }
+</code></pre>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%20Floyd%0A%23%23%20%E4%BD%9C%E7%94%A8%0A*%20%E5%9B%BE%E4%B8%AD%E4%BB%BB%E6%84%8F%E4%B8%A4%E7%82%B9%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB%EF%BC%8C%E5%8D%B3%E5%A4%9A%E6%BA%90%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%0Ahttps%3A%2F%2Fwww.cnblogs.com%2Fwangyuliang%2Fp%2F9216365.html%0A%0A%23%23%20%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%0A%0Ai%E5%88%B0j%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E4%B8%8D%E7%BB%8F%E8%BF%87k%EF%BC%9B%0Ai%E5%88%B0j%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%BB%8F%E8%BF%87%E4%BA%86k%E3%80%82%0A%0A%E4%B8%8D%E7%BB%8F%E8%BF%87%E7%82%B9k%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E6%83%85%E5%86%B5%E4%B8%8B%EF%BC%8Cd%5Bk%5D%5Bi%5D%5Bj%5D%3Dd%5Bk-1%5D%5Bi%5D%5Bj%5D%E3%80%82%0A%E7%BB%8F%E8%BF%87%E7%82%B9k%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E6%83%85%E5%86%B5%E4%B8%8B%EF%BC%8Cd%5Bk%5D%5Bi%5D%5Bj%5D%3Dd%5Bk-1%5D%5Bi%5D%5Bk%5D%2Bd%5Bk-1%5D%5Bk%5D%5Bj%5D%0A%0A%E5%9B%A0%E6%AD%A4%EF%BC%8C%E7%BB%BC%E5%90%88%E4%B8%8A%E8%BF%B0%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5%EF%BC%8C%E4%BE%BF%E5%8F%AF%E4%BB%A5%E5%BE%97%E5%88%B0Floyd%E7%AE%97%E6%B3%95%E7%9A%84%E5%8A%A8%E6%80%81%E8%BD%AC%E7%A7%BB%E6%96%B9%E7%A8%8B%EF%BC%9A%0Ad%5Bk%5D%5Bi%5D%5Bj%5D%20%3D%20min(d%5Bk-1%5D%5Bi%5D%5Bj%5D%2C%20d%5Bk-1%5D%5Bi%5D%5Bk%5D%2Bd%5Bk-1%5D%5Bk%5D%5Bj%5D)%EF%BC%88k%2Ci%2Cj%E2%88%88%5B1%2Cn%5D%EF%BC%89%0A%E5%88%9D%E5%A7%8B%E6%9D%A1%E4%BB%B6%EF%BC%9Ad%5B0%5D%5Bi%5D%5Bj%5D%3Dw(i%2C%20j)%EF%BC%8Cd%5Bk%5D%5B0%5D%5Bj%5D%3D0%2Cd%5Bk%5D%5Bi%5D%5B0%5D%3D0%0A%0A%23%23%20%E6%AD%A5%E9%AA%A4%0Aforforfor%20%0A%E4%BD%BF%E7%94%A8graph%5Bx%5D%5By%5D%20%E8%A1%A8%E7%A4%BA%E5%8F%AF%E4%BB%A5%E7%BB%8F%E8%BF%870-k%E7%82%B9%E6%97%B6x%E5%88%B0y%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%0A%60%60%60%0Afor(k%E4%BB%8E0%E9%81%8D%E5%8E%86%E5%88%B0n%EF%BC%8C%E8%A1%A8%E7%A4%BA%E5%8F%AF%E4%BB%A5%E7%BB%8F%E8%BF%870-k)%7B%0A%20%20%20%20for(i%E4%BB%8E0%E9%81%8D%E5%8E%86%E5%88%B0n%EF%BC%8C%E8%A1%A8%E7%A4%BA%E8%B5%B7%E5%A7%8B%E7%82%B9i)%7B%0A%20%20%20%20%20%20%20%20for(j%E4%BB%8E0%E9%81%8D%E5%8E%86%E5%88%B0n%EF%BC%8C%E8%A1%A8%E7%A4%BA%E7%BB%88%E6%AD%A2%E7%82%B9j)%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20graph%5Bi%5D%5Bj%5D%20%3D%20%E5%BD%93%E5%89%8Dgraph%5Bi%5D%5Bj%5D%20%E6%88%96%E8%80%85%E7%BB%8F%E8%BF%87k%20graph%5Bi%5D%5Bk%5D%20%2B%20graph%5Bk%5D%5Bj%5D%E4%B8%AD%E8%BE%83%E5%B0%8F%E7%9A%84%E9%82%A3%E4%B8%AA%2F%2F%E6%B3%A8%E6%84%8F%EF%BC%8C%E5%A6%82%E6%9E%9C%E7%94%A8%E6%9C%80%E5%A4%A7%E5%80%BC%E5%8D%A0%E4%BD%8D%E6%98%AF%E9%9C%80%E8%A6%81%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%8B%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%7D%0A%60%60%60%0A%0A%0A%0A%60%60%60java%20%0A%2F%2Fgraph%5Bx%5D%5By%5D%20%E8%A1%A8%E7%A4%BA%E4%BB%8Ex%E5%88%B0y%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%9D%E7%A6%BB%EF%BC%8C%E9%BB%98%E8%AE%A4%E4%B8%BA%E5%9B%BE%EF%BC%8C%E5%A6%821-1%E8%AE%BE%E4%B8%BA0%2C1-2%E5%A6%82%E6%9E%9C%E6%B2%A1%E6%9C%89%E8%BE%B9%E8%AE%BE%E4%B8%BAInteger.MAX_VALUE%0A%2F%2F%0A%C2%A0%C2%A0%C2%A0%C2%A0public%C2%A0%C2%A0void%C2%A0floyd(int%5B%5D%5B%5D%C2%A0graph%C2%A0%2Cint%C2%A0n)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2F%E4%B8%8D%E7%BB%8F%E8%BF%87%E4%BB%BB%E4%BD%95%E7%82%B9%E8%BD%AC%E7%A7%BB%E6%97%B6%EF%BC%8C%E7%82%B9%E5%88%B0%E7%82%B9%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E5%B0%B1%E6%98%AF%E9%BB%98%E8%AE%A4%E5%9B%BE%0A%20%20%20%20%20%20%20%20%2F%2F%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%2F%2F%E5%8F%AA%E8%83%BD%E5%90%8C%E6%84%8F0%E7%82%B9%E8%BD%AC%E7%A7%BB%E7%9A%84%E6%97%B6%E5%80%99%E6%9C%80%E5%B0%8F%E7%9A%84%C2%A0(%E6%8E%A8%E5%AF%BC%E8%BF%87%E7%A8%8B%EF%BC%8C%E6%8C%87%E7%BB%8F%E8%BF%870%E7%9A%84%E6%83%85%E5%86%B5)%0A%20%20%20%20%20%20%20%20%2F%2F%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0for(int%C2%A0i%C2%A0%3D%C2%A00%3Bi%3Cn%3Bi%2B%2B)%7B%0A%20%20%20%20%20%20%20%20%2F%2F%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0for(int%C2%A0j%C2%A0%3D%C2%A00%3Bj%3Cn%3Bj%2B%2B)%7B%0A%20%20%20%20%20%20%20%20%2F%2F%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0if(graph%5Bi%5D%5B0%5D!%3DInteger.MAX_VALUE%C2%A0%7C%7C%C2%A0graph%5B0%5D%5Bj%5D!%3DInteger.MAX_VALUE)%0A%20%20%20%20%20%20%20%20%2F%2F%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0graph%5Bi%5D%5Bj%5D%C2%A0%3D%C2%A0Math.min(graph%5Bi%5D%5B0%5D%C2%A0%2B%C2%A0graph%5B0%5D%5Bj%5D%C2%A0%2C%C2%A0graph%5Bi%5D%5Bj%5D)%3B%0A%20%20%20%20%20%20%20%20%2F%2F%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%20%20%20%20%20%20%20%20%2F%2F%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0for(int%C2%A0k%C2%A0%3D%C2%A00%3Bk%3Cn%3Bk%2B%2B)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0for(int%C2%A0i%C2%A0%3D%C2%A00%3Bi%3Cn%3Bi%2B%2B)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0for(int%C2%A0j%C2%A0%3D%C2%A00%3Bj%3Cn%3Bj%2B%2B)%7B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0if(graph%5Bi%5D%5Bk%5D!%3DInteger.MAX_VALUE%C2%A0%26%26%C2%A0graph%5Bk%5D%5Bj%5D!%3DInteger.MAX_VALUE)%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0graph%5Bi%5D%5Bj%5D%C2%A0%3D%C2%A0Math.min(graph%5Bi%5D%5Bk%5D%C2%A0%2B%C2%A0graph%5Bk%5D%5Bj%5D%C2%A0%2C%C2%A0graph%5Bi%5D%5Bj%5D)%3B%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%C2%A0%C2%A0%C2%A0%C2%A0%7D%0A%60%60%60</center></span>
+</div></body></html> 

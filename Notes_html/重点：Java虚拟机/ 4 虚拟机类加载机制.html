@@ -1,0 +1,133 @@
+<html>
+<head>
+  <title># 4 虚拟机类加载机制</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/601392 (zh-CN, DDL); Windows/10.0.0 (Win64); EDAMVersion=V2;"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="10034"/>
+<h1># 4 虚拟机类加载机制</h1>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h1 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 41px; border-bottom: 3px double #999; color: #000; margin-top: 14px;">4 虚拟机类加载机制</h1>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">类加载的过程都是在运行期间完成的</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">4.1 类加载的时机</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">4.1.1 类的生命周期</h3>
+<ol style="line-height: 160%; box-sizing: content-box; display: block; padding-left: 30px; margin: 6px 0 10px; color: #333; list-style-type: decimal;">
+<li style="line-height: 160%; box-sizing: content-box;">加载</li>
+<li style="line-height: 160%; box-sizing: content-box;">连接
+<ol style="line-height: 160%; box-sizing: content-box; display: block; padding-left: 30px; margin: 6px 0 10px; color: #333; list-style-type: decimal; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box;">验证</li>
+<li style="line-height: 160%; box-sizing: content-box;">准备</li>
+<li style="line-height: 160%; box-sizing: content-box;">解析</li>
+</ol>
+</li>
+<li style="line-height: 160%; box-sizing: content-box;">初始化</li>
+<li style="line-height: 160%; box-sizing: content-box;">使用</li>
+<li style="line-height: 160%; box-sizing: content-box;">卸载</li>
+</ol>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">4.1.2 类初始化的契机</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">主动引用
+<ol style="line-height: 160%; box-sizing: content-box; display: block; padding-left: 30px; margin: 6px 0 10px; color: #333; list-style-type: decimal; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">遇到new（new创建对象）、getstatic（读取静态变量）、putstatic（设置静态变量）或invokestatic（调用静态方法）这四条字节码指令时</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">反射的时候</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">初始化子类，需先初始化父类</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">指定的唯一要执行的主类（main方法的类）</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">使用动态语言支持</li>
+</ol>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">被动引用<br/>
+其他情况全是被动引用</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">4.2 类加载过程</h2>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">4.2.1 加载</h2>
+<ol style="line-height: 160%; box-sizing: content-box; display: block; padding-left: 30px; margin: 6px 0 10px; color: #333; list-style-type: decimal;">
+<li style="line-height: 160%; box-sizing: content-box;">通过全限定类名获取二进制字节流</li>
+<li style="line-height: 160%; box-sizing: content-box;">将字节流代表的静态存储结构转化为方法区的运行时数据结构</li>
+<li style="line-height: 160%; box-sizing: content-box;">在内存中创建类的java.lang.Class对象（HotSpot存于方法区）</li>
+</ol>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">4.2.2 链接</h2>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">验证
+<ol style="line-height: 160%; box-sizing: content-box; display: block; padding-left: 30px; margin: 6px 0 10px; color: #333; list-style-type: decimal; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">文件格式验证<br/>
+验证是否符合class文件格式的规范</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">元数据验证<br/>
+保证符合java语言规范，对数据类型进行验证</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">字节码验证<br/>
+分析程序语义，对类的方法体进行验证</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">符号引用验证<br/>
+对常量池中符号引用进行匹配验证，确保解析动作能正常执行</li>
+</ol>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">准备
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">为类的静态变量分配内存并设置默认初始值（如int的0）</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">解析
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">将常量池中的符号引用替换成直接引用</li>
+</ul>
+</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">4.2.3 初始化</h2>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">完成静态变量的真正初值的设置</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">4.3 类加载过程</h2>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">作用：通过一个类的全限定类名获取类的二进制字节流</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">类的唯一性由类加载器和类本身决定，不同加载器加载同一个class文件也不是一个类</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">过程
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">扯淡版：<br/>
+要加载一个类<br/>
+1、看看有没有现成的<br/>
+2、没有就让他爹去看，他爹又让他爹，直到没爹<br/>
+3、某一辈找着了，加载，返回<br/>
+4、老一辈没找着，就让低辈还是靠自己吧<br/>
+5、如果新一辈找着了，皆大欢喜，加载，返回<br/>
+6、新一辈没找着，完蛋了只能告诉你我不行了，抛出了ClassNotFoundException</li>
+</ul>
+</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">4.3.1 加载器分类</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">启动类加载器（Bootstrap ClassLoader）
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">加载&lt;JAVA_HOME&gt;\lib目录下的类</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">扩展类加载器（Extension ClassLoader）
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">加载&lt;JAVA_HOME&gt;\lib\ext目录下的类</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">应用程序类加载器（Application ClassLoader）
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">加载普通类</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">用户类加载器（User ClassLoader）
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">用户自定义的类加载器</li>
+</ul>
+</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">4.3.2 类加载机制</h3>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">全盘负责：这类我找着了，这个类的老爹啥的类也叫给我吧<br/>
+双亲委派：有事老爹顶着，老爹的老爹顶着，他们顶不住再交给下一辈<br/>
+缓存机制：祖祖辈辈加载的类都得保存好呀，这可是遗产</p>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%204%20%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%0A*%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E8%BF%87%E7%A8%8B%E9%83%BD%E6%98%AF%E5%9C%A8%E8%BF%90%E8%A1%8C%E6%9C%9F%E9%97%B4%E5%AE%8C%E6%88%90%E7%9A%84%0A%23%23%204.1%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E6%97%B6%E6%9C%BA%0A%23%23%23%204.1.1%20%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%0A1.%20%E5%8A%A0%E8%BD%BD%0A2.%20%E8%BF%9E%E6%8E%A5%0A%20%20%20%201.%20%E9%AA%8C%E8%AF%81%0A%20%20%20%202.%20%E5%87%86%E5%A4%87%0A%20%20%20%203.%20%E8%A7%A3%E6%9E%90%0A3.%20%E5%88%9D%E5%A7%8B%E5%8C%96%0A4.%20%E4%BD%BF%E7%94%A8%0A5.%20%E5%8D%B8%E8%BD%BD%0A%23%23%23%204.1.2%20%E7%B1%BB%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%A5%91%E6%9C%BA%0A*%20%E4%B8%BB%E5%8A%A8%E5%BC%95%E7%94%A8%0A%20%20%20%201.%20%E9%81%87%E5%88%B0new%EF%BC%88new%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%EF%BC%89%E3%80%81getstatic%EF%BC%88%E8%AF%BB%E5%8F%96%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%EF%BC%89%E3%80%81putstatic%EF%BC%88%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%EF%BC%89%E6%88%96invokestatic%EF%BC%88%E8%B0%83%E7%94%A8%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%EF%BC%89%E8%BF%99%E5%9B%9B%E6%9D%A1%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4%E6%97%B6%0A%20%20%20%202.%20%E5%8F%8D%E5%B0%84%E7%9A%84%E6%97%B6%E5%80%99%0A%20%20%20%203.%20%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AD%90%E7%B1%BB%EF%BC%8C%E9%9C%80%E5%85%88%E5%88%9D%E5%A7%8B%E5%8C%96%E7%88%B6%E7%B1%BB%0A%20%20%20%204.%20%E6%8C%87%E5%AE%9A%E7%9A%84%E5%94%AF%E4%B8%80%E8%A6%81%E6%89%A7%E8%A1%8C%E7%9A%84%E4%B8%BB%E7%B1%BB%EF%BC%88main%E6%96%B9%E6%B3%95%E7%9A%84%E7%B1%BB%EF%BC%89%0A%20%20%20%205.%20%E4%BD%BF%E7%94%A8%E5%8A%A8%E6%80%81%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81%0A*%20%E8%A2%AB%E5%8A%A8%E5%BC%95%E7%94%A8%0A%20%20%20%20%E5%85%B6%E4%BB%96%E6%83%85%E5%86%B5%E5%85%A8%E6%98%AF%E8%A2%AB%E5%8A%A8%E5%BC%95%E7%94%A8%0A%23%23%204.2%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%0A%23%23%204.2.1%20%E5%8A%A0%E8%BD%BD%0A1.%20%E9%80%9A%E8%BF%87%E5%85%A8%E9%99%90%E5%AE%9A%E7%B1%BB%E5%90%8D%E8%8E%B7%E5%8F%96%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AD%97%E8%8A%82%E6%B5%81%0A2.%20%E5%B0%86%E5%AD%97%E8%8A%82%E6%B5%81%E4%BB%A3%E8%A1%A8%E7%9A%84%E9%9D%99%E6%80%81%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%E8%BD%AC%E5%8C%96%E4%B8%BA%E6%96%B9%E6%B3%95%E5%8C%BA%E7%9A%84%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%0A3.%20%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E5%88%9B%E5%BB%BA%E7%B1%BB%E7%9A%84java.lang.Class%E5%AF%B9%E8%B1%A1%EF%BC%88HotSpot%E5%AD%98%E4%BA%8E%E6%96%B9%E6%B3%95%E5%8C%BA%EF%BC%89%0A%23%23%204.2.2%20%E9%93%BE%E6%8E%A5%0A*%20%E9%AA%8C%E8%AF%81%0A%20%20%20%201.%20%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E9%AA%8C%E8%AF%81%0A%20%20%20%20%20%20%20%20%20%E9%AA%8C%E8%AF%81%E6%98%AF%E5%90%A6%E7%AC%A6%E5%90%88class%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F%E7%9A%84%E8%A7%84%E8%8C%83%0A%20%20%20%202.%20%E5%85%83%E6%95%B0%E6%8D%AE%E9%AA%8C%E8%AF%81%0A%20%20%20%20%20%20%20%20%E4%BF%9D%E8%AF%81%E7%AC%A6%E5%90%88java%E8%AF%AD%E8%A8%80%E8%A7%84%E8%8C%83%EF%BC%8C%E5%AF%B9%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BF%9B%E8%A1%8C%E9%AA%8C%E8%AF%81%0A%20%20%20%203.%20%E5%AD%97%E8%8A%82%E7%A0%81%E9%AA%8C%E8%AF%81%0A%20%20%20%20%20%20%20%20%E5%88%86%E6%9E%90%E7%A8%8B%E5%BA%8F%E8%AF%AD%E4%B9%89%EF%BC%8C%E5%AF%B9%E7%B1%BB%E7%9A%84%E6%96%B9%E6%B3%95%E4%BD%93%E8%BF%9B%E8%A1%8C%E9%AA%8C%E8%AF%81%0A%20%20%20%204.%20%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E9%AA%8C%E8%AF%81%0A%20%20%20%20%20%20%20%20%E5%AF%B9%E5%B8%B8%E9%87%8F%E6%B1%A0%E4%B8%AD%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E8%BF%9B%E8%A1%8C%E5%8C%B9%E9%85%8D%E9%AA%8C%E8%AF%81%EF%BC%8C%E7%A1%AE%E4%BF%9D%E8%A7%A3%E6%9E%90%E5%8A%A8%E4%BD%9C%E8%83%BD%E6%AD%A3%E5%B8%B8%E6%89%A7%E8%A1%8C%0A*%20%E5%87%86%E5%A4%87%0A%20%20%20%20*%20%E4%B8%BA%E7%B1%BB%E7%9A%84%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%E5%88%86%E9%85%8D%E5%86%85%E5%AD%98%E5%B9%B6%E8%AE%BE%E7%BD%AE%E9%BB%98%E8%AE%A4%E5%88%9D%E5%A7%8B%E5%80%BC%EF%BC%88%E5%A6%82int%E7%9A%840%EF%BC%89%0A*%20%E8%A7%A3%E6%9E%90%0A%20%20%20%20*%20%E5%B0%86%E5%B8%B8%E9%87%8F%E6%B1%A0%E4%B8%AD%E7%9A%84%E7%AC%A6%E5%8F%B7%E5%BC%95%E7%94%A8%E6%9B%BF%E6%8D%A2%E6%88%90%E7%9B%B4%E6%8E%A5%E5%BC%95%E7%94%A8%0A%23%23%204.2.3%20%E5%88%9D%E5%A7%8B%E5%8C%96%0A*%20%E5%AE%8C%E6%88%90%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%E7%9A%84%E7%9C%9F%E6%AD%A3%E5%88%9D%E5%80%BC%E7%9A%84%E8%AE%BE%E7%BD%AE%0A%23%23%204.3%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%0A*%20%E4%BD%9C%E7%94%A8%EF%BC%9A%E9%80%9A%E8%BF%87%E4%B8%80%E4%B8%AA%E7%B1%BB%E7%9A%84%E5%85%A8%E9%99%90%E5%AE%9A%E7%B1%BB%E5%90%8D%E8%8E%B7%E5%8F%96%E7%B1%BB%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AD%97%E8%8A%82%E6%B5%81%0A*%20%E7%B1%BB%E7%9A%84%E5%94%AF%E4%B8%80%E6%80%A7%E7%94%B1%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%92%8C%E7%B1%BB%E6%9C%AC%E8%BA%AB%E5%86%B3%E5%AE%9A%EF%BC%8C%E4%B8%8D%E5%90%8C%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%8A%A0%E8%BD%BD%E5%90%8C%E4%B8%80%E4%B8%AAclass%E6%96%87%E4%BB%B6%E4%B9%9F%E4%B8%8D%E6%98%AF%E4%B8%80%E4%B8%AA%E7%B1%BB%0A*%20%E8%BF%87%E7%A8%8B%0A%20%20%20%20*%20%E6%89%AF%E6%B7%A1%E7%89%88%EF%BC%9A%0A%20%20%20%20%E8%A6%81%E5%8A%A0%E8%BD%BD%E4%B8%80%E4%B8%AA%E7%B1%BB%0A%20%20%20%201%E3%80%81%E7%9C%8B%E7%9C%8B%E6%9C%89%E6%B2%A1%E6%9C%89%E7%8E%B0%E6%88%90%E7%9A%84%0A%20%20%20%202%E3%80%81%E6%B2%A1%E6%9C%89%E5%B0%B1%E8%AE%A9%E4%BB%96%E7%88%B9%E5%8E%BB%E7%9C%8B%EF%BC%8C%E4%BB%96%E7%88%B9%E5%8F%88%E8%AE%A9%E4%BB%96%E7%88%B9%EF%BC%8C%E7%9B%B4%E5%88%B0%E6%B2%A1%E7%88%B9%0A%20%20%20%203%E3%80%81%E6%9F%90%E4%B8%80%E8%BE%88%E6%89%BE%E7%9D%80%E4%BA%86%EF%BC%8C%E5%8A%A0%E8%BD%BD%EF%BC%8C%E8%BF%94%E5%9B%9E%0A%20%20%20%204%E3%80%81%E8%80%81%E4%B8%80%E8%BE%88%E6%B2%A1%E6%89%BE%E7%9D%80%EF%BC%8C%E5%B0%B1%E8%AE%A9%E4%BD%8E%E8%BE%88%E8%BF%98%E6%98%AF%E9%9D%A0%E8%87%AA%E5%B7%B1%E5%90%A7%0A%20%20%20%205%E3%80%81%E5%A6%82%E6%9E%9C%E6%96%B0%E4%B8%80%E8%BE%88%E6%89%BE%E7%9D%80%E4%BA%86%EF%BC%8C%E7%9A%86%E5%A4%A7%E6%AC%A2%E5%96%9C%EF%BC%8C%E5%8A%A0%E8%BD%BD%EF%BC%8C%E8%BF%94%E5%9B%9E%0A%20%20%20%206%E3%80%81%E6%96%B0%E4%B8%80%E8%BE%88%E6%B2%A1%E6%89%BE%E7%9D%80%EF%BC%8C%E5%AE%8C%E8%9B%8B%E4%BA%86%E5%8F%AA%E8%83%BD%E5%91%8A%E8%AF%89%E4%BD%A0%E6%88%91%E4%B8%8D%E8%A1%8C%E4%BA%86%EF%BC%8C%E6%8A%9B%E5%87%BA%E4%BA%86ClassNotFoundException%0A%23%23%23%204.3.1%20%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%88%86%E7%B1%BB%0A*%20%E5%90%AF%E5%8A%A8%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%EF%BC%88Bootstrap%20ClassLoader%EF%BC%89%0A%20%20%20%20*%20%E5%8A%A0%E8%BD%BD%3CJAVA_HOME%3E%5Clib%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84%E7%B1%BB%0A*%20%E6%89%A9%E5%B1%95%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%EF%BC%88Extension%20ClassLoader%EF%BC%89%0A%20%20%20%20*%20%E5%8A%A0%E8%BD%BD%3CJAVA_HOME%3E%5Clib%5Cext%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84%E7%B1%BB%0A*%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%EF%BC%88Application%20ClassLoader%EF%BC%89%0A%20%20%20%20*%20%E5%8A%A0%E8%BD%BD%E6%99%AE%E9%80%9A%E7%B1%BB%0A*%20%E7%94%A8%E6%88%B7%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%EF%BC%88User%20ClassLoader%EF%BC%89%0A%20%20%20%20*%20%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%0A%23%23%23%204.3.2%20%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6%0A%E5%85%A8%E7%9B%98%E8%B4%9F%E8%B4%A3%EF%BC%9A%E8%BF%99%E7%B1%BB%E6%88%91%E6%89%BE%E7%9D%80%E4%BA%86%EF%BC%8C%E8%BF%99%E4%B8%AA%E7%B1%BB%E7%9A%84%E8%80%81%E7%88%B9%E5%95%A5%E7%9A%84%E7%B1%BB%E4%B9%9F%E5%8F%AB%E7%BB%99%E6%88%91%E5%90%A7%0A%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%EF%BC%9A%E6%9C%89%E4%BA%8B%E8%80%81%E7%88%B9%E9%A1%B6%E7%9D%80%EF%BC%8C%E8%80%81%E7%88%B9%E7%9A%84%E8%80%81%E7%88%B9%E9%A1%B6%E7%9D%80%EF%BC%8C%E4%BB%96%E4%BB%AC%E9%A1%B6%E4%B8%8D%E4%BD%8F%E5%86%8D%E4%BA%A4%E7%BB%99%E4%B8%8B%E4%B8%80%E8%BE%88%0A%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%EF%BC%9A%E7%A5%96%E7%A5%96%E8%BE%88%E8%BE%88%E5%8A%A0%E8%BD%BD%E7%9A%84%E7%B1%BB%E9%83%BD%E5%BE%97%E4%BF%9D%E5%AD%98%E5%A5%BD%E5%91%80%EF%BC%8C%E8%BF%99%E5%8F%AF%E6%98%AF%E9%81%97%E4%BA%A7%0A%0A%0A%0A%20%20%20%20</center></span>
+</div></body></html> 

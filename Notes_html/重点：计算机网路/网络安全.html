@@ -1,0 +1,113 @@
+<html>
+<head>
+  <title>网络安全</title>
+  <basefont face="微软雅黑" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="YXBJ Windows/601392 (zh-CN, DDL); Windows/10.0.0 (Win64); EDAMVersion=V2;"/>
+  <meta name="content-class" content="yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: 微软雅黑;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="9699"/>
+<h1>网络安全</h1>
+
+<div><span><div style="font-size: 14px; margin: 0; padding: 0; width: 100%;"><h1 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 41px; border-bottom: 3px double #999; color: #000; margin-top: 14px;">网络安全</h1>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">计算机网络面临的安全性威胁</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">被动攻击</h3>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">在网络上窃听他人通信内容，截获，分析数据性质获取信息，又叫流量分析</p>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">主动攻击</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">篡改：攻击者故意篡改网络上传送的报文</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">恶意程序：
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">计算机病毒</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">计算机蠕虫</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">特洛伊木马</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">逻辑炸弹</li>
+</ul>
+</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">拒绝服务
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">指攻击者向因特网上的某个服务器不停地发送大量分组，使因特网或服务器无法提供正常服务</li>
+</ul>
+</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">两类密码体制</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">对称密钥密码体制</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">加密密钥和级秘密钥时相同的密码体制</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">公钥密码体制</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">使用不同的加密密钥与解密密钥
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">解决密钥分配问题和对数字签名的需求</li>
+</ul>
+</li>
+</ul>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">内容</h4>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">加密密钥，向公众公开</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">解密密钥，需要保密</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">加密算法和解密算法公开</li>
+</ul>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">过程</h4>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">发送者A，接收者B<br/>
+1、密钥对产生器，产出接收者B的一对密钥（加密密钥_公开，解密密钥_私密）<br/>
+2、发送者A利用B的公开加密密钥和加密算法得到密文，发送给B<br/>
+3、接收者B接收到密文，使用自己的私密解密密钥和解密算法对密文进行解密，恢复出明文使用</p>
+<h4 style="line-height: 160%; box-sizing: content-box; font-size: 20px; color: #333;">特点</h4>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">从公钥推导解密私钥，计算机上不可能</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">公钥不能用来解密</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">任何加密方法的安全性取决于密钥的长度，以及攻破密文所需的计算量</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">数字签名</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">数字签名必须实现的功能</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">接收者能够核实发送者对报文的签名（我收到你的消息，我要确信是你发的）</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">接收者确信收到的数据和发送者发送的完全一样而没有被篡改过</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">发送者时候不能抵赖对报文的签名</li>
+</ul>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">使用公钥方式实现数字签名</h3>
+<p style="line-height: 160%; box-sizing: content-box; margin: 10px 0; color: #333;">1、签名：发送方用自己的私钥和解密算法对密文进行签名<br/>
+2、加密：发送方用对方的公钥和加密算法对签字的密文进行加密<br/>
+3、解密：接收方用自己的私钥和解密算法对密文进行解密<br/>
+4、确认：接收方用对方的公钥和加密算法对密文进行签名确认<br/>
+<img src="网络安全_files/Image.png" type="image/png" data-filename="Image.png"/></p>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">密钥分配</h2>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">对称密钥分配</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">密钥分配中心KDC<br/>
+用户A和用户B，在KDA登记，登记时确定和KDC进行通信的主密钥KA和KB<br/>
+<img src="网络安全_files/Image [1].png" type="image/png" data-filename="Image.png"/></li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">步骤</li>
+</ul>
+<ol style="line-height: 160%; box-sizing: content-box; display: block; padding-left: 30px; margin: 6px 0 10px; color: #333; list-style-type: decimal;">
+<li style="line-height: 160%; box-sizing: content-box;">用户A向密钥分配中心KDC发送时用明文，说明想和用户B通信。在明文中给出A和B在KDC登记的身份。</li>
+<li style="line-height: 160%; box-sizing: content-box;">KDC用随机数产生“一次一密”的会话密钥 KAB供A和B的这次会话使用，然后向A发送回答报文。这个回答报文用A的密钥 KA加密。这个报文中包含有这次会话使用的密钥KAB和请A转给B的一个票据(ticket)[插图]，它包含A和B在KDC登记的身份，以及这次会话将要使用的密钥KAB。这个票据用B的密钥KB加密，因此A无法知道此票据的内容，因为A没有B的密钥KB。当然A也不需要知道此票据的内容。</li>
+<li style="line-height: 160%; box-sizing: content-box;">当B收到A转来的票据并使用自己的密钥KB解密后，就知道A要和他通信，同时也知道KDC为这次和A通信所分配的会话密钥KAB。</li>
+</ol>
+<h3 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: #333;">公钥分配</h3>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">认证中心CA</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">认证中心CA的公钥所有用户都可以获得</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">步骤
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333; margin-top: 0; margin-bottom: 0;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">用户想要验证某个公钥是否是某个个体所拥有，向CA机构查询</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">CA机构给用户发送用CA签名的证书，用户用CA的公钥对证书进行验证</li>
+</ul>
+</li>
+</ul>
+<h2 style="line-height: 160%; box-sizing: content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; color: #333;">运输层安全协议</h2>
+<ul style="line-height: 160%; box-sizing: content-box; display: block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: #333;">
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">安全套接字层SSL</li>
+<li style="line-height: 160%; box-sizing: content-box; position: relative;">运输层安全TLS</li>
+</ul>
+</div><center style="display:none !important;visibility:collapse !important;height:0 !important;white-space:nowrap;width:100%;overflow:hidden">%23%20%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%0A%23%23%20%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%9D%A2%E4%B8%B4%E7%9A%84%E5%AE%89%E5%85%A8%E6%80%A7%E5%A8%81%E8%83%81%0A%23%23%23%20%E8%A2%AB%E5%8A%A8%E6%94%BB%E5%87%BB%0A%E5%9C%A8%E7%BD%91%E7%BB%9C%E4%B8%8A%E7%AA%83%E5%90%AC%E4%BB%96%E4%BA%BA%E9%80%9A%E4%BF%A1%E5%86%85%E5%AE%B9%EF%BC%8C%E6%88%AA%E8%8E%B7%EF%BC%8C%E5%88%86%E6%9E%90%E6%95%B0%E6%8D%AE%E6%80%A7%E8%B4%A8%E8%8E%B7%E5%8F%96%E4%BF%A1%E6%81%AF%EF%BC%8C%E5%8F%88%E5%8F%AB%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90%0A%23%23%23%20%E4%B8%BB%E5%8A%A8%E6%94%BB%E5%87%BB%0A*%20%E7%AF%A1%E6%94%B9%EF%BC%9A%E6%94%BB%E5%87%BB%E8%80%85%E6%95%85%E6%84%8F%E7%AF%A1%E6%94%B9%E7%BD%91%E7%BB%9C%E4%B8%8A%E4%BC%A0%E9%80%81%E7%9A%84%E6%8A%A5%E6%96%87%0A*%20%E6%81%B6%E6%84%8F%E7%A8%8B%E5%BA%8F%EF%BC%9A%0A%20%20%20%20*%20%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%97%85%E6%AF%92%0A%20%20%20%20*%20%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A0%95%E8%99%AB%0A%20%20%20%20*%20%E7%89%B9%E6%B4%9B%E4%BC%8A%E6%9C%A8%E9%A9%AC%0A%20%20%20%20*%20%E9%80%BB%E8%BE%91%E7%82%B8%E5%BC%B9%0A*%20%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%0A%20%20%20%20*%20%E6%8C%87%E6%94%BB%E5%87%BB%E8%80%85%E5%90%91%E5%9B%A0%E7%89%B9%E7%BD%91%E4%B8%8A%E7%9A%84%E6%9F%90%E4%B8%AA%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8D%E5%81%9C%E5%9C%B0%E5%8F%91%E9%80%81%E5%A4%A7%E9%87%8F%E5%88%86%E7%BB%84%EF%BC%8C%E4%BD%BF%E5%9B%A0%E7%89%B9%E7%BD%91%E6%88%96%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%A0%E6%B3%95%E6%8F%90%E4%BE%9B%E6%AD%A3%E5%B8%B8%E6%9C%8D%E5%8A%A1%0A%0A%23%23%20%E4%B8%A4%E7%B1%BB%E5%AF%86%E7%A0%81%E4%BD%93%E5%88%B6%0A%23%23%23%20%E5%AF%B9%E7%A7%B0%E5%AF%86%E9%92%A5%E5%AF%86%E7%A0%81%E4%BD%93%E5%88%B6%0A*%20%E5%8A%A0%E5%AF%86%E5%AF%86%E9%92%A5%E5%92%8C%E7%BA%A7%E7%A7%98%E5%AF%86%E9%92%A5%E6%97%B6%E7%9B%B8%E5%90%8C%E7%9A%84%E5%AF%86%E7%A0%81%E4%BD%93%E5%88%B6%0A%23%23%23%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E4%BD%93%E5%88%B6%0A*%20%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%90%8C%E7%9A%84%E5%8A%A0%E5%AF%86%E5%AF%86%E9%92%A5%E4%B8%8E%E8%A7%A3%E5%AF%86%E5%AF%86%E9%92%A5%0A%20%20%20%20*%20%E8%A7%A3%E5%86%B3%E5%AF%86%E9%92%A5%E5%88%86%E9%85%8D%E9%97%AE%E9%A2%98%E5%92%8C%E5%AF%B9%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%9A%84%E9%9C%80%E6%B1%82%0A%23%23%23%23%20%E5%86%85%E5%AE%B9%0A*%20%E5%8A%A0%E5%AF%86%E5%AF%86%E9%92%A5%EF%BC%8C%E5%90%91%E5%85%AC%E4%BC%97%E5%85%AC%E5%BC%80%0A*%20%E8%A7%A3%E5%AF%86%E5%AF%86%E9%92%A5%EF%BC%8C%E9%9C%80%E8%A6%81%E4%BF%9D%E5%AF%86%0A*%20%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%92%8C%E8%A7%A3%E5%AF%86%E7%AE%97%E6%B3%95%E5%85%AC%E5%BC%80%0A%23%23%23%23%20%E8%BF%87%E7%A8%8B%0A%E5%8F%91%E9%80%81%E8%80%85A%EF%BC%8C%E6%8E%A5%E6%94%B6%E8%80%85B%0A1%E3%80%81%E5%AF%86%E9%92%A5%E5%AF%B9%E4%BA%A7%E7%94%9F%E5%99%A8%EF%BC%8C%E4%BA%A7%E5%87%BA%E6%8E%A5%E6%94%B6%E8%80%85B%E7%9A%84%E4%B8%80%E5%AF%B9%E5%AF%86%E9%92%A5%EF%BC%88%E5%8A%A0%E5%AF%86%E5%AF%86%E9%92%A5_%E5%85%AC%E5%BC%80%EF%BC%8C%E8%A7%A3%E5%AF%86%E5%AF%86%E9%92%A5_%E7%A7%81%E5%AF%86%EF%BC%89%0A2%E3%80%81%E5%8F%91%E9%80%81%E8%80%85A%E5%88%A9%E7%94%A8B%E7%9A%84%E5%85%AC%E5%BC%80%E5%8A%A0%E5%AF%86%E5%AF%86%E9%92%A5%E5%92%8C%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%BE%97%E5%88%B0%E5%AF%86%E6%96%87%EF%BC%8C%E5%8F%91%E9%80%81%E7%BB%99B%0A3%E3%80%81%E6%8E%A5%E6%94%B6%E8%80%85B%E6%8E%A5%E6%94%B6%E5%88%B0%E5%AF%86%E6%96%87%EF%BC%8C%E4%BD%BF%E7%94%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E7%A7%81%E5%AF%86%E8%A7%A3%E5%AF%86%E5%AF%86%E9%92%A5%E5%92%8C%E8%A7%A3%E5%AF%86%E7%AE%97%E6%B3%95%E5%AF%B9%E5%AF%86%E6%96%87%E8%BF%9B%E8%A1%8C%E8%A7%A3%E5%AF%86%EF%BC%8C%E6%81%A2%E5%A4%8D%E5%87%BA%E6%98%8E%E6%96%87%E4%BD%BF%E7%94%A8%0A%23%23%23%23%20%E7%89%B9%E7%82%B9%0A*%20%E4%BB%8E%E5%85%AC%E9%92%A5%E6%8E%A8%E5%AF%BC%E8%A7%A3%E5%AF%86%E7%A7%81%E9%92%A5%EF%BC%8C%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%8A%E4%B8%8D%E5%8F%AF%E8%83%BD%0A*%20%E5%85%AC%E9%92%A5%E4%B8%8D%E8%83%BD%E7%94%A8%E6%9D%A5%E8%A7%A3%E5%AF%86%0A*%20%E4%BB%BB%E4%BD%95%E5%8A%A0%E5%AF%86%E6%96%B9%E6%B3%95%E7%9A%84%E5%AE%89%E5%85%A8%E6%80%A7%E5%8F%96%E5%86%B3%E4%BA%8E%E5%AF%86%E9%92%A5%E7%9A%84%E9%95%BF%E5%BA%A6%EF%BC%8C%E4%BB%A5%E5%8F%8A%E6%94%BB%E7%A0%B4%E5%AF%86%E6%96%87%E6%89%80%E9%9C%80%E7%9A%84%E8%AE%A1%E7%AE%97%E9%87%8F%0A%23%23%20%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%0A%23%23%23%20%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E5%BF%85%E9%A1%BB%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8A%9F%E8%83%BD%0A*%20%E6%8E%A5%E6%94%B6%E8%80%85%E8%83%BD%E5%A4%9F%E6%A0%B8%E5%AE%9E%E5%8F%91%E9%80%81%E8%80%85%E5%AF%B9%E6%8A%A5%E6%96%87%E7%9A%84%E7%AD%BE%E5%90%8D%EF%BC%88%E6%88%91%E6%94%B6%E5%88%B0%E4%BD%A0%E7%9A%84%E6%B6%88%E6%81%AF%EF%BC%8C%E6%88%91%E8%A6%81%E7%A1%AE%E4%BF%A1%E6%98%AF%E4%BD%A0%E5%8F%91%E7%9A%84%EF%BC%89%0A*%20%E6%8E%A5%E6%94%B6%E8%80%85%E7%A1%AE%E4%BF%A1%E6%94%B6%E5%88%B0%E7%9A%84%E6%95%B0%E6%8D%AE%E5%92%8C%E5%8F%91%E9%80%81%E8%80%85%E5%8F%91%E9%80%81%E7%9A%84%E5%AE%8C%E5%85%A8%E4%B8%80%E6%A0%B7%E8%80%8C%E6%B2%A1%E6%9C%89%E8%A2%AB%E7%AF%A1%E6%94%B9%E8%BF%87%0A*%20%E5%8F%91%E9%80%81%E8%80%85%E6%97%B6%E5%80%99%E4%B8%8D%E8%83%BD%E6%8A%B5%E8%B5%96%E5%AF%B9%E6%8A%A5%E6%96%87%E7%9A%84%E7%AD%BE%E5%90%8D%0A%23%23%23%20%E4%BD%BF%E7%94%A8%E5%85%AC%E9%92%A5%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%0A1%E3%80%81%E7%AD%BE%E5%90%8D%EF%BC%9A%E5%8F%91%E9%80%81%E6%96%B9%E7%94%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E7%A7%81%E9%92%A5%E5%92%8C%E8%A7%A3%E5%AF%86%E7%AE%97%E6%B3%95%E5%AF%B9%E5%AF%86%E6%96%87%E8%BF%9B%E8%A1%8C%E7%AD%BE%E5%90%8D%0A2%E3%80%81%E5%8A%A0%E5%AF%86%EF%BC%9A%E5%8F%91%E9%80%81%E6%96%B9%E7%94%A8%E5%AF%B9%E6%96%B9%E7%9A%84%E5%85%AC%E9%92%A5%E5%92%8C%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%AF%B9%E7%AD%BE%E5%AD%97%E7%9A%84%E5%AF%86%E6%96%87%E8%BF%9B%E8%A1%8C%E5%8A%A0%E5%AF%86%0A3%E3%80%81%E8%A7%A3%E5%AF%86%EF%BC%9A%E6%8E%A5%E6%94%B6%E6%96%B9%E7%94%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E7%A7%81%E9%92%A5%E5%92%8C%E8%A7%A3%E5%AF%86%E7%AE%97%E6%B3%95%E5%AF%B9%E5%AF%86%E6%96%87%E8%BF%9B%E8%A1%8C%E8%A7%A3%E5%AF%86%0A4%E3%80%81%E7%A1%AE%E8%AE%A4%EF%BC%9A%E6%8E%A5%E6%94%B6%E6%96%B9%E7%94%A8%E5%AF%B9%E6%96%B9%E7%9A%84%E5%85%AC%E9%92%A5%E5%92%8C%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%AF%B9%E5%AF%86%E6%96%87%E8%BF%9B%E8%A1%8C%E7%AD%BE%E5%90%8D%E7%A1%AE%E8%AE%A4%0A!%5B5f2b7b27662288d1f78aac079f3e4993.png%5D(en-resource%3A%2F%2Fdatabase%2F3525%3A0)%0A%23%23%20%E5%AF%86%E9%92%A5%E5%88%86%E9%85%8D%0A%23%23%23%20%E5%AF%B9%E7%A7%B0%E5%AF%86%E9%92%A5%E5%88%86%E9%85%8D%0A%20*%20%E5%AF%86%E9%92%A5%E5%88%86%E9%85%8D%E4%B8%AD%E5%BF%83KDC%0A%20%E7%94%A8%E6%88%B7A%E5%92%8C%E7%94%A8%E6%88%B7B%EF%BC%8C%E5%9C%A8KDA%E7%99%BB%E8%AE%B0%EF%BC%8C%E7%99%BB%E8%AE%B0%E6%97%B6%E7%A1%AE%E5%AE%9A%E5%92%8CKDC%E8%BF%9B%E8%A1%8C%E9%80%9A%E4%BF%A1%E7%9A%84%E4%B8%BB%E5%AF%86%E9%92%A5KA%E5%92%8CKB%0A%20!%5Bf2ba5dab27857d1821d9cf01c41d59a3.png%5D(en-resource%3A%2F%2Fdatabase%2F3527%3A0)%0A%20*%20%E6%AD%A5%E9%AA%A4%0A%201.%20%E7%94%A8%E6%88%B7A%E5%90%91%E5%AF%86%E9%92%A5%E5%88%86%E9%85%8D%E4%B8%AD%E5%BF%83KDC%E5%8F%91%E9%80%81%E6%97%B6%E7%94%A8%E6%98%8E%E6%96%87%EF%BC%8C%E8%AF%B4%E6%98%8E%E6%83%B3%E5%92%8C%E7%94%A8%E6%88%B7B%E9%80%9A%E4%BF%A1%E3%80%82%E5%9C%A8%E6%98%8E%E6%96%87%E4%B8%AD%E7%BB%99%E5%87%BAA%E5%92%8CB%E5%9C%A8KDC%E7%99%BB%E8%AE%B0%E7%9A%84%E8%BA%AB%E4%BB%BD%E3%80%82%0A%202.%20KDC%E7%94%A8%E9%9A%8F%E6%9C%BA%E6%95%B0%E4%BA%A7%E7%94%9F%E2%80%9C%E4%B8%80%E6%AC%A1%E4%B8%80%E5%AF%86%E2%80%9D%E7%9A%84%E4%BC%9A%E8%AF%9D%E5%AF%86%E9%92%A5%20KAB%E4%BE%9BA%E5%92%8CB%E7%9A%84%E8%BF%99%E6%AC%A1%E4%BC%9A%E8%AF%9D%E4%BD%BF%E7%94%A8%EF%BC%8C%E7%84%B6%E5%90%8E%E5%90%91A%E5%8F%91%E9%80%81%E5%9B%9E%E7%AD%94%E6%8A%A5%E6%96%87%E3%80%82%E8%BF%99%E4%B8%AA%E5%9B%9E%E7%AD%94%E6%8A%A5%E6%96%87%E7%94%A8A%E7%9A%84%E5%AF%86%E9%92%A5%20KA%E5%8A%A0%E5%AF%86%E3%80%82%E8%BF%99%E4%B8%AA%E6%8A%A5%E6%96%87%E4%B8%AD%E5%8C%85%E5%90%AB%E6%9C%89%E8%BF%99%E6%AC%A1%E4%BC%9A%E8%AF%9D%E4%BD%BF%E7%94%A8%E7%9A%84%E5%AF%86%E9%92%A5KAB%E5%92%8C%E8%AF%B7A%E8%BD%AC%E7%BB%99B%E7%9A%84%E4%B8%80%E4%B8%AA%E7%A5%A8%E6%8D%AE(ticket)%5B%E6%8F%92%E5%9B%BE%5D%EF%BC%8C%E5%AE%83%E5%8C%85%E5%90%ABA%E5%92%8CB%E5%9C%A8KDC%E7%99%BB%E8%AE%B0%E7%9A%84%E8%BA%AB%E4%BB%BD%EF%BC%8C%E4%BB%A5%E5%8F%8A%E8%BF%99%E6%AC%A1%E4%BC%9A%E8%AF%9D%E5%B0%86%E8%A6%81%E4%BD%BF%E7%94%A8%E7%9A%84%E5%AF%86%E9%92%A5KAB%E3%80%82%E8%BF%99%E4%B8%AA%E7%A5%A8%E6%8D%AE%E7%94%A8B%E7%9A%84%E5%AF%86%E9%92%A5KB%E5%8A%A0%E5%AF%86%EF%BC%8C%E5%9B%A0%E6%AD%A4A%E6%97%A0%E6%B3%95%E7%9F%A5%E9%81%93%E6%AD%A4%E7%A5%A8%E6%8D%AE%E7%9A%84%E5%86%85%E5%AE%B9%EF%BC%8C%E5%9B%A0%E4%B8%BAA%E6%B2%A1%E6%9C%89B%E7%9A%84%E5%AF%86%E9%92%A5KB%E3%80%82%E5%BD%93%E7%84%B6A%E4%B9%9F%E4%B8%8D%E9%9C%80%E8%A6%81%E7%9F%A5%E9%81%93%E6%AD%A4%E7%A5%A8%E6%8D%AE%E7%9A%84%E5%86%85%E5%AE%B9%E3%80%82%0A%203.%20%E5%BD%93B%E6%94%B6%E5%88%B0A%E8%BD%AC%E6%9D%A5%E7%9A%84%E7%A5%A8%E6%8D%AE%E5%B9%B6%E4%BD%BF%E7%94%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E5%AF%86%E9%92%A5KB%E8%A7%A3%E5%AF%86%E5%90%8E%EF%BC%8C%E5%B0%B1%E7%9F%A5%E9%81%93A%E8%A6%81%E5%92%8C%E4%BB%96%E9%80%9A%E4%BF%A1%EF%BC%8C%E5%90%8C%E6%97%B6%E4%B9%9F%E7%9F%A5%E9%81%93KDC%E4%B8%BA%E8%BF%99%E6%AC%A1%E5%92%8CA%E9%80%9A%E4%BF%A1%E6%89%80%E5%88%86%E9%85%8D%E7%9A%84%E4%BC%9A%E8%AF%9D%E5%AF%86%E9%92%A5KAB%E3%80%82%0A%20%23%23%23%20%E5%85%AC%E9%92%A5%E5%88%86%E9%85%8D%0A%20%20*%20%E8%AE%A4%E8%AF%81%E4%B8%AD%E5%BF%83CA%0A%20%20*%20%E8%AE%A4%E8%AF%81%E4%B8%AD%E5%BF%83CA%E7%9A%84%E5%85%AC%E9%92%A5%E6%89%80%E6%9C%89%E7%94%A8%E6%88%B7%E9%83%BD%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%BE%97%0A%20*%20%E6%AD%A5%E9%AA%A4%0A%20%20%20%20%20%20*%20%E7%94%A8%E6%88%B7%E6%83%B3%E8%A6%81%E9%AA%8C%E8%AF%81%E6%9F%90%E4%B8%AA%E5%85%AC%E9%92%A5%E6%98%AF%E5%90%A6%E6%98%AF%E6%9F%90%E4%B8%AA%E4%B8%AA%E4%BD%93%E6%89%80%E6%8B%A5%E6%9C%89%EF%BC%8C%E5%90%91CA%E6%9C%BA%E6%9E%84%E6%9F%A5%E8%AF%A2%0A%20%20%20%20%20%20*%20CA%E6%9C%BA%E6%9E%84%E7%BB%99%E7%94%A8%E6%88%B7%E5%8F%91%E9%80%81%E7%94%A8CA%E7%AD%BE%E5%90%8D%E7%9A%84%E8%AF%81%E4%B9%A6%EF%BC%8C%E7%94%A8%E6%88%B7%E7%94%A8CA%E7%9A%84%E5%85%AC%E9%92%A5%E5%AF%B9%E8%AF%81%E4%B9%A6%E8%BF%9B%E8%A1%8C%E9%AA%8C%E8%AF%81%0A%23%23%20%E8%BF%90%E8%BE%93%E5%B1%82%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%0A*%20%E5%AE%89%E5%85%A8%E5%A5%97%E6%8E%A5%E5%AD%97%E5%B1%82SSL%0A*%20%E8%BF%90%E8%BE%93%E5%B1%82%E5%AE%89%E5%85%A8TLS%0A</center></span>
+</div></body></html> 
