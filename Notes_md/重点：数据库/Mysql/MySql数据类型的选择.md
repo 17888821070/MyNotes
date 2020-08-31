@@ -27,7 +27,13 @@
 
 浮点数：float、double    普通带小数点的数据
 
-顶点数：decimal、numberic	货币等需要完全精确的数据
+定点数：decimal、numberic	货币等需要完全精确的数据
+
+```sql
+decimal(10,10) -- 表示整数部分10位（最多为65），小数部分10位（最多为30）
+-- 例子：
+alter table mytable modify money DECIMAL(100,30);
+```
 
 ## 4. 日期类型的选择
 
