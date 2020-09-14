@@ -1,3 +1,5 @@
+[目录](目录.md)
+
 # JDBC数据库连接池JDBC工具
 
 [1、三层架构](# 1、三层架构)
@@ -12,7 +14,7 @@
 
 ​		[2.2.2 DBCP](# 2.2.2 DBCP)
 
-​		[2.2.3Druid](# 2.2.3 Druid)
+​		[2.2.3 Druid](# 2.2.3 Druid)
 
 ​	[2.3 jdbc的封装工具](# 2.3 jdbc的封装工具)
 
@@ -329,6 +331,8 @@ maven依赖
 >  <artifactId>commons-dbutils</artifactId>
 >  <version>1.7</version>
 
+>**需要提供数据库连接作为条件**
+
 * QueryRunner
 
   * update(Connection conn, String sql, Object... params)
@@ -379,6 +383,8 @@ maven依赖
 >  <groupId>org.springframework</groupId>
 >  <artifactId>spring-jdbc</artifactId>
 >  <version>5.0.8.RELEASE</version>
+
+> **需要提供数据库连接池作为条件**
 
 * JdbcTemplate
 
