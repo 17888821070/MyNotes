@@ -58,7 +58,17 @@
 
 > 协商后使用beyond compare等工具修改lizixing分支或development分支代码
 
-12、git 
+12、合并lizixing分支到development分支
+
+> git merge lzixing
+
+13、上传development分支
+
+> git push origion development
+
+14、删除开发分支
+
+> git branch -d lizixing
 
 
 
