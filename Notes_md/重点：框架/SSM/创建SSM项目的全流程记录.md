@@ -1,5 +1,3 @@
-# 从零开始创建SSM实验室管理系统
-
 ## 1. 新建Maven Web工程
 
 ![1599038436541](C:\Users\LZX\AppData\Roaming\Typora\typora-user-images\1599038436541.png)

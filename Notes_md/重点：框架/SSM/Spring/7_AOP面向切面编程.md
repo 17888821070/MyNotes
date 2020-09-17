@@ -19,9 +19,11 @@
 public class AcountService{
     public int saveAccount(Account account){
         System.out.println("saveAccount");
+        return 1;
     }
     public int updateAccount(Account account){
         System.out.println("saveAccount");
+        return 2;
     }
 }
 ```
@@ -30,14 +32,25 @@ public class AcountService{
 
 ```java
 //用于保存日志的类
-class Logger{
+public class Logger{
     //前置通知方法
-    
+    public void beforeLogger(){
+        System.out.println("即将进行XXX操作");
+    }
     //后置通用方法
-    
+    public void afterLogger(int value){
+        System.out.println("执行XXX操作成功");
+        System.out.println(value);
+    }
     //异常通知方法
-    
+    public void catchLogger(Exception ex){
+        System.out.println("执行XXX操作失败");
+        System.out.println("李籽兴主动打印"+ex);
+    }
     //最终通知方法
+    public void finallyLogger(){
+        System.out.println("执行XXX操作失败");
+    }
 }
 ```
 
@@ -82,11 +95,13 @@ execution表达式  = execution([访问修饰符] 返回值类型 全限定类�
     <bean id="logger" class="Logger"></bean>
     <aop:config>
     	<aop:aspect id="loggerAspect" ref="logger">
-            <aop:before method="beforeLogger" pointcut="execution(public void com.lzx.service.AccountService.delete())"/>
-            <aop:after-returning method="afterLogger" pointcut="execution(public void com.lzx.service.AccountService.delete())"/>
-            <aop:after-throwing method="catchLogger" pointcut="execution(public void com.lzx.service.AccountService.delete())"/>
-            <aop:after method="finallyLogger" pointcut="execution(public void com.lzx.service.AccountService.delete())"/>
-            
+            <aop:pointcut id="pt1" 
+              expression="execution(public void com.lzx.service.AccountService.delete())"
+                          
+            <aop:before method="beforeLogger" pointcut-ref="pt1"/>
+            <aop:after-returning method="afterLogger" pointcut="" returning="value" />
+            <aop:after-throwing method="catchLogger" pointcut-ref="pt1" throwing="ex"/>
+            <aop:after method="finallyLogger" pointcut-ref="pt1" />
         </aop:aspect>
     </aop:config>
 </beans>
@@ -97,6 +112,36 @@ execution表达式  = execution([访问修饰符] 返回值类型 全限定类�
 ```xml
 <!--开启AOP注解配置-->
 <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+```
+
+```java
+@Aspect
+public class LoggerAspect{
+    @Pointcut("execution("* com.lzx.service.impl.*.*(..)")")
+    public void pt1(){}
+    
+    @Before("pt1()")
+    public void beforeLogger(){
+        System.out.println("即将进行XXX操作");
+    }
+    
+    @AfterReturning("pt1()")
+    public void afterLogger(int value){
+        System.out.println("执行XXX操作成功");
+        System.out.println(value);
+    }
+    
+    @AfterThrowing("pt1()")
+    public void catchLogger(Exception ex){
+        System.out.println("执行XXX操作失败");
+        System.out.println("李籽兴主动打印"+ex);
+    }
+    
+    @After("pt1")
+    public void finallyLogger(){
+        System.out.println("执行XXX操作失败");
+    }
+}
 ```
 
 
