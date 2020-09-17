@@ -20,7 +20,7 @@
 
 ​		[2.3.1 DBUtils](# 2.3.1 DBUtils [Apache])
 
-​		[2.3.2 JdbcTemplate](2.3.2 JdbcTemplate)
+​		[2.3.2 JdbcTemplate](# 2.3.2 JdbcTemplate [Spring])
 
 
 
