@@ -14,7 +14,7 @@
 
 ```java
 @Controller
-	public class TestController{
+public class TestController{
 }
 ```
 

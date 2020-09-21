@@ -119,7 +119,7 @@
 
 #### **1.通过慢查询日志找到sql执行效率低的语句**
 
-* 使用`show variables like '%_query_%' 查看慢查询是否开启`
+* 使用`show variables like '%_query_%' 查看慢查询是否开启` 
 
   ![1598879308257](imgs\1598879308257.png)
 
