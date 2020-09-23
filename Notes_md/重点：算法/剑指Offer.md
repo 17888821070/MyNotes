@@ -10,6 +10,8 @@
 
 [二进制](# 二进制)
 
+[栈](# 栈)
+
 
 
 ## 数组
@@ -328,7 +330,73 @@ public TreeNode reConstructBinaryTree(int[] pre, int[] in ,int leftp, int rightp
 }
 ```
 
-#### 
+#### 二叉搜索树的后续遍历
+```txt
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则返回true,否则返回false。假设输入的数组的任意两个数字都互不相同。
+```
+
+```java
+public class Solution {
+    public boolean VerifySquenceOfBST(int [] sequence) {
+        if(sequence == null || sequence.length == 0)return false;
+        return  helpVerify(sequence, 0, sequence.length-1);
+    }
+    
+    public boolean helpVerify(int [] sequence, int start, int root){
+        if(start >= root)return true;
+        int key = sequence[root];
+        int i;
+        //找到左右子数的分界点
+        for(i=start; i < root; i++)
+            if(sequence[i] > key)
+                break;
+        //在右子树中判断是否含有小于root的值，如果有返回false
+        for(int j = i; j < root; j++)
+            if(sequence[j] < key)
+                return false;
+        return helpVerify(sequence, start, i-1) && helpVerify(sequence, i, root-1);
+    }
+}
+```
+
+#### 二叉树中和为某一值的路径
+
+```txt
+输入一颗二叉树的根节点和一个整数，按字典序打印出二叉树中结点值的和为输入整数的所有路径。路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+```
+
+```java
+public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+    ArrayList<Integer> list = new ArrayList();
+    dfs(list,target,root);
+    return res;
+}
+ArrayList<ArrayList<Integer>> res = new ArrayList();
+int t = 0;
+public void dfs(ArrayList list,int leftTar,TreeNode node){
+    if(leftTar<0) return;
+    if(node==null){
+        t++;
+        if(leftTar==0&&t%2==0){
+            ArrayList<Integer> cur = new ArrayList(list);
+            res.add(cur);
+            return;
+        }
+        else{
+            return;
+        }
+    }
+
+    list.add(node.val);
+    int nextLeftTar = leftTar- node.val;
+    dfs(list,nextLeftTar,node.left);
+
+    dfs(list,nextLeftTar,node.right);
+    list.remove(list.size()-1);
+}
+```
+
+
 
 ## 二进制
 
@@ -349,6 +417,72 @@ public class Solution {
         }
         return res;
     }
+}
+```
+
+
+
+## 栈
+
+#### 包含min函数的栈
+
+```txt
+定义栈的数据结构，请在该类型中实现一个能够得到栈中所含最小元素的min函数（时间复杂度应为O（1））。
+```
+
+```java
+public class Solution {
+    //数据栈，保存正常数据 例子 4，2，3，1
+    Stack<Integer> stack = new Stack();
+    //最小数栈，保存最小值 例子 4，2，2，1 
+    Stack<Integer> minstack = new Stack();
+    public void push(int node) {
+        stack.push(node);
+        if(minstack.isEmpty()){
+            minstack.push(node);
+        }
+        else{
+            minstack.push(Math.min(node,minstack.peek()));
+        }
+    }
+    public void pop() {
+        stack.pop();
+        minstack.pop();
+    }
+    public int top() {
+        return stack.peek();
+    }
+    public int min() {
+        return minstack.peek();
+    }
+}
+```
+
+#### 栈的压入弹出序列
+
+```txt
+输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否可能为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，序列4,5,3,2,1是该压栈序列对应的一个弹出序列，但4,3,5,1,2就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）
+```
+
+```java
+public boolean IsPopOrder(int [] pushA,int [] popA) {
+    int len = pushA.length;
+    Stack<Integer> stack = new Stack();
+    int pA=0;
+    int pB=0;
+    while(pA<=len){
+        //栈空就压栈
+        if(stack.isEmpty()||stack.peek()!=popA[pB]){
+            if(pA==len) break;
+            stack.add(pushA[pA]);
+            pA++;
+        }
+        else{
+            stack.pop();
+            pB++;
+        }
+    }
+    return pB==len;
 }
 ```
 
