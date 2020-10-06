@@ -1,5 +1,9 @@
 # IOC原理
 
+## IOC初始化核心流程
+
+<img src="imgs\1601952812144.png" alt="1601952812144" style="zoom:75%;" />
+
 ##  SpringBean的生命周期
 
 > singleton作用域的Bean对象会被Spring 跟踪整个生命周期
@@ -62,6 +66,10 @@ class User{
 ​	Ⅰ Bean实现DisposableBean接口的destory方法
 
 ​	Ⅱ Bean配置中dertory-method配置的初始化方法
+
+
+
+
 
 #  AOP的原理——动态代理
 
