@@ -329,3 +329,4 @@ public class JedisDemo{
 ## 多行执行命令
 
 组装Pipeline命令，一次发送，返回结果为多组
+
