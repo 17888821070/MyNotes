@@ -124,7 +124,7 @@ $17							-- 第三个数据的长度（1,2,3,4,5,6,7,8,9长度是17）
 >
 > ##### 3、多路复用IO（同步）
 >
-> ​	<font color="red">selset 多路复用，由内核进行socket的遍历，将有效的read返回，减少了用户态和内核态的切换次数</font>
+> ​	<font color="red">select 多路复用，由内核进行socket的遍历，将有效的read返回，减少了用户态和内核态的切换次数</font>
 >
 > ​				使用方法：调用内核select()，<font color="blue">传入socket连接描述符</font>，连接描述符传入内核，内核对socket进行遍历，检查是否能read到数据，<font color="blue">返回能read到数据的socket连接描述符</font>
 >
