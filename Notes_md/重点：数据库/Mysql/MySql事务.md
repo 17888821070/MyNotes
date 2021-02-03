@@ -255,5 +255,5 @@ BEGIN;
 update a set a2 = 11 where a1 = 1;
 update a set a2 = 22 where a1 = 2;
 update a set a2 = 'asd' where a1 = 3;
-commit;;
+commit;
 ```
